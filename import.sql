@@ -102,7 +102,7 @@ CREATE TABLE correo (
 INSERT INTO universidad (nombre, web, direccion, correo) VALUES
 ('Universidad Complutense de Madrid', 'https://www.ucm.es/', 'Av. Complutense, s/n, 28040 Madrid', '@ucm.es'),
 ('Universidad Autonoma de Madrid', 'https://www.uam.es/uam/inicio', 'Ciudad Universitaria de Cantoblanco, 28049 Madrid', '@uam.es'),
-('Universidad Carlos III de Madrid', 'https://www.uc3m.es/Inicio', 'Av. de Gregorio Peces-Barba Martínez, 22, 28270 Colmenarejo, Madrid', '@alumnos.uc3m.es'),
+('Universidad Carlos III de Madrid', 'https://www.uc3m.es/Inicio', 'Av. de Gregorio Peces-Barba Martínez, 22, 28270 Colmenarejo, Madrid', '@uc3m.es'),
 ('Universidad Rey Juan Carlos', 'https://www.urjc.es/', 'Av. del Alcalde de Móstoles, 28933 Móstoles, Madrid', '@urjc.es');
 
 
@@ -128,7 +128,13 @@ INSERT INTO facultad (nombre, id_universidad) VALUES
 INSERT INTO usuario (activo, nombre, apellido1, apellido2, correo, password, curso, grupo, rol, id_facultad) VALUES
 (1, 'Beatriz', 'Espinar', 'Aragón', 'beaesp01@ucm.es', '1234', 4, 'E', 0, 1),
 (1, 'Lucas', 'Bravo', 'Fairen', 'lucbravo@ucm.es', '1234', 4, 'E', 0, 1),
-(1, 'Jesús', 'Cáceres', 'Tello', 'jescacer@ucm.es', '1234', 4, 'E', 1, 1);
+(1, 'Jesús', 'Cáceres', 'Tello', 'jescacer@ucm.es', '1234', 4, 'E', 1, 1),
+
+(1, 'Julia', 'Chacón', 'Labella', 'julia.chacon@uam.es', '1234', 4, 'A', 1, 5),
+
+(1, 'Julio', 'Cáceres', 'Delpiano', 'julcadel@uc3m.es', '1234', 4, 'A', 1, 8),
+
+(1, 'Jennifer', 'Garcia', 'Carrizo', 'jennifer.garcia@urjc.es', '1234', 4, 'A', 1, 10);
 
 
 -- TIPO INSTALACIÓN
@@ -187,8 +193,8 @@ INSERT INTO reserva (activo, id_usuario, id_instalacion, n_personas, fecha, hora
 (1, 1, 5, 87, '2023-12-13', '09:00:00', 0, '2023-11-26 18:06:25'),
 
 (1, 2, 18, 1, '2023-12-15', '09:00:00', 1, '2023-11-26 18:06:26'),
-(1, 1, 11, 220, '2023-12-15', '09:00:00', 0, '2023-11-26 18:06:27'),
-(1, 1, 5, 1, '2023-12-14', '09:00:00', 0, '2023-11-26 18:06:28');
+(1, 2, 11, 220, '2023-12-15', '09:00:00', 0, '2023-11-26 18:06:27'),
+(1, 2, 5, 1, '2023-12-14', '09:00:00', 0, '2023-11-26 18:06:28');
 
 
 -- CORREO
