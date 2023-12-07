@@ -1,452 +1,207 @@
-const university = [{
-    id: 1,
-    name: 'Universidad Complutense de Madrid',
-    web: 'https://www.ucm.es/',
-    address: 'Av. Complutense, s/n, 28040 Madrid',
-    mail: 'ucm.es'
-}];
+"use strict"
 
-const faculties = [{
-    id: 1,
-    name: 'Facultad de Informática',
-    idUniversity: 1
-},
-{
-    id: 2,
-    name: 'Facultad de Derecho',
-    idUniversity: 1
-},
-{
-    id: 3,
-    name: 'Facultad de Medicina',
-    idUniversity: 1
-},
-{
-    id: 4,
-    name: 'Facultad de Bellas Artes',
-    idUniversity: 1
-}];
+// --- Importar módulos ---
+// Core
+const path = require("path");
 
-const users = [{
-    id: 1,
-    enabled: 1,
-    validated: 1,
-    name: 'Beatriz',
-    lastname1: 'Espinar',
-    lastname2: 'Aragón',
-    mail: 'beaesp01@ucm.es',
-    password: '1234',
-    role: 0,
-    idFaculty: 1
-},
-{
-    id: 2,
-    enabled: 1,
-    validated: 1,
-    name: 'Lucas',
-    lastname1: 'Bravo',
-    lastname2: 'Fairen',
-    mail: 'lucbravo@ucm.es',
-    password: '1234',
-    role: 0,
-    idFaculty: 1
-},
-{
-    id: 3,
-    enabled: 1,
-    validated: 1,
-    name: 'Jesús',
-    lastname1: 'Cáceres',
-    lastname2: 'Tello',
-    mail: 'jescacer@ucm.es',
-    password: '1234',
-    role: 1,
-    idFaculty: 1
-}];
+// Paquete
+const express = require("express");
+const mySQL = require("mysql");
+const session = require("express-session");
+const mySQLsession = require("express-mysql-session");
+const morgan = require("morgan");
+const multer = require("multer");
+const { check, validationResult } = require("express-validator");
 
-const facilityType = [{
-    id: 1,
-    name: 'Laboratorio',
-    idUniversity: 1
-},
-{
-    id: 2,
-    name: 'Salas de grados',
-    idUniversity: 1
-},
-{
-    id: 3,
-    name: 'Salón de actos',
-    idUniversity: 1
-},
-{
-    id: 4,
-    name: 'Salas de reunión',
-    idUniversity: 1
-},
-{
-    id: 5,
-    name: 'Sala de estudio',
-    idUniversity: 1
-}];
+// Fichero
+const mySQLconfig = require("./config");
+const DAOFacilities = require("./dao/DAOFacilities");
+const DAOMessages = require("./dao/DAOMessages");
+const DAOReservations = require("./dao/DAOReservations");
+const DAOUniversities = require("./dao/DAOUniversities");
+const DAOUsers = require("./dao/DAOUsers");
+const FacilityController = require("./controller/FacilityController");
+const MessageController = require("./controller/MessageController");
+const ReservationController = require("./controller/ReservationController");
+const UniversityController = require("./controller/UniversityController");
+const UserController = require("./controller/UserController");
+const routerAdmin = require("./routes/RouterAdmin");
+const routerPersonal = require("./routes/RouterPersonal");
+const routerUser = require("./routes/RouterUser");
 
-const facility = [{
-    id: 1,
-    name: 'Laboratorio 1 - Informática',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 1,
-    capacity: 60,
-    idType: 1
-},
-{
-    id: 2,
-    name: 'Laboratorio 2 - Informática',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 1,
-    capacity: 60,
-    idType: 1
-},
-{
-    id: 3,
-    name: 'Laboratorio 3 - Informática',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 1,
-    capacity: 30,
-    idType: 1
-},
-{
-    id: 4,
-    name: 'Laboratorio 4 - Informática',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 1,
-    capacity: 30,
-    idType: 1
-},
-{
-    id: 5,
-    name: 'Salas de grados 1 - Informática',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 1,
-    capacity: 120,
-    idType: 2
-},
-{
-    id: 6,
-    name: 'Salas de grados 2 - Informática',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 1,
-    capacity: 120,
-    idType: 2
-},
-{
-    id: 7,
-    name: 'Salas de grados 3 - Informática',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 1,
-    capacity: 90,
-    idType: 2
-},
-{
-    id: 8,
-    name: 'Salas de grados 1 - Derecho',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 1,
-    capacity: 90,
-    idType: 2
-},
-{
-    id: 9,
-    name: 'Salas de grados 2 - Derecho',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 1,
-    capacity: 80,
-    idType: 2
-},
-{
-    id: 10,
-    name: 'Salas de grados 3 - Derecho',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 1,
-    capacity: 80,
-    idType: 2
-},
-{
-    id: 11,
-    name: 'Salón de actos 1 - Informática',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 1,
-    reservationType: 1,
-    capacity: 250,
-    idType: 3
-},
-{
-    id: 12,
-    name: 'Salón de actos 1 - Medicina',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 1,
-    reservationType: 1,
-    capacity: 250,
-    idType: 3
-},
-{
-    id: 13,
-    name: 'Salas de reunión 1 - Informática',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 1,
-    capacity: 10,
-    idType: 4
-},
-{
-    id: 14,
-    name: 'Salas de reunión 2 - Informática',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 1,
-    capacity: 10,
-    idType: 4
-},
-{
-    id: 15,
-    name: 'Salas de reunión 1 - Derecho',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 1,
-    capacity: 8,
-    idType: 4
-},
-{
-    id: 16,
-    name: 'Salas de reunión 1 - Medicina',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 1,
-    capacity: 5,
-    idType: 4
-},
-{
-    id: 17,
-    name: 'Salas de reunión 1 - Bellas Artes',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 1,
-    capacity: 5,
-    idType: 4
-},
-{
-    id: 18,
-    name: 'Sala de estudio 1 - Informática',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 0,
-    capacity: 1,
-    idType: 5
-},
-{
-    id: 19,
-    name: 'Sala de estudio 2 - Informática',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 0,
-    capacity: 1,
-    idType: 5
-},
-{
-    id: 20,
-    name: 'Sala de estudio 1 - Medicina',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 0,
-    capacity: 1,
-    idType: 5
-},
-{
-    id: 21,
-    name: 'Sala de estudio 1 - Bellas Artes',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 0,
-    capacity: 1,
-    idType: 5
-},
-{
-    id: 22,
-    name: 'Sala de estudio 1 - Bellas Artes',
-    startHour: '09:00',
-    endHour: '18:00',
-    complete: 0,
-    reservationType: 0,
-    capacity: 1,
-    idType: 5
-}];
+// [!] BORRAR
+const testData = require("./delete");
 
-const reservations = [{
-    id: 1,
-    enabled: 1,
-    idUser: 1,
-    idFacility: 18,
-    nPeople: 1,
-    date: '2023-12-15',
-    hour: '09:00:00',
-    row: 0,
-    reservationDate: '2023-11-26 18:06:23'
-},
-{
-    id: 2,
-    enabled: 1,
-    idUser: 1,
-    idFacility: 1,
-    nPeople: 15,
-    date: '2023-12-20',
-    hour: '09:00:00',
-    row: 0,
-    reservationDate: '2023-11-26 18:06:24'
-},
-{
-    id: 3,
-    enabled: 1,
-    idUser: 1,
-    idFacility: 15,
-    nPeople: 87,
-    date: '2023-12-13',
-    hour: '09:00:00',
-    row: 0,
-    reservationDate: '2023-11-26 18:06:25'
-},
-{
-    id: 4,
-    enabled: 1,
-    idUser: 2,
-    idFacility: 18,
-    nPeople: 1,
-    date: '2023-12-15',
-    hour: '09:00:00',
-    row: 1,
-    reservationDate: '2023-11-26 18:06:26'
-},
-{
-    id: 5,
-    enabled: 1,
-    idUser: 2,
-    idFacility: 11,
-    nPeople: 220,
-    date: '2023-12-15',
-    hour: '09:00:00',
-    row: 0,
-    reservationDate: '2023-11-26 18:06:27'
-},
-{
-    id: 6,
-    enabled: 1,
-    idUser: 2,
-    idFacility: 5,
-    nPeople: 1,
-    date: '2023-12-14',
-    hour: '09:00:00',
-    row: 0,
-    reservationDate: '2023-11-26 18:06:28'
-}];
+// --- Crear aplicación Express ---
+const app = express();
 
-const messages = [{
-    id: 1,
-    idSender: 1,
-    idReceiver: 2,
-    message: 'Hola Beatriz',
-    subject: 'Segundo mensaje',
-    sendDate: '2023-11-25 18:06:23',
-    readDate: '2023-11-26 18:06:23'
-},
-{
-    id: 2,
-    idSender: 1,
-    idReceiver: 3,
-    message: 'Hola Jesús',
-    subject: 'Primer mensaje',
-    sendDate: '2023-11-25 10:10:10',
-    readDate: '2023-11-26 10:10:10'
-},
-{
-    id: 3,
-    idSender: 2,
-    idReceiver: 1,
-    message: 'Adiós Lucas',
-    subject: 'Primera respuesta',
-    sendDate: '2023-11-26 23:18:06',
-    readDate: '2023-11-27 23:18:06'
-},
-{
-    id: 4,
-    idSender: 2,
-    idReceiver: 3,
-    message: 'Hola Jesús',
-    subject: 'Primer mensaje',
-    sendDate: '2023-11-26 10:10:10',
-    readDate: '2023-11-26 10:11:11'
-},
-{
-    id: 5,
-    idSender: 3,
-    idReceiver: 1,
-    message: 'Adiós Lucas',
-    subject: 'Primera respuesta',
-    sendDate: '2023-11-26 10:10:30',
-    readDate: '2023-11-27 10:10:10'
-},
-{
-    id: 6,
-    idSender: 3,
-    idReceiver: 2,
-    message: 'Adiós Beatriz',
-    subject: 'Segunda respuesta',
-    sendDate: '2023-11-26 10:11:31',
-    readDate: '2023-11-27 10:10:10'
-},
-{
-    id: 7,
-    idSender: 3,
-    idReceiver: 1,
-    message: 'Hola a todos',
-    subject: 'Primer mensaje',
-    sendDate: '2023-11-28 09:00:00',
-    readDate: null
-},
-{
-    id: 8,
-    idSender: 3,
-    idReceiver: 2,
-    message: 'Hola a todos',
-    subject: 'Segundo mensaje',
-    sendDate: '2023-11-28 09:00:00',
-    readDate: null
-},];
+// --- EJS ---
+app.set("view engine", "ejs"); // Configurar EJS como motor de plantillas
+app.set("views", path.join(__dirname, "views")); // Definir el directorio de plantillas
+
+// --- Multer ---
+const multerFactory = multer({ storage: multer.memoryStorage() });
+
+// --- BodyParser (Express) ---
+app.use(express.urlencoded({extended: true}));
+
+// --- Static ---
+app.use(express.static(path.join(__dirname, "public"))); // Gestionar ficheros estáticos con static
+
+// --- Morgan ---
+app.use(morgan("dev")); // Imprimir peticiones recibidas
+
+// --- Sesiones y MySQL ---
+// Sesión MySQL
+const mySQLStore = mySQLsession(session);
+const sessionStore = new mySQLStore(mySQLconfig.config);
+
+// Crear middleware de la sesión
+const middlewareSession = session({
+    saveUninitialized: false,
+    secret: "riuUCM18",
+    resave: true,
+    store: sessionStore
+});
+app.use(middlewareSession);
+
+// Crear pool de conexiones
+const pool = mySQL.createPool(mySQLconfig.config);
+
+// --- DAOs y Controllers ---
+// Crear instancias de los DAOs
+app.locals.daoFac = new DAOFacilities(pool);
+app.locals.daoMes = new DAOMessages(pool);
+app.locals.daoRes = new DAOReservations(pool);
+app.locals.daoUni = new DAOUniversities(pool);
+app.locals.daoUse = new DAOUsers(pool);
+// Crear instancias de los Controllers
+app.locals.facController = new FacilityController(daoFac);
+app.locals.mesController = new MessageController(daoMes);
+app.locals.resController = new ReservationController(daoRes);
+app.locals.uniController = new UniversityController(daoUni);
+app.locals.useController = new UserController(daoUse);
+
+// --- VARIABLES GLOBALES de plantilla ---
+
+
+// --- Middlewares ---
+// [!] Comprobar que el usuario ha iniciado sesión
+function userLogged(request, response, next) {
+    next();
+};
+
+// [!] Comprobar que el usuario no está baneado
+function userBanned(request, response, next) {
+    next();
+};
+
+// [!] Comprobar que el usuario es admin
+function isAdmin(request, response, next) {
+    next();
+}
+
+
+// --- Peticiones GET ---
+
+// - Rutas -
+// SignUp
+app.get("/registro", (request, response, next) => {
+    response.render("sign_up", { error: undefined })
+});
+
+// Login
+app.get("/login", (request, response, next) => {
+    response.render("login", { error: undefined })
+});
+
+// Inicio
+app.get(["/", "/inicio"], userLogged, userBanned, (request, response, next) => {
+    if (request.session.currentUser.rol) { // Admin
+        response.redirect("/admin/inicio");
+    }
+    else { // User
+        response.redirect("/usuario/inicio");
+    }
+});
+
+// Instalaciones
+app.get("/instalaciones", userLogged, userBanned, (request, response, next) => {
+    if (request.session.currentUser.rol) { // Admin
+        response.redirect("/admin/instalaciones");
+    }
+    else { // User
+        response.redirect("/usuario/instalaciones");
+    }
+});
+
+// Reservas
+app.get("/reservas", userLogged, userBanned, (request, response, next) => {
+    if (request.session.currentUser.rol) { // Admin
+        response.redirect("/admin/reservas");
+    }
+    else { // User
+        response.redirect("/usuario/reservas");
+    }
+});
+
+// - Routers -
+app.use("/admin", userLogged, userBanned, isAdmin, routerAdmin);
+app.use("/personal", userLogged, userBanned, routerPersonal);
+app.use("/usuario", userLogged, userBanned, routerUser);
+
+// - Otras peticiones GET -
+
+
+// --- Peticiones POST ---
+// [TODO]
+
+// --- Middlewares de respuestas y errores ---
+// Error 404
+app.use((request, response, next) => {
+    next({
+        ajax: false,
+        status: 404,
+        redirect: "error",
+        data: {
+            code: 404,
+            title: "Oops! Página no encontrada :(",
+            message: "La página a la que intentas acceder no existe."
+        }
+    }); 
+});
+
+// Peticiones no AJAX
+app.use((responseData, request, response, next) => {
+    if (responseData.ajax) {
+        next(responseData);
+    }
+    else {
+        response.status(responseData.status);
+        response.render(responseData.redirect, responseData.data);
+    }
+});
+
+// Peticiones AJAX
+app.use((responseData, request, response, next) => {
+    if (responseData.error) {
+        response.status(responseData.status).send(responseData.error);
+        response.end();
+    }
+    else if (responseData.img) {
+        response.end(responseData.img);
+    }
+    else {
+        response.json(responseData.data);
+    }
+});
+
+// --- Iniciar el servidor ---
+app.listen(mySQLconfig.port, (error) => {
+    if (error) {
+        console.error(`Se ha producido un error al iniciar el servidor: ${error.message}`);
+    }
+    else {
+        console.log(`Se ha arrancado el servidor en el puerto ${mySQLconfig.port}`);
+    }
+});

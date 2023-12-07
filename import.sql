@@ -59,6 +59,7 @@ CREATE TABLE RIU_INS_Instalación (
     completo INT NOT NULL,
     tipo_reserva INT NOT NULL,
     aforo INT NOT NULL,
+    foto BLOB,
     id_tipo INT NOT NULL,
 
     CONSTRAINT UC_Instalación UNIQUE(nombre, id_tipo),
@@ -101,9 +102,7 @@ CREATE TABLE RIU_MEN_Mensaje (
 -- UNIVERSIDAD
 INSERT INTO RIU_UNI_Universidad (nombre, web, dirección, correo) VALUES
 ('Universidad Complutense de Madrid', 'https://www.ucm.es/', 'Av. Complutense, s/n, 28040 Madrid', 'ucm.es'),
-('Universidad Autonoma de Madrid', 'https://www.uam.es/uam/inicio', 'Ciudad Universitaria de Cantoblanco, 28049 Madrid', 'uam.es'),
-('Universidad Carlos III de Madrid', 'https://www.uc3m.es/Inicio', 'Av. de Gregorio Peces-Barba Martínez, 22, 28270 Colmenarejo, Madrid', 'uc3m.es'),
-('Universidad Rey Juan Carlos', 'https://www.urjc.es/', 'Av. del Alcalde de Móstoles, 28933 Móstoles, Madrid', 'urjc.es');
+('Universidad Autonoma de Madrid', 'https://www.uam.es/uam/inicio', 'Ciudad Universitaria de Cantoblanco, 28049 Madrid', 'uam.es');
 
 
 -- FACULTAD
@@ -115,13 +114,7 @@ INSERT INTO RIU_FAC_Facultad (nombre, id_universidad) VALUES
 
 ('Facultad de Ciencias', 2),
 ('Facultad de Filosofía y Letras', 2),
-('Facultad de Psicología', 2),
-
-('Facultad de Ciencias Sociales y Jurídicas', 3),
-('Facultad de Humanidades, Comunicación y Documentación', 3),
-
-('Facultad de Ciencias de la Comunicación', 4),
-('Facultad de Ciencias de la Salud', 4);
+('Facultad de Psicología', 2);
 
 
 -- USUARIOS
@@ -130,11 +123,7 @@ INSERT INTO RIU_USU_Usuario (validado, nombre, apellido1, apellido2, correo, con
 (1, 'Lucas', 'Bravo', 'Fairen', 'lucbravo@ucm.es', '1234', 0, 1),
 (1, 'Jesús', 'Cáceres', 'Tello', 'jescacer@ucm.es', '1234', 1, 1),
 
-(1, 'Julia', 'Chacón', 'Labella', 'julia.chacon@uam.es', '1234', 1, 5),
-
-(1, 'Julio', 'Cáceres', 'Delpiano', 'julcadel@uc3m.es', '1234', 1, 8),
-
-(1, 'Jennifer', 'Garcia', 'Carrizo', 'jennifer.garcia@urjc.es', '1234', 1, 10);
+(1, 'Julia', 'Chacón', 'Labella', 'julia.chacon@uam.es', '1234', 1, 5);
 
 
 -- TIPO INSTALACIÓN
@@ -147,13 +136,7 @@ INSERT INTO RIU_TIN_Tipo_Instalación (nombre, id_universidad) VALUES
 
 ('Laboratorio', 2),
 ('Salas de grados', 2),
-('Salón de actos', 2),
-
-('Laboratorio', 3),
-('Salas de grados', 3),
-
-('Laboratorio', 4),
-('Salas de grados', 4);
+('Salón de actos', 2);
 
 
 -- INSTALACIÓN
