@@ -1,3 +1,4 @@
+
 "use strict"
 
 // --- Importar módulos ---
@@ -28,9 +29,6 @@ const UserController = require("./controller/UserController");
 const routerAdmin = require("./routes/RouterAdmin");
 const routerPersonal = require("./routes/RouterPersonal");
 const routerUser = require("./routes/RouterUser");
-
-// [!] BORRAR
-const testData = require("./delete");
 
 // --- Crear aplicación Express ---
 const app = express();
@@ -70,17 +68,17 @@ const pool = mySQL.createPool(mySQLconfig.config);
 
 // --- DAOs y Controllers ---
 // Crear instancias de los DAOs
-app.locals.daoFac = new DAOFacilities(pool);
-app.locals.daoMes = new DAOMessages(pool);
-app.locals.daoRes = new DAOReservations(pool);
-app.locals.daoUni = new DAOUniversities(pool);
-app.locals.daoUse = new DAOUsers(pool);
+// app.locals.daoFac = new DAOFacilities(pool);
+// app.locals.daoMes = new DAOMessages(pool);
+// app.locals.daoRes = new DAOReservations(pool);
+// app.locals.daoUni = new DAOUniversities(pool);
+// app.locals.daoUse = new DAOUsers(pool);
 // Crear instancias de los Controllers
-app.locals.facController = new FacilityController(daoFac);
-app.locals.mesController = new MessageController(daoMes);
-app.locals.resController = new ReservationController(daoRes);
-app.locals.uniController = new UniversityController(daoUni);
-app.locals.useController = new UserController(daoUse);
+// app.locals.facController = new FacilityController(daoFac);
+// app.locals.mesController = new MessageController(daoMes);
+// app.locals.resController = new ReservationController(daoRes);
+// app.locals.uniController = new UniversityController(daoUni);
+// app.locals.useController = new UserController(daoUse);
 
 // --- VARIABLES GLOBALES de plantilla ---
 

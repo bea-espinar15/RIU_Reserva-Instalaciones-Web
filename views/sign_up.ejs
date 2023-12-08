@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <%- include("../public/head.html") %>
+    <!-- Importar CSS específicos -->
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
+
+<body>
+    <div class="d-flex col-md-8 col-lg-6 col-xxl-4 offset-md-2 offset-lg-3 offset-xxl-4 align-items-center">
+        <div id="div-sign-up" class="div-rounded div-auth d-flex flex-column align-items-center w-100 bg-riu-white">
+            <img src="/img/logo.png" alt="Logo RIU" width="225">
+            <h1 id=h1-sign-up>Crea tu cuenta</h1>
+            <!-- Formulario registro -->
+            <form class="d-flex flex-column w-50">
+                <input id="input-name" type="text" placeholder="Nombre">
+                <input id="input-lastname-1" type="text" placeholder="Primer apellido">
+                <input id="input-lastname-2" type="text" placeholder="Segundo apellido">
+                <input id="input-mail" type="mail" placeholder="Correo">
+                <input id="input-password" type="password" placeholder="Contraseña">
+                <label id="label-faculty" for="input-faculty">Selecciona tu facultad</label>
+                <select id="input-faculty"></select>
+                <input id="input-sb-sign-up" type="submit" value="Regístrate" class="bg-riu-primary button-riu button-auth align-self-center">
+            </form>
+            <p>¿Tienes ya una cuenta? <a href="/login">Inicia sesión</a></p>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,108 @@
+/* --- PALETA COLORES --- */
+:root {
+    /* Colores básicos */
+    --white: #FFFFFF;
+    --gray: #EFE8E7;
+    --dark-gray: #727272;
+    --red: #B92525;
+    --green: #2BA13C;
+
+    /* Colores parametrizables */
+    --primary-h: 0;
+    --primary-s: 45%;
+    --primary-l: 35%;
+    --secondary-h: 215;
+    --secondary-s: 43%;
+    --secondary-l: 27%;
+    --filter-dark: 0.6; /* Oscurecer un 40% */
+    --filter-light: 2; /* Aclarar un 100% */
+  
+    /* Construimos los colores */
+    --primary: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+    --secondary: hsl(var(--secondary-h), var(--secondary-s), var(--secondary-l));
+    --primary-dark: hsl(var(--primary-h), var(--primary-s), calc(var(--primary-l) * var(--filter-dark)));
+    --primary-light: hsl(var(--primary-h), var(--primary-s), calc(var(--primary-l) * var(--filter-light)));
+    --secondary-dark: hsl(var(--secondary-h), var(--secondary-s), calc(var(--secondary-l) * var(--filter-dark)));
+    --secondary-light: hsl(var(--secondary-h), var(--secondary-s), calc(var(--secondary-l) * var(--filter-light)));
+   
+}
+
+/* --- GENERAL --- */
+* {
+    font-family: Tahoma;
+}
+
+body {
+    background-color: var(--gray);
+}
+
+/* --- BACKGROUND --- */
+
+.bg-riu-primary { /* [!] CONFIGURABLE */
+    background-color: var(--primary);
+}
+
+.bg-riu-secondary { /* [!] CONFIGURABLE */
+    background-color: var(--secondary);
+}
+
+.bg-riu-primary-dark { /* [!] CONFIGURABLE */
+    background-color: var(--primary-dark);
+}
+
+.bg-riu-secondary-dark { /* [!] CONFIGURABLE */
+    background-color: var(--secondary-dark);
+}
+
+.bg-riu-primary-light { /* [!] CONFIGURABLE */
+    background-color: var(--primary-light);
+}
+
+.bg-riu-secondary-light { /* [!] CONFIGURABLE */
+    background-color: var(--secondary-light);
+}
+
+.bg-riu-white {
+    background-color: var(--white);
+}
+
+.bg-riu-gray {
+    background-color: var(--gray);
+}
+
+.bg-riu-red {
+    background-color: var(--red);
+}
+
+.bg-riu-green {
+    background-color: var(--green);
+}
+
+/* --- INPUT --- */
+label {
+    color: var(--dark-gray);
+}
+
+input, select {
+    margin: 0.4rem 0rem;
+    padding: 0.3rem 0.6rem;
+    border: 0.15rem var(--primary-dark) solid;
+    border-radius: 0.6rem;
+}
+::placeholder {
+    color: var(--dark-gray);
+}
+
+/* --- BUTTON --- */
+.button-riu {
+    padding: 1rem;
+    border: none;
+    border-radius: 2rem;
+    color: var(--white);
+}
+
+/* --- Otros --- */
+
+.div-rounded {
+    border-radius: 2em;
+}

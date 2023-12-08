@@ -16,7 +16,7 @@ const multerFactory = multer({ storage: multer.memoryStorage() });
 const RouterUser = express.Router();
 
 // [!] BORRAR
-const testData = require("./delete");
+const testData = require("../delete");
 
 // --- Peticiones GET ---
 // [!] Inicio

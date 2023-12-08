@@ -240,5 +240,24 @@ CONVENIOS
 · Variables y funciones: lowerCamelCase
 · IDs y clases: kebab-case
 
+· Orden estilos CSS:
+    1- Display
+    2- Margin & Padding
+    3- Size
+    4- Border
+    5- Color
+
+· Orden class en HTML:
+    1- Clases propias
+    2- Los 5 del anterior
+
+· Orden etiquetas:
+    1- ID
+    2- Otros
+        · <input>: name - type - placeholder - value - min - max
+        · <img>: src - alt - width - height
+        · <a>: href
+    3- class
+    4- data
 
 */
