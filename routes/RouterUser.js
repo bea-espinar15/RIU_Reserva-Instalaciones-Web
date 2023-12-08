@@ -38,7 +38,7 @@ RouterUser.get("/inicio", (request, response, next) => {
 });
 
 // [!] Instalaciones
-RouterUser.get("/instalaciones", (request, response, next) => {
+RouterUser.get("/instalaciones/:id", (request, response, next) => {
     response.render("user_facilities", {
         error: undefined,
         generalInfo: {

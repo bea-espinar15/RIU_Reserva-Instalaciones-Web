@@ -131,16 +131,6 @@ app.get(["/", "/inicio"], userLogged, userBanned, (request, response, next) => {
     }
 });
 
-// Instalaciones
-app.get("/instalaciones", userLogged, userBanned, (request, response, next) => {
-    if (request.session.currentUser.rol) { // Admin
-        response.redirect("/admin/instalaciones");
-    }
-    else { // User
-        response.redirect("/usuario/instalaciones");
-    }
-});
-
 // Reservas
 app.get("/reservas", userLogged, userBanned, (request, response, next) => {
     if (request.session.currentUser.rol) { // Admin
@@ -164,6 +154,11 @@ app.get("/profilePic/:id", userLogged, userBanned, accessPicAllowed, (request, r
 
 // Logo de la universidad
 app.get("/universityPic/:id", userLogged, userBanned, (request, response, next) => {
+    response.end(undefined);
+});
+
+// Foto del tipo de instalación
+app.get("/facilityTypePic/:id", userLogged, userBanned, (request, response, next) => {
     response.end(undefined);
 });
 

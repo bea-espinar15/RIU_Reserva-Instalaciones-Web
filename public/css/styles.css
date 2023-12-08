@@ -46,6 +46,10 @@ a:hover {
     filter: brightness(85%);
 }
 
+img {
+    object-fit: cover;
+}
+
 /* --- BACKGROUND --- */
 
 .bg-riu-primary { /* [!] CONFIGURABLE */

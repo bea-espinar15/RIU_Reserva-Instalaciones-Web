@@ -32,7 +32,8 @@ RouterAdmin.get("/inicio", (request, response, next) => {
             messagesUnread: 5,
             idUser: testData.users[0].id,
             hasProfilePic: false
-        }
+        },
+        adminName: testData.users[0].name
     });
 });
 

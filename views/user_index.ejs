@@ -3,11 +3,33 @@
 
 <head>
     <%- include("../public/head.html") %>
+    <!-- Importar CSS específicos -->
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 
 <body>
     <!-- Importar nav -->
     <%- include("nav", { generalInfo: generalInfo }) %>
+
+    <!-- Tipos de instalaciones -->
+    <div id="div-facilities" class="row row-cols-1 row-cols-lg-2 row-cols-xxl-4">
+        <% facilityTypes.forEach(type => { %>
+            <div class="div-card">
+                <a href="/usuario/facilities/<%= type.id %>">
+                    <div class="card-user card align-items-center">
+                            <% if (type.hasPic) { %>
+                                <img src="/facilityTypePic/<%= type.id %>" alt="Foto <%= type.name %>" class="card-img-top">
+                            <% } else { %>
+                                <img src="/img/default/facility.png" alt="Logo instalación por defecto" class="card-img-top">
+                            <% } %>
+                            <div class="card-body">
+                                <h2 class="card-title"><%= type.name %></h2>
+                            </div>
+                    </div>
+                </a>
+            </div>
+        <% }) %>
+    </div>
 
     <!-- Importar footer -->
     <%- include("footer", { generalInfo: generalInfo }) %>

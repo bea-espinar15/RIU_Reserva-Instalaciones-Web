@@ -3,14 +3,68 @@
 
 <head>
     <%- include("../public/head.html") %>
+    <!-- Importar CSS específicos -->
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 
 <body>
     <!-- Importar nav -->
     <%- include("nav", { generalInfo: generalInfo }) %>
 
-    <!-- Importar footer -->
-    <%- include("footer", { generalInfo: generalInfo }) %>
+        <div id="div-welcome-admin">
+            <h1>¡Bienvenido, administrador/a <%= adminName %>!</h1>
+        </div>        
+
+        <!-- Tipos de instalaciones -->
+        <div id="div-facilities" class="row row-cols-1 row-cols-lg-2 row-cols-xxl-4">
+            <!-- Configuración -->
+            <div class="div-card">
+                <a href="/admin/configuracion">
+                    <div class="card align-items-center">
+                        <img src="/img/vector/settings.png" alt="Icono Configuración" class="card-img-top">
+                        <div class="card-body">
+                            <h2 class="card-title">Configuración</h2>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- Instalaciones -->
+            <div class="div-card">
+                <a href="/admin/instalaciones">
+                    <div class="card align-items-center">
+                        <img src="/img/vector/facilities.png" alt="Icono Instalaciones" class="card-img-top">
+                        <div class="card-body">
+                            <h2 class="card-title">Instalaciones</h2>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- Usuarios -->
+            <div class="div-card">
+                <a href="/admin/usuarios">
+                    <div class="card align-items-center">
+                        <img src="/img/vector/users.png" alt="Icono Usuarios" class="card-img-top">
+                        <div class="card-body">
+                            <h2 class="card-title">Usuarios</h2>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- Reservas -->
+            <div class="div-card">
+                <a href="/admin/reservas">
+                    <div class="card align-items-center">
+                        <img src="/img/vector/reservations.png" alt="Icono Reservas" class="card-img-top">
+                        <div class="card-body">
+                            <h2 class="card-title">Reservas</h2>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Importar footer -->
+        <%- include("footer", { generalInfo: generalInfo }) %>
 </body>
 
 </html>

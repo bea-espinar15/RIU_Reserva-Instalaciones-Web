@@ -1,0 +1,102 @@
+/* --- GENERAL --- */
+#div-facilities {
+    margin: 7rem 7rem;
+}
+
+.div-card {
+    margin: 4rem 0rem;
+    padding: 0rem 2rem !important;
+}
+
+.div-card a {
+    text-decoration: none;
+}
+
+.card {
+    padding: 3rem 2rem;
+    border-radius: 2rem !important;
+    box-shadow: 0rem 0rem 1rem 0.05rem var(--primary-dark);
+}
+
+.card img {
+    width: 10rem !important;
+    height: 10rem !important;
+}
+
+.card-body {
+    padding: 0rem !important;
+}
+
+.card h2 {
+    margin: 2rem 0rem 0rem 0rem;
+    text-align: center;
+}
+
+/* --- USER --- */
+.card-user {
+    background-color: var(--primary-dark) !important;
+}
+
+.card-user h2 {
+    color: var(--white);
+}
+
+/* --- ADMIN --- */
+#div-welcome-admin {
+    padding: 5rem 3rem 0rem 3rem;
+    text-align: center;
+}
+
+#div-welcome-admin h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: var(--primary-dark);
+}
+
+/* --- RESPONSIVENESS --- */
+/* Monitores largos - XXL */
+@media (max-width: 1399.98px) {
+    #div-welcome-admin h1 {
+        font-size: 3rem;
+    }
+}
+
+/* Tablets - LG */
+@media (max-width: 991.98px) {
+    #div-facilities {
+        margin: 4rem 2rem;
+    }
+
+    .div-card {
+        margin: 1.5rem 0rem;
+        padding: 0rem !important;
+    }
+
+    #div-welcome-admin h1 {
+        font-size: 2.5rem;
+    }
+}
+
+/* Móviles - MD */
+@media (max-width: 767.98px) {
+    #div-facilities {
+        margin: 2rem 1rem;
+    }
+
+    .div-card {
+        margin: 1rem 0rem;
+    }
+
+    .card img {
+        width: 8rem !important;
+        height: 8rem !important;
+    }
+
+    .card h2 {
+        margin: 1rem 0rem 0rem 0rem;
+    }
+
+    #div-welcome-admin h1 {
+        font-size: 1.7rem;
+    }
+}
