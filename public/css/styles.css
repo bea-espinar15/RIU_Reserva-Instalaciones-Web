@@ -6,7 +6,8 @@
     --gray: #727272;
     --dark-gray: #454545;
     --red: #B92525;
-    --green: #2BA13C;
+    --green: #157824;
+    --light-green: #eaf9ee;
 
     /* Colores parametrizables */
     --primary-h: 0;
@@ -100,6 +101,10 @@ img {
     background-color: var(--green);
 }
 
+.bg-riu-light-green {
+    background-color: var(--light-green);
+}
+
 /* --- INPUT --- */
 label {
     color: var(--gray);
@@ -133,6 +138,25 @@ input, select {
     border-radius: 2em;
 }
 
+/* --- Modal Response --- */
+#button-modal-error-x {
+    border: none;
+    background: none;
+}
+
+#button-modal-error-ok {
+    padding: 1rem 2rem;
+} 
+
+#button-modal-error-ok:hover {
+    background-color: var(--primary);
+} 
+
+#h1-modal-error {
+    margin-left: 1rem !important;
+    font-size: 1.3rem;
+}
+
 /* --- NAV --- */
 
 nav {
@@ -146,7 +170,7 @@ nav {
 
 #h1-nav {
     margin: 0rem 0rem 0rem 1rem;
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
 .dropdown button {

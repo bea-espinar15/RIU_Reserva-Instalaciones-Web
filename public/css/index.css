@@ -29,6 +29,7 @@
 
 .card h2 {
     margin: 2rem 0rem 0rem 0rem;
+    font-size: 1.5rem !important;
     text-align: center;
 }
 
@@ -48,7 +49,8 @@
 }
 
 #div-welcome-admin h1 {
-    font-size: 3.5rem;
+    margin: 0rem;
+    font-size: 3rem;
     font-weight: bold;
     color: var(--primary-dark);
 }
@@ -57,7 +59,7 @@
 /* Monitores largos - XXL */
 @media (max-width: 1399.98px) {
     #div-welcome-admin h1 {
-        font-size: 3rem;
+        font-size: 2.7rem;
     }
 }
 

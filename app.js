@@ -113,12 +113,12 @@ function accessPicAllowed(request, response, next) {
 // - Rutas -
 // SignUp
 app.get("/registro", (request, response, next) => {
-    response.render("sign_up", { error: undefined })
+    response.render("sign_up", { error: undefined });
 });
 
 // Login
 app.get("/login", (request, response, next) => {
-    response.render("login", { error: undefined })
+    response.render("login", { error: undefined });
 });
 
 // Inicio
@@ -185,28 +185,25 @@ app.use((request, response, next) => {
     }); 
 });
 
-// Peticiones no AJAX
+// Manejador de respuestas 
 app.use((responseData, request, response, next) => {
+    // Respuestas AJAX
     if (responseData.ajax) {
-        next(responseData);
+        if (responseData.error) {
+            response.status(responseData.status).send(responseData.error);
+            response.end();
+        }
+        else if (responseData.img) {
+            response.end(responseData.img);
+        }
+        else {
+            response.json(responseData.data);
+        }
     }
+    // Respuestas no AJAX
     else {
         response.status(responseData.status);
         response.render(responseData.redirect, responseData.data);
-    }
-});
-
-// Peticiones AJAX
-app.use((responseData, request, response, next) => {
-    if (responseData.error) {
-        response.status(responseData.status).send(responseData.error);
-        response.end();
-    }
-    else if (responseData.img) {
-        response.end(responseData.img);
-    }
-    else {
-        response.json(responseData.data);
     }
 });
 
