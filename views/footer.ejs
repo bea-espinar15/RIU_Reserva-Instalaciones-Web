@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <%- include("../public/head.html") %>
+</head>
+
+<body>
+    <footer class="d-flex align-items-center justify-content-between bg-riu-dark-gray">
+        <div id="div-footer-left" class="d-flex align-items-center">
+            <!-- Logo y nombre -->
+            <div class="d-flex flex-column align-items-center">
+                <% if (generalInfo.hasLogo) { %>
+                    <img src="/universityPic/<%= generalInfo.idUniversity %>" alt="Logo <%= generalInfo.name %>" width="60">
+                <% } else { %>
+                    <img src="/img/default/university.png" alt="Logo universidad por defecto" width="60">
+                <% } %>
+                <p id="p-footer-name"><%= generalInfo.name %></p>
+            </div>
+            <!-- Web y Dirección -->
+            <div id="div-footer-info">
+                <a target="_blank" href="<%= generalInfo.web %>"><%= generalInfo.web %></a>
+                <p><%= generalInfo.address %></p>                
+            </div>
+        </div>
+        <!-- Logo RIU -->
+        <img id="img-footer-logo-riu" src="/img/logo_white.png" alt="Logo RIU" width="100" class="align-self-end">
+    </footer>
+</body>
+
+</html>

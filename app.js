@@ -80,6 +80,9 @@ const pool = mySQL.createPool(mySQLconfig.config);
 // app.locals.uniController = new UniversityController(daoUni);
 // app.locals.useController = new UserController(daoUse);
 
+// [!] BORRAR
+const testData = require("./delete"); 
+
 // --- VARIABLES GLOBALES de plantilla ---
 
 
@@ -96,6 +99,11 @@ function userBanned(request, response, next) {
 
 // [!] Comprobar que el usuario es admin
 function isAdmin(request, response, next) {
+    next();
+}
+
+// [!] Comprobar que el ID es el del usuario
+function accessPicAllowed(request, response, next) {
     next();
 }
 
@@ -149,7 +157,20 @@ app.use("/personal", userLogged, userBanned, routerPersonal);
 app.use("/usuario", userLogged, userBanned, routerUser);
 
 // - Otras peticiones GET -
+// Imagen del usuario
+app.get("/profilePic/:id", userLogged, userBanned, accessPicAllowed, (request, response, next) => {
+    response.end(undefined);
+});
 
+// Logo de la universidad
+app.get("/universityPic/:id", userLogged, userBanned, (request, response, next) => {
+    response.end(undefined);
+});
+
+// Foto de la instalación
+app.get("/facilityPic/:id", userLogged, userBanned, (request, response, next) => {
+    response.end(undefined);
+});
 
 // --- Peticiones POST ---
 // [TODO]

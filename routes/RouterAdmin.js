@@ -23,13 +23,15 @@ const testData = require("../delete");
 RouterAdmin.get("/inicio", (request, response, next) => {
     response.render("admin_index", {
         error: undefined,
-        navInfo: {
-            logo: testData.university.logo,
+        generalInfo: {
+            hasLogo: false,
+            idUniversity: testData.university.id,
             name: testData.university.name,
             web: testData.university.web,
             address: testData.university.address,
             messagesUnread: 5,
-            profilePic: undefined
+            idUser: testData.users[0].id,
+            hasProfilePic: false
         }
     });
 });
@@ -38,13 +40,15 @@ RouterAdmin.get("/inicio", (request, response, next) => {
 RouterAdmin.get("/configuracion", (request, response, next) => {
     response.render("admin_settings", {
         error: undefined,
-        navInfo: {
-            logo: testData.university.logo,
+        generalInfo: {
+            hasLogo: false,
+            idUniversity: testData.university.id,
             name: testData.university.name,
             web: testData.university.web,
             address: testData.university.address,
             messagesUnread: 5,
-            profilePic: undefined
+            idUser: testData.users[0].id,
+            hasProfilePic: false
         },
         university: testData.university
     });
@@ -54,13 +58,15 @@ RouterAdmin.get("/configuracion", (request, response, next) => {
 RouterAdmin.get("/usuarios", (request, response, next) => {
     response.render("admin_users", {
         error: undefined,
-        navInfo: {
-            logo: testData.university.logo,
+        generalInfo: {
+            hasLogo: false,
+            idUniversity: testData.university.id,
             name: testData.university.name,
             web: testData.university.web,
             address: testData.university.address,
             messagesUnread: 5,
-            profilePic: undefined
+            idUser: testData.users[0].id,
+            hasProfilePic: false
         },
         users: testData.users
     });
@@ -70,13 +76,15 @@ RouterAdmin.get("/usuarios", (request, response, next) => {
 RouterAdmin.get("/instalaciones", (request, response, next) => {
     response.render("admin_facilities", {
         error: undefined,
-        navInfo: {
-            logo: testData.university.logo,
+        generalInfo: {
+            hasLogo: false,
+            idUniversity: testData.university.id,
             name: testData.university.name,
             web: testData.university.web,
             address: testData.university.address,
             messagesUnread: 5,
-            profilePic: undefined
+            idUser: testData.users[0].id,
+            hasProfilePic: false
         },
         facilities: testData.facilities
     });
@@ -86,13 +94,15 @@ RouterAdmin.get("/instalaciones", (request, response, next) => {
 RouterAdmin.get("/reservas", (request, response, next) => {
     response.render("admin_reservations", {
         error: undefined,
-        navInfo: {
-            logo: testData.university.logo,
+        generalInfo: {
+            hasLogo: false,
+            idUniversity: testData.university.id,
             name: testData.university.name,
             web: testData.university.web,
             address: testData.university.address,
             messagesUnread: 5,
-            profilePic: undefined
+            idUser: testData.users[0].id,
+            hasProfilePic: false
         },
         reservations: testData.reservations
     });

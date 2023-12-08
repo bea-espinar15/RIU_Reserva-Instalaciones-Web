@@ -23,13 +23,15 @@ const testData = require("../delete");
 RouterUser.get("/inicio", (request, response, next) => {
     response.render("user_index", {
         error: undefined,
-        navInfo: {
-            logo: testData.university.logo,
+        generalInfo: {
+            hasLogo: false,
+            idUniversity: testData.university.id,
             name: testData.university.name,
             web: testData.university.web,
             address: testData.university.address,
             messagesUnread: 5,
-            profilePic: undefined
+            idUser: testData.users[0].id,
+            hasProfilePic: false
         },
         facilityTypes: testData.facilityTypes
     });
@@ -39,13 +41,15 @@ RouterUser.get("/inicio", (request, response, next) => {
 RouterUser.get("/instalaciones", (request, response, next) => {
     response.render("user_facilities", {
         error: undefined,
-        navInfo: {
-            logo: testData.university.logo,
+        generalInfo: {
+            hasLogo: false,
+            idUniversity: testData.university.id,
             name: testData.university.name,
             web: testData.university.web,
             address: testData.university.address,
             messagesUnread: 5,
-            profilePic: undefined
+            idUser: testData.users[0].id,
+            hasProfilePic: false
         },
         facilities: testData.facilities
     });
@@ -55,13 +59,15 @@ RouterUser.get("/instalaciones", (request, response, next) => {
 RouterUser.get("/reservas", (request, response, next) => {
     response.render("user_reservations", {
         error: undefined,
-        navInfo: {
-            logo: testData.university.logo,
+        generalInfo: {
+            hasLogo: false,
+            idUniversity: testData.university.id,
             name: testData.university.name,
             web: testData.university.web,
             address: testData.university.address,
             messagesUnread: 5,
-            profilePic: undefined
+            idUser: testData.users[0].id,
+            hasProfilePic: false
         },
         currentReservations: testData.currentReservations,
         oldReservations: testData.oldReservations

@@ -2,8 +2,9 @@
 :root {
     /* Colores básicos */
     --white: #FFFFFF;
-    --gray: #EFE8E7;
-    --dark-gray: #727272;
+    --light-gray: #EFE8E7;
+    --gray: #727272;
+    --dark-gray: #454545;
     --red: #B92525;
     --green: #2BA13C;
 
@@ -25,6 +26,8 @@
     --secondary-dark: hsl(var(--secondary-h), var(--secondary-s), calc(var(--secondary-l) * var(--filter-dark)));
     --secondary-light: hsl(var(--secondary-h), var(--secondary-s), calc(var(--secondary-l) * var(--filter-light)));
    
+    /* Otros colores */
+    --footer-gray: #bababa;
 }
 
 /* --- GENERAL --- */
@@ -33,7 +36,14 @@
 }
 
 body {
-    background-color: var(--gray);
+    background-color: var(--light-gray);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+a:hover {
+    filter: brightness(85%);
 }
 
 /* --- BACKGROUND --- */
@@ -66,8 +76,16 @@ body {
     background-color: var(--white);
 }
 
+.bg-riu-light-gray {
+    background-color: var(--light-gray);
+}
+
 .bg-riu-gray {
     background-color: var(--gray);
+}
+
+.bg-riu-dark-gray {
+    background-color: var(--dark-gray);
 }
 
 .bg-riu-red {
@@ -80,7 +98,7 @@ body {
 
 /* --- INPUT --- */
 label {
-    color: var(--dark-gray);
+    color: var(--gray);
 }
 
 input, select {
@@ -90,7 +108,7 @@ input, select {
     border-radius: 0.6rem;
 }
 ::placeholder {
-    color: var(--dark-gray);
+    color: var(--gray);
 }
 
 /* --- BUTTON --- */
@@ -101,8 +119,110 @@ input, select {
     color: var(--white);
 }
 
+.button-riu:hover {
+    background-color: hsl(var(--primary-h), var(--primary-s), calc(var(--primary-l) * 0.8));
+}
+
 /* --- Otros --- */
 
 .div-rounded {
     border-radius: 2em;
+}
+
+/* --- NAV --- */
+
+nav {
+    padding: 0.6rem 2rem;
+}
+
+#a-nav {
+    text-decoration: none;
+    color: var(--white);    
+}
+
+#h1-nav {
+    margin: 0rem 0rem 0rem 1rem;
+    font-size: 2rem;
+}
+
+.dropdown button {
+    margin-left: 1rem;
+    border: none;
+    background: none;
+}
+
+/* --- FOOTER --- */
+
+footer {
+    margin-top: auto;
+    padding: 1.5rem 2rem;
+    color: var(--footer-gray);
+}
+
+footer a {
+    color: var(--footer-gray);
+}
+
+#p-footer-name {
+    font-size: 1.3rem;
+}
+
+#div-footer-info {
+    margin-left: 3rem;
+}
+
+/* --- RESPONSIVENESS --- */
+
+/* Monitores largos - XXL */
+@media (max-width: 1399.98px) {
+
+}
+
+/* Monitores laptop - XL */
+@media (max-width: 1199.98px) {
+
+}
+
+/* Tablets - LG */
+@media (max-width: 991.98px) {
+    #h1-nav {
+        display: none;
+    }
+
+    #div-footer-left {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    #div-footer-info {
+        margin-left: 0rem;
+    }
+}
+
+/* Móviles - MD */
+@media (max-width: 767.98px) {
+    #a-nav-mail {
+        display: none;
+    }
+
+    #button-nav-profile {
+        display: none;
+    }
+
+    #button-nav-hamburger {
+        display: block !important;
+    }
+
+    #li-nav-mail {
+        display: block !important;
+    }
+
+    footer {
+        flex-direction: column;
+    }
+
+    #img-footer-logo-riu {
+        align-self: center !important;
+        margin-top: 1rem
+    }
 }

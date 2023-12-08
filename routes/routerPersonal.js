@@ -23,13 +23,15 @@ const testData = require("../delete");
 RouterPersonal.get("/mensajes", (request, response, next) => {
     response.render("mail", {
         error: undefined,
-        navInfo: {
-            logo: testData.university.logo,
+        generalInfo: {
+            hasLogo: false,
+            idUniversity: testData.university.id,
             name: testData.university.name,
             web: testData.university.web,
             address: testData.university.address,
             messagesUnread: 5,
-            profilePic: undefined
+            idUser: testData.users[0].id,
+            hasProfilePic: false
         },
         messages: testData.messages
         
@@ -40,13 +42,15 @@ RouterPersonal.get("/mensajes", (request, response, next) => {
 RouterPersonal.get("/perfil", (request, response, next) => {
     response.render("profile", {
         error: undefined,
-        navInfo: {
-            logo: testData.university.logo,
+        generalInfo: {
+            hasLogo: false,
+            idUniversity: testData.university.id,
             name: testData.university.name,
             web: testData.university.web,
             address: testData.university.address,
             messagesUnread: 5,
-            profilePic: undefined
+            idUser: testData.users[0].id,
+            hasProfilePic: false
         },
         user: testData.users[0]
     });
