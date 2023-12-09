@@ -93,7 +93,8 @@ RouterAdmin.get("/instalaciones", (request, response, next) => {
             hasProfilePic: false,
             isAdmin: true
         },
-        facilities: testData.facilities
+        facilities: testData.facilities,
+        facilityTypes: testData.facilityTypes
     });
 });
 

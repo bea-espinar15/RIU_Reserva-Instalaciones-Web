@@ -1,0 +1,200 @@
+/* --- GENERAL --- */
+#div-container {
+    padding: 3rem;
+}
+
+#div-facilities-container {
+    padding-right: 3rem;
+    border-right: 0.1rem solid var(--gray);
+}
+
+/* -- Zona de búsqueda -- */
+#div-search {
+    margin-top: 0.5rem;
+}
+
+#input-search-facility {
+    border: 1px solid  var(--primary-dark);
+    width: 20rem;
+    padding: 5px 10px;
+}
+
+#button-search {
+    border: 1px solid  var(--primary-dark);
+    background-color: var(--white);
+    padding: 5px 8px;
+}
+
+#button-new-facility {    
+    margin-right: 2rem;
+    padding: 0.5rem 0rem !important;
+    width: 7rem;
+}
+
+/* -- Lista instalaciones -- */
+.div-facility {
+    margin: 1rem 0rem;
+    padding: 0.8rem 1rem;
+    border: 0.1rem solid var(--primary-dark);
+    border-left: 1.5rem solid var(--primary-dark);
+    border-radius: 1rem;
+    background-color: var(--white);
+}
+
+.div-facility h2 {
+    font-size: 1.5rem;
+}
+
+.div-facility h2, p {
+    margin: 0rem !important;
+}
+
+.button-see-more {
+    padding: 0.4rem 1rem;
+    border: none;
+    border-radius: 1rem;
+    color: var(--white);
+}
+
+/* -- Instalación (nueva o editar) -- */
+#div-show-facility {
+    padding: 0rem 5rem;
+}
+
+#div-show-facility label {
+    margin-top: 0.5rem;
+    color: var(--black);
+}
+
+#label-checkbox {
+    margin-top: 1rem !important;
+}
+
+.input-facility-pic {
+    border: 0.1rem solid var(--primary);
+    margin-top: 2rem;
+}
+
+#input-sb-facility {
+    margin-top: 2rem;
+    width: 7.5rem;
+}
+
+/* -- MODAL nuevo tipo */
+.modal-header {
+    color: var(--white);
+}
+
+#input-facility-type-pic {
+    margin: 0rem;
+}
+
+.button-modal-new-type {
+    padding: 0.5rem 1.3rem;
+    border: none;
+    border-radius: 2rem;
+    color: var(--white);
+}
+
+/* --- RESPONSIVENESS --- */
+
+/* Monitores largos - XXL */
+@media (max-width: 1400.02px) {
+    #input-search-facility {
+        width: 14rem;
+    }
+
+    .div-facility div {
+        margin-right: 1rem;
+    }
+
+    #div-show-facility {
+        padding: 0rem 0rem 0rem 3rem;
+    }
+
+    #div-show-facility img {
+        width: 12rem;
+    }
+}
+
+/* Monitores laptop - XL */
+@media (max-width: 1200.02px) {
+    #div-search {
+        flex-direction: column;
+    }
+
+    #button-new-facility {
+        margin: 0rem 0rem 1rem 0rem;
+    }
+
+    .div-facility {
+        flex-direction: column;
+    }
+
+    .button-see-more {
+        margin-top: 1rem;
+        width: 7rem;
+    }   
+
+    #div-facility-form {
+        flex-direction: column;
+    }
+
+    #div-facility-pic {
+        margin-top: 2rem;
+    }
+}
+
+/* Tablets - LG */
+@media (max-width: 992.02px) {
+    #div-container {
+        padding: 3rem 2rem;
+    }
+}
+
+/* Móviles - MD */
+@media (max-width: 768.02px) {
+    #div-container {
+        flex-direction: column;
+    }
+
+    #div-facilities-container {
+        padding-right: 0rem;
+        border: none;
+    }
+
+    #div-show-facility {
+        margin-top: 2rem;
+    }
+
+    .div-facility {
+        flex-direction: row;
+    }
+
+    .button-see-more {
+        margin-top: 0rem;
+        padding: 0.4rem 1rem;
+        width: auto;
+    }
+}
+
+/* Móviles - SM */
+@media (max-width: 576.02px) {
+    .div-facility {
+        flex-direction: column;
+    }
+
+    .button-see-more {
+        margin-top: 1rem;
+        width: 7rem;
+    }
+
+    #div-show-facility {
+        padding: 0rem 1rem;
+    }
+
+    .input-facility-pic {
+        border: none;
+        font-size: 0.8rem;
+    }
+}

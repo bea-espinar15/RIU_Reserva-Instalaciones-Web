@@ -27,7 +27,7 @@
             <!-- Correos -->
             <div>
                 <% messages.forEach(msg => { %>
-                    <div class="div-message d-flex justify-content-between">
+                    <div class="div-message d-flex justify-content-between" data-idMessage="<%= msg.id %>">
                         <!-- Usuario origen y asunto -->
                         <div>
                             <h2 <% if (!msg.readDate) { %> class="font-bold" <% } %>><%= msg.senderUsername %>@<%= universityMail %></h2>

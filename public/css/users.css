@@ -5,20 +5,20 @@
 }
 
 #input-search-user {
-    border: 1px solid #2a3a13;
-    width: 25em;
+    border: 1px solid var(--primary-dark);
+    width: 25rem;
     padding: 5px 10px;
 }
 
 #button-search {
-    border: 1px solid #2a3a13;
-    background-color: white;
+    border: 1px solid var(--primary-dark);
+    background-color: var(--white);
     padding: 5px 8px;
 }
 
 #label-checkbox {
     margin-left: 2rem;
-    color: black;
+    color: var(--black);
 }
 
 /* -- Listas -- */
@@ -57,7 +57,7 @@
     padding: 0.5rem 1.7rem;
     border: none;
     border-radius: 2rem;
-    color: white;
+    color: var(--white);
 }
 
 .button-users:hover {
@@ -92,11 +92,14 @@
 }
 
 .div-admin-info {
-    margin-right: 1rem !important;
+    flex-direction: column;
+    align-items: start;
+    margin-top: 0.5rem;
+    margin-right: 1rem;
 }
 
 .p-admin-faculty {
-    margin: 0rem 0rem 0.5rem 0rem;
+    margin: 0rem 0rem 1rem 0rem !important;
 }
 
 /* --- RESPONSIVENESS --- */

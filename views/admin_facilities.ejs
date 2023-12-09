@@ -3,6 +3,8 @@
 
 <head>
     <%- include("../public/head.html") %>
+    <!-- Importar CSS específicos -->
+    <link rel="stylesheet" href="/css/facilities.css">
 </head>
 
 <body>
@@ -12,6 +14,130 @@
     <!-- Importar nav -->
     <%- include("nav", { generalInfo: generalInfo }) %>
 
+    <div id="div-container" class="d-flex">
+        <!-- Lista de instalaciones -->
+        <div id="div-facilities-container" class="col-md-5 d-flex flex-column">
+            <h1>Instalaciones</h1>
+            <!-- Búsqueda y Nueva instalación -->
+            <div id="div-search" class="d-flex">                        
+                <button id="button-new-facility" type="button" class="button-riu bg-riu-primary">+ Nueva</button>
+                <div class="d-flex align-items-center">
+                    <input id="input-search-facility" type="search" class="rounded" placeholder="Buscar instalación...">
+                    <button id="button-search" type="button" class="ms-2 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg>
+                    </button>                      
+                </div>                
+            </div>
+            <!-- Resultados -->
+            <div class="mt-4">
+                <!-- Mensaje Nº resultados -->
+                <% if (facilities.length === 0) { %>
+                    <p>No hay ningún resultado que coincida.</p>
+                <% } else if (facilities.length === 1) { %>
+                    <p>Ver <%= facilities.length %> resultado</p>
+                <% } else { %>
+                    <p>Ver <%= facilities.length %> resultados</p>
+                <% } %>
+                <!-- Lista -->
+                <% facilities.forEach(fac => { %>
+                    <div class="div-facility d-flex justify-content-between" data-idFacility="<%= fac.id %>">
+                        <div class="d-flex flex-column">
+                            <h2><%= fac.name %></h2>
+                            <p><%= fac.facilityTypeName %></p>
+                        </div>
+                        <button type="button" class="button-see-more bg-riu-primary-dark align-items-end">Ver más</button>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+        <!-- Visualización instalación -->
+        <div id="div-show-facility" class="col-md-7 d-flex flex-column">
+            <h2>Detalles de la instalación</h2>
+            <form class="d-flex flex-column w-100">
+                <div id="div-facility-form" class="d-flex">
+                    <!-- Info instalación -->
+                    <div class="col-xl-4 d-flex flex-column">
+                        <!-- Nombre -->
+                        <label for="input-facility-name">Nombre</label>
+                        <input id="input-facility-name" type="text" placeholder="Escribe aquí...">
+                        <!-- Tipo de instalación -->
+                        <label for="input-facility-type">Tipo</label>
+                        <select id="input-facility-type">
+                            <% facilityTypes.forEach((type => { %>
+                                <option value="<%= type.name %>"><%= type.name %></option>
+                            <% })); %>
+                            <option id="option-new-type" value="Nuevo tipo...">Nuevo tipo...</option>
+                        </select>
+                        <button id="button-modal-new-type" type="button" hidden="true" data-bs-toggle="modal" data-bs-target="#div-modal-new-type">Nuevo</button>
+                        <!-- Hora inicio -->
+                        <label for="input-facility-start-hour">Hora inicio</label>
+                        <input id="input-facility-start-hour" type="time">
+                        <!-- Hora fin -->
+                        <label for="input-facility-end-hour">Hora fin</label>
+                        <input id="input-facility-end-hour" type="time">
+                        <!-- Tipo de reserva -->
+                        <label for="input-facility-res-type">Tipo de reserva</label>
+                        <select id="input-facility-res-type">
+                            <option value="Individual" title="Sólo se puede hacer una reserva simultánea, aunque no se llene el aforo">Individual</option>
+                            <option value="Colectiva" title="Se pueden hacer reservas hasta que se llene el aforo">Colectiva</option>
+                        </select>
+                        <!-- ¿Completo? -->
+                        <label id="label-checkbox" class="d-flex align-items-center" title="¿La instalación se reserva el día completo o por horas?">
+                            <input id="input-facility-complete" type="checkbox" class="checkbox-riu">
+                            Completo
+                        </label>
+                        <!-- Aforo -->
+                        <label for="input-facility-capacity">Aforo</label>
+                        <input id="input-facility-capacity" type="number" value="1" min="1" max="500">
+                    </div>
+                    <!-- Foto -->
+                    <div id="div-facility-pic" class="col-xl-7 offset-xl-1 d-flex flex-column align-items-center">
+                        <img src="/img/default/facility.png" alt="Imagen instalación" width="270">
+                        <input type="file" class="input-facility-pic">
+                    </div>
+                </div>
+                <input id="input-sb-facility" type="submit" value="Guardar" class="button-riu bg-riu-primary align-self-center">
+            </form>
+            <!-- Modal crear nuevo tipo -->
+            <div id="div-modal-new-type" class="modal fade" aria-labelledby="label-modal-new-type" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <!-- Header -->
+                        <div class="modal-header bg-riu-primary">
+                            Nuevo tipo de instalación
+                            <button type="button" class="button-modal-x" data-bs-dismiss="modal" aria-label="Close">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="#ffffff" height="20" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <!-- Body: formulario -->
+                        <div class="modal-body d-flex">
+                            <!-- Nueva instalación-->
+                            <form id="form-new-type" class="d-flex flex-column">
+                                <!-- Nombre -->
+                                <div>
+                                    <label for="input-facility-type-name">Nombre:</label>
+                                    <input id="input-facility-type-name" type="text" placeholder="Escribe aquí...">
+                                </div>
+                                <!-- Foto -->
+                                <div>
+                                    <label for="input-facility-type-pic">Foto (¡Atención! No la podrás editar luego):</label>
+                                    <input id="input-facility-type-pic" type="file" class="input-facility-pic">
+                                </div>                                
+                            </form>
+                        </div>
+                        <!-- Footer -->
+                        <div class="modal-footer">
+                            <button id="button-sb-new-type" class="button-modal-new-type bg-riu-primary">Crear</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Importar footer -->
     <%- include("footer", { generalInfo: generalInfo }) %>
 </body>

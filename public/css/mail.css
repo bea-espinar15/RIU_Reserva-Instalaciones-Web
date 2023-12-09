@@ -22,7 +22,7 @@ label {
     border: none;
     border-radius: 1rem;
     background-color: var(--primary-light);
-    color: white;
+    color: var(--white);
 }
 
 #button-compose:hover {
@@ -72,7 +72,7 @@ label {
     padding: 2rem;
     border: 0.1rem solid var(--primary-light);
     border-radius: 1rem;
-    background-color: white;
+    background-color: var(--white);
 }
 
 #div-mail-title {

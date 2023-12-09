@@ -121,7 +121,7 @@ const facilityTypes = [
         idUniversity: 1
     }];
 
-const facility = [
+const facilities = [
     {
         id: 1,
         name: 'Laboratorio 1 - Informática',
@@ -130,7 +130,8 @@ const facility = [
         complete: 0,
         reservationType: 1,
         capacity: 60,
-        idType: 1
+        idType: 1,
+        facilityTypeName: 'Laboratorio'
     },
     {
         id: 2,
@@ -140,7 +141,8 @@ const facility = [
         complete: 0,
         reservationType: 1,
         capacity: 60,
-        idType: 1
+        idType: 1,
+        facilityTypeName: 'Laboratorio'
     },
     {
         id: 3,
@@ -150,7 +152,8 @@ const facility = [
         complete: 0,
         reservationType: 1,
         capacity: 30,
-        idType: 1
+        idType: 1,
+        facilityTypeName: 'Laboratorio'
     },
     {
         id: 4,
@@ -160,7 +163,8 @@ const facility = [
         complete: 0,
         reservationType: 1,
         capacity: 30,
-        idType: 1
+        idType: 1,
+        facilityTypeName: 'Laboratorio'
     }];
 
 const reservations = [
@@ -310,7 +314,7 @@ module.exports = {
     users: users,
     admins: admins,
     facilityTypes: facilityTypes,
-    facility: facility,
+    facilities: facilities,
     reservations: reservations,
     oldReservations: oldReservations,
     currentReservations: currentReservations,
