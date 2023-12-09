@@ -25,10 +25,6 @@ a {
     box-shadow: 0rem 0rem 3rem 1rem var(--gray);
 }
 
-#label-faculty {
-    margin-top: 2rem;
-}
-
 .button-auth {
     width: 12rem;
 }
@@ -40,6 +36,10 @@ a {
 
 #h1-sign-up {
     margin: 4rem 1rem 2rem 1rem;
+}
+
+#label-faculty {
+    margin-top: 2rem;
 }
 
 #input-sb-sign-up {
@@ -61,29 +61,23 @@ a {
 
 /* --- RESPONSIVENESS --- */
 
-/* Monitores largos - XXL */
-@media (max-width: 1399.98px) {
-    .div-auth {
-        margin: 10rem 0rem;
+/* Monitores más largos */
+@media (max-width: 1920.02px) {
+    h1 {
+        font-size: 3rem;
     }
-}
 
-/* Monitores laptop - XL */
-@media (max-width: 1199.98px) {
-    .div-auth {
-        margin: 8rem 0rem;
-    }
-}
+    img {
+        width: 10rem;
+    }    
 
-/* Tablets - LG */
-@media (max-width: 991.98px) {
     .div-auth {
-        margin: 6rem 0rem;
+        margin: 3rem 0rem;
     }
 }
 
 /* Móviles - MD */
-@media (max-width: 767.98px) {
+@media (max-width: 768.02px) {
     h1 {
         font-size: 2.5rem;
     }
@@ -91,7 +85,6 @@ a {
     img {
         align-self: center;
         margin: 0rem;
-        width: 10rem;
     }
 
     .div-auth {
@@ -99,7 +92,7 @@ a {
         padding: 3rem 0rem 0rem 0rem;
         border-radius: 0rem;
         box-shadow: none;    
-        background-color: var(--light-gray);    
+        background-color: var(--light-gray) !important;    
     }
 
     #h1-login {

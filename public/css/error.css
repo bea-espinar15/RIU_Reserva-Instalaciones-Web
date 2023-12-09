@@ -23,21 +23,33 @@ p {
 
 button {
     margin: 5rem 0rem;
-    padding: 1rem 1.5rem !important;
     font-size: 1.5rem;
 }
 
 /* --- RESPONSIVENESS --- */
 
-/* Monitores largos - XXL */
-@media (max-width: 1399.98px) {
+/* Monitores más largos */
+@media (max-width: 1920.02px) {
     h1 {
-        margin: 5rem 0rem 3rem 0rem;
+        margin: 5rem 0rem 1.5rem 0rem;
+    }
+
+    h2 {
+        font-size: 3rem;
+    }
+
+    p {
+        font-size: 1.5rem;
+    }
+
+    button {
+        margin: 3rem 0rem;
+        font-size: 1.2rem;
     }
 }
 
 /* Monitores laptop - XL */
-@media (max-width: 1199.98px) {
+@media (max-width: 1200.02px) {
     img {
         width: 12rem;
     }
@@ -46,21 +58,13 @@ button {
         font-size: 8rem;
     }
     
-    h2 {
-        font-size: 3rem;
-    }
-    
-    p {
-        font-size: 1.5rem;
-    }
-    
     button {
         font-size: 1rem;
     }
 }
 
 /* Tablets - LG */
-@media (max-width: 991.98px) {
+@media (max-width: 992.02px) {
     img {
         width: 8rem;
     }
@@ -72,19 +76,10 @@ button {
     h2 {
         font-size: 2rem;
     }
-    
-    p {
-        font-size: 1.5rem;
-    }
-    
-    button {
-        margin: 3rem 0rem;
-        font-size: 1rem;
-    }
 }
 
 /* Móviles - MD */
-@media (max-width: 767.98px) {
+@media (max-width: 768.02px) {
     img {
         width: 6rem;
         margin: 1.5rem 0rem 2.5rem 1.5rem;

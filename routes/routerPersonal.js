@@ -52,7 +52,8 @@ RouterPersonal.get("/perfil", (request, response, next) => {
             idUser: testData.users[0].id,
             hasProfilePic: false
         },
-        user: testData.users[0]
+        user: testData.users[0],
+        universityMail: testData.university.mail
     });
 });
 

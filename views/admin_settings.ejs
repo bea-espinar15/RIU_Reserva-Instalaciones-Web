@@ -3,6 +3,8 @@
 
 <head>
     <%- include("../public/head.html") %>
+    <!-- Importar CSS específicos -->
+    <link rel="stylesheet" href="/css/settings.css">
 </head>
 
 <body>
@@ -11,6 +13,35 @@
     
     <!-- Importar nav -->
     <%- include("nav", { generalInfo: generalInfo }) %>
+
+    <div id="div-settings" class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 d-flex flex-column align-items-center">
+        <form method="POST" action="/admin/cambiarConfiguracion" class="d-flex flex-column w-100">
+            <h1>Configuración</h1>
+            <div id="div-settings-form" class="d-flex">
+                <!-- Info universidad -->
+                <div class="col-lg-6 col-xl-7 d-flex flex-column">
+                    <label for="input-settings-name">Nombre</label>
+                    <input id="input-settings-name" name="settingsName" type="text" value="<%= university.name %>">
+                    <label for="input-settings-mail">Correo</label>
+                    <input id="input-settings-mail" disabled="true" type="text" value="@<%= university.mail %>">
+                    <label for="input-settings-address">Dirección</label>
+                    <input id="input-settings-address" name="settingsAddress" type="text" value="<%= university.address %>">
+                    <label for="input-settings-web">Página web</label>
+                    <input id="input-settings-web" name="settingsWeb" type="text" value="<%= university.web %>">
+                </div>
+                <!-- Logo -->
+                <div id="div-settings-logo" class="col-4 offset-lg-2 offset-xl-1 d-flex flex-column align-items-center">
+                    <% if (university.hasLogo) { %>
+                        <img src="/universityPic/<%= university.id %>" alt="Logo <%= university.name %>" width="270">
+                    <% } else { %>
+                        <img src="/img/default/university.png" alt="Logo universidad por defecto" width="270">
+                    <% } %>
+                    <input id="input-settings-logo" type="file">
+                </div>
+            </div>
+            <input id="input-sb-settings" type="submit" value="Guardar" class="button-riu bg-riu-primary">
+        </form>
+    </div>
 
     <!-- Importar footer -->
     <%- include("footer", { generalInfo: generalInfo }) %>

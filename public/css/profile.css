@@ -1,0 +1,83 @@
+/* --- GENERAL --- */
+label {
+    margin-top: 0.5rem;
+    color: var(--black) !important;
+}
+
+hr {
+    margin-top: 2rem !important;
+}
+
+/* --- PERFIL --- */
+
+#div-profile-info h1 {
+    margin: 2rem 0rem 1rem 0rem;
+}
+
+#input-profile-pic {
+    margin-top: 1.1rem;
+    font-size: 0.9rem;
+}
+
+/* --- CAMBIAR CONTRASEÑA --- */
+
+#form-change-pass h1 {
+    margin: 0.7rem 0rem 1rem 0rem;
+}
+
+#div-new-pass {
+    margin-left: 3rem;
+}
+
+#input-sb-change-pass {
+    margin: 1.5rem 0rem 3rem 0rem;
+    width: 8.5rem;
+}
+
+/* --- RESPONSIVENESS --- */
+/* Tablets - LG */
+@media (max-width: 992.02px) {
+    #div-profile {
+        padding: 0rem 4rem;
+    }
+    
+    #div-profile-form {
+        flex-direction: column;
+    }
+
+    #div-profile-form img {
+        margin-top: 3rem;
+    }
+}
+
+/* Móviles - MD */
+@media (max-width: 768.02px) {
+    #div-new-pass {
+        margin-left: 1rem;
+    }
+}
+
+/* Móviles - SM */
+@media (max-width: 576.02px) {
+    #div-profile {
+        padding: 0rem 2rem;
+    }
+
+    #div-profile-form img {
+        margin-top: 1.5rem;
+        width: 10rem;
+    }
+    
+    #input-profile-pic {
+        border: none;
+        font-size: 0.8rem;
+    }
+
+    #div-change-pass {
+        flex-direction: column;
+    }
+
+    #div-new-pass {
+        margin-left: 0rem;
+    }
+}

@@ -38,7 +38,7 @@ const users = [
         name: 'Beatriz',
         lastname1: 'Espinar',
         lastname2: 'Aragón',
-        mail: 'beaesp01@ucm.es',
+        mail: 'beaesp01',
         password: '1234',
         role: 0,
         idFaculty: 1
@@ -50,7 +50,7 @@ const users = [
         name: 'Jesús',
         lastname1: 'Cáceres',
         lastname2: 'Tello',
-        mail: 'jescacer@ucm.es',
+        mail: 'jescacer',
         password: '1234',
         role: 1,
         idFaculty: 1

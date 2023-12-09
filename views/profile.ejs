@@ -3,6 +3,8 @@
 
 <head>
     <%- include("../public/head.html") %>
+    <!-- Importar CSS específicos -->
+    <link rel="stylesheet" href="/css/profile.css">
 </head>
 
 <body>
@@ -11,6 +13,57 @@
     
     <!-- Importar nav -->
     <%- include("nav", { generalInfo: generalInfo }) %>
+
+    <div id="div-profile" class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 d-flex flex-column align-items-center">
+        <!-- Info perfil  -->
+        <div id="div-profile-info" class="d-flex flex-column w-100">
+            <h1>Mi Perfil</h1>
+            <div id="div-profile-form" class="d-flex">
+                <!-- Datos del usuario -->
+                <div class="col-lg-6 d-flex flex-column">
+                    <label for="input-profile-name">Nombre</label>
+                    <input id="input-profile-name" disabled="true" type="text" value="<%= user.name %>">
+                    <label for="input-profile-lastname1">Primer apellido</label>
+                    <input id="input-profile-lastname1" disabled="true" type="text" value="<%= user.lastname1 %>">
+                    <label for="input-profile-lastname2">Segundo apellido</label>
+                    <input id="input-profile-lastname2" disabled="true" type="text" value="<%= user.lastname2 %>">
+                    <label for="input-profile-mail">Correo</label>
+                    <input id="input-profile-mail" disabled="true" type="mail" value="<%= user.mail %>@<%= universityMail %>">
+                </div>      
+                <!-- Foto de perfil -->
+                <div class="col-6 d-flex flex-column align-items-center mx-auto">
+                    <% if (user.hasPicture) { %>
+                        <img src="/profilePic/<%= user.id %>" alt="Foto de perfil" width="180">
+                    <% } else { %>
+                        <img src="/img/default/profile.png" alt="Foto de perfil (ninguna)" width="180">
+                    <% } %>
+                    <form>
+                        <input id="input-profile-pic" type="file">
+                    </form>                    
+                </div>          
+            </div>
+        </div>
+
+        <hr class="w-100">
+
+        <!-- Cambiar contraseña -->
+        <form id="form-change-pass" class="d-flex flex-column w-100">
+            <h1>Cambiar contraseña</h1>
+            <div id="div-change-pass" class="d-flex">
+                <!-- Actual -->
+                <div class="d-flex flex-column">
+                    <label for="input-change-pass-old">Contraseña actual</label>
+                    <input id="input-change-pass-old" type="password" placeholder="Escribe aquí...">
+                </div>
+                <!-- Nueva -->
+                <div id="div-new-pass" class="d-flex flex-column">
+                    <label for="input-change-pass-new">Nueva contraseña</label>
+                    <input id="input-change-pass-new" type="password" placeholder="Escribe aquí...">
+                </div>
+            </div>
+            <input id="input-sb-change-pass" type="submit" value="Cambiar" class="button-riu bg-riu-primary">
+        </form>
+    </div>
 
     <!-- Importar footer -->
     <%- include("footer", { generalInfo: generalInfo }) %>
