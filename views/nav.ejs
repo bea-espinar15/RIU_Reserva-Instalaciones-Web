@@ -55,7 +55,9 @@
                         </span>
                         </a>
                   </li>
-                  <li><a href="/reservas" class="dropdown-item">Mis reservas</a></li>
+                  <% if (!generalInfo.isAdmin) { %>
+                    <li><a href="/usuario/reservas" class="dropdown-item">Mis reservas</a></li>
+                  <% } %>
                   <li><a id="a-logout" class="dropdown-item"><button class="m-0 p-0">Cerrar sesión</button></a></li>
                 </ul>
             </div>

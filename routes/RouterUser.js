@@ -31,7 +31,8 @@ RouterUser.get("/inicio", (request, response, next) => {
             address: testData.university.address,
             messagesUnread: 5,
             idUser: testData.users[0].id,
-            hasProfilePic: false
+            hasProfilePic: false,
+            isAdmin: false
         },
         facilityTypes: testData.facilityTypes
     });
@@ -49,7 +50,8 @@ RouterUser.get("/instalaciones/:id", (request, response, next) => {
             address: testData.university.address,
             messagesUnread: 5,
             idUser: testData.users[0].id,
-            hasProfilePic: false
+            hasProfilePic: false,
+            isAdmin: false
         },
         facilities: testData.facilities
     });
@@ -67,7 +69,8 @@ RouterUser.get("/reservas", (request, response, next) => {
             address: testData.university.address,
             messagesUnread: 5,
             idUser: testData.users[0].id,
-            hasProfilePic: false
+            hasProfilePic: false,
+            isAdmin: false
         },
         currentReservations: testData.currentReservations,
         oldReservations: testData.oldReservations

@@ -3,6 +3,8 @@
 
 <head>
     <%- include("../public/head.html") %>
+    <!-- Importar CSS específicos -->
+    <link rel="stylesheet" href="/css/reservations.css">
 </head>
 
 <body>
@@ -11,6 +13,81 @@
     
     <!-- Importar nav -->
     <%- include("nav", { generalInfo: generalInfo }) %>
+
+    <h1 id="h1-admin-reservations">Reservas</h1>
+    <hr class="mx-4 mx-lg-5">
+    <!-- Contenido -->
+    <div id="div-admin-reservations-container" class="d-flex">
+        <!-- Filtros -->
+        <form id="form-filter-reservations" method="POST" action="/admin/filtrarReservas" class="col-lg-3 d-flex flex-column">            
+            <h2>Filtros</h2>
+            <label for="input-filter-user">Usuario</label>
+            <input id="input-filter-user" type="text" placeholder="Nombre, apellido o correo">
+            <label for="input-filter-date">Fecha</label>
+            <input id="input-filter-date" type="date">
+            <label for="input-filter-faculty">Facultad</label>
+            <select id="input-faculty"></select>
+            <label for="input-filter-facility">Instalación</label>
+            <input id="input-filter-facility" type="text" placeholder="Escribe aquí...">
+            <input id="input-sb-filter" type="submit" value="Filtrar" class="button-riu bg-riu-primary">
+        </form>
+        <!-- Resultados -->
+        <div id="div-results" class="col-lg-8 offset-1">
+            <!-- Nº resultados y filtros aplicados -->
+            <div id="div-results-header" class="d-flex justify-content-between">
+                <!-- Mensaje Nº resultados -->
+                <% if (reservations.length === 0) { %>
+                    <p>No hay ningún resultado que coincida.</p>
+                <% } else if (reservations.length === 1) { %>
+                    <p>Ver <%= reservations.length %> resultado</p>
+                <% } else { %>
+                    <p>Ver <%= reservations.length %> resultados</p>
+                <% } %>
+                <!-- Filtros aplicados -->
+                <div id="div-filters" class="d-flex align-items-start">
+                    <% filters.forEach(f => { %>
+                        <p class="p-filter"><%= f %></p> 
+                    <% }); %>
+                </div>
+            </div>
+            <!-- Tabla resultados -->
+            <div id="div-reservations-results" class="div-reservations accordion">
+                <% reservations.forEach((res, i) => { %>
+                    <div class="accordion-item">
+                        <!-- Exterior  -->
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed current" type="button" data-bs-toggle="collapse" data-bs-target="#div-reservation-<%= i %>" aria-expanded="false" aria-controls="div-reservation-<_%= i %>">
+                                <!-- Info de la reserva -->
+                                <div class="div-reservation-info d-flex flex-column">
+                                    <h2><%= res.facilityName %></h2>
+                                    <p class="m-0"><%= res.userName %></p>
+                                </div>
+                            </button>
+                        </h2>
+                        <!-- Desplegable -->
+                        <div id="div-reservation-<%= i %>" class="accordion-collapse collapse" data-bs-parent="#div-reservations-results">
+                            <div class="accordion-body d-flex">
+                                <!-- Datos reserva -->
+                                <div class="div-reservation-extended col">
+                                    <p>Fecha: <%= res.date %></p>
+                                    <p>Hora: <%= res.hour %></p>
+                                    <p>Nº Personas: <%= res.nPeople %></p>
+                                </div>
+                                <div class="div-old-reservation-date col d-flex flex-column align-items-end">
+                                    <!-- Fecha reserva -->
+                                    <p class="m-0">Reserva realizada el <%= res.reservationDate%></p>
+                                    <!-- Cola -->
+                                    <% if (res.queued && res.date >= new Date()) { %>
+                                        <p class="m-0">¡Atención! Esta reserva está en cola. Si los que están delante no cancelan su reserva, esta no aplica.</p>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </div>
 
     <!-- Importar footer -->
     <%- include("footer", { generalInfo: generalInfo }) %>

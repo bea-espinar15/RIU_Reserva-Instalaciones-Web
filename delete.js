@@ -125,34 +125,53 @@ const reservations = [
         id: 1,
         enabled: 1,
         idUser: 1,
-        idFacility: 18,
+        userName: 'Beatriz',
+        idFacility: 3,
+        facilityName: 'Laboratorio 3 - Informática',
         nPeople: 1,
-        date: '2023-12-15',
+        date: '2023-11-15',
         hour: '09:00:00',
-        row: 0,
-        reservationDate: '2023-11-26 18:06:23'
+        queued: 0,
+        reservationDate: '2023-10-26'
     },
     {
         id: 2,
         enabled: 1,
         idUser: 1,
+        userName: 'Beatriz',
         idFacility: 1,
+        facilityName: 'Laboratorio 1 - Informática',
         nPeople: 15,
         date: '2023-12-20',
         hour: '09:00:00',
-        row: 0,
-        reservationDate: '2023-11-26 18:06:24'
+        queued: 0,
+        reservationDate: '2023-11-26'
     },
     {
         id: 3,
         enabled: 1,
         idUser: 1,
-        idFacility: 15,
+        userName: 'Beatriz',
+        idFacility: 2,
+        facilityName: 'Laboratorio 2 - Informática',
         nPeople: 87,
         date: '2023-12-13',
         hour: '09:00:00',
-        row: 0,
-        reservationDate: '2023-11-26 18:06:25'
+        queued: 1,
+        reservationDate: '2023-11-26'
+    },
+    {
+        id: 4,
+        enabled: 1,
+        idUser: 1,
+        userName: 'Beatriz',
+        idFacility: 4,
+        facilityName: 'Laboratorio 4 - Informática',
+        nPeople: 1,
+        date: '2023-11-15',
+        hour: '09:00:00',
+        queued: 0,
+        reservationDate: '2023-10-26'
     }];
 
 const oldReservations = [

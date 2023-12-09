@@ -31,7 +31,8 @@ RouterAdmin.get("/inicio", (request, response, next) => {
             address: testData.university.address,
             messagesUnread: 5,
             idUser: testData.users[0].id,
-            hasProfilePic: false
+            hasProfilePic: false,
+            isAdmin: true
         },
         adminName: testData.users[0].name
     });
@@ -49,7 +50,8 @@ RouterAdmin.get("/configuracion", (request, response, next) => {
             address: testData.university.address,
             messagesUnread: 5,
             idUser: testData.users[0].id,
-            hasProfilePic: false
+            hasProfilePic: false,
+            isAdmin: true
         },
         university: testData.university
     });
@@ -67,7 +69,8 @@ RouterAdmin.get("/usuarios", (request, response, next) => {
             address: testData.university.address,
             messagesUnread: 5,
             idUser: testData.users[0].id,
-            hasProfilePic: false
+            hasProfilePic: false,
+            isAdmin: true
         },
         users: testData.users
     });
@@ -85,7 +88,8 @@ RouterAdmin.get("/instalaciones", (request, response, next) => {
             address: testData.university.address,
             messagesUnread: 5,
             idUser: testData.users[0].id,
-            hasProfilePic: false
+            hasProfilePic: false,
+            isAdmin: true
         },
         facilities: testData.facilities
     });
@@ -103,9 +107,11 @@ RouterAdmin.get("/reservas", (request, response, next) => {
             address: testData.university.address,
             messagesUnread: 5,
             idUser: testData.users[0].id,
-            hasProfilePic: false
+            hasProfilePic: false,
+            isAdmin: true
         },
-        reservations: testData.reservations
+        reservations: testData.reservations,
+        filters: ["15-10-2001", "Lucas", "Informática", "Laboratorio 1 - Informática"]
     });
 });
 

@@ -1,3 +1,5 @@
+/* --- GENERAL --- */
+
 hr {
     margin-bottom: 2rem !important;
 }
@@ -57,7 +59,7 @@ hr {
     margin-left: 0.5rem;
 }
 
-/* --- MODAL CANCELAR RESERVA --- */
+/* --- Modal Cancelar --- */
 
 .button-modal-cancel {
     padding: 0.5rem 1.3rem;
@@ -66,13 +68,50 @@ hr {
     color: var(--white);
 }
 
-/* --- RESPONSIVENESS --- */
-
-/* Monitores más largos */
-@media (max-width: 1920.02px) {
-    
+/* --- ADMIN --- */
+#div-admin-reservations-container {
+    margin-bottom: 3rem;
 }
 
+#h1-admin-reservations {
+    margin: 3rem 0rem 0rem 4rem;
+}
+
+#form-filter-reservations {
+    padding-left: 4rem;
+}
+
+#form-filter-reservations label {
+    margin-top: 0.5rem;
+}
+
+#input-sb-filter {
+    align-self: center;
+    margin-top: 2rem;
+    width: 8em;
+}
+
+.p-filter {
+    margin: 0rem 0.5rem;
+    padding: 0.3rem 1rem;
+    border-radius: 1rem;
+    background-color: var(--primary-light);
+    color: var(--white);
+}
+
+#div-results {
+    padding-right: 10rem;
+}
+
+#div-results-header p {
+    margin-bottom: 1rem;
+}
+
+#div-reservations-results {
+    padding: 0rem;
+}
+
+/* --- RESPONSIVENESS --- */
 /* Monitores largos - XXL */
 @media (max-width: 1400.02px) {
     .accordion-body {
@@ -86,6 +125,10 @@ hr {
     .div-reservation-info-main {
         flex-direction: column !important;
     }
+
+    #div-results-header {
+        flex-direction: column;
+    }
 }
 
 /* Monitores laptop - XL */
@@ -96,6 +139,10 @@ hr {
     
     .button-cancel-reservation {
         margin-top: 1rem;
+    }
+
+    #div-filters {
+        flex-direction: column;
     }
 }
 
@@ -112,6 +159,31 @@ hr {
     #div-old-reservations {
         padding-top: 0rem;
     }
+
+    #div-admin-reservations-container {
+        flex-direction: column;
+    }
+
+    #form-filter-reservations {
+        padding: 0rem 3rem;
+    }
+
+    #div-results {
+        padding-right: 3rem;
+    }
+
+    #div-results-header {
+        margin-top: 2rem;
+    }
+
+    #div-filters {
+        display: none !important; 
+     }
+}
+
+/* Móviles - MD */
+@media (max-width: 768.02px) {
+
 }
 
 /* Móviles - SM */
@@ -126,5 +198,21 @@ hr {
 
     .div-reservations h2 {
         font-size: 1.1rem;
+    }
+
+    #h1-admin-reservations {
+        margin: 3rem auto 0rem auto;
+    }
+
+    #form-filter-reservations {
+        padding: 0rem 2rem;
+    }
+
+    #div-results {
+        padding: 0rem 0rem;
+    }
+
+    #div-reservations-results {
+        padding-right: 1.5rem;
     }
 }

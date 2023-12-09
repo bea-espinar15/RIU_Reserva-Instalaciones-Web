@@ -31,11 +31,11 @@ RouterPersonal.get("/correo", (request, response, next) => {
             address: testData.university.address,
             messagesUnread: 5,
             idUser: testData.users[0].id,
-            hasProfilePic: false
+            hasProfilePic: false,
+            isAdmin: true
         },
         messages: testData.messages,
-        universityMail: testData.university.mail,
-        isAdmin: true
+        universityMail: testData.university.mail
     });
 });
 
@@ -51,7 +51,8 @@ RouterPersonal.get("/perfil", (request, response, next) => {
             address: testData.university.address,
             messagesUnread: 5,
             idUser: testData.users[0].id,
-            hasProfilePic: false
+            hasProfilePic: false,
+            isAdmin: true
         },
         user: testData.users[0],
         universityMail: testData.university.mail
