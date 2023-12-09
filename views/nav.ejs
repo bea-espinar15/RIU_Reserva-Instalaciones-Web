@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 
-<head>
-    <%- include("../public/head.html") %>
-</head>
-
 <body>
     <nav class="d-flex align-items-center justify-content-between bg-riu-primary">
         <!-- Inicio -->
         <div>
             <a id="a-nav" href="/inicio" class="d-flex align-items-center">
                 <% if (generalInfo.hasLogo) { %>
-                    <img src="/universityPic/<%= generalInfo.idUniversity %>" alt="Logo <%= generalInfo.name %>" width="60">
+                    <img src="/fotoUniversidad/<%= generalInfo.idUniversity %>" alt="Logo <%= generalInfo.name %>" width="60">
                 <% } else { %>
                     <img src="/img/default/university.png" alt="Logo universidad por defecto" width="60">
                 <% } %>
@@ -21,9 +17,9 @@
         <!-- Correo y menú -->
         <div class="d-flex align-items-center">
             <!-- Correo con nº no leídos -->
-            <a id="a-nav-mail" href="/mail" class="position-relative">
+            <a id="a-nav-mail" href="/personal/correo" class="position-relative">
                 <img src="/img/mail.png" alt="Símbolo correo" width="60">
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-riu-secondary-light">
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-riu-blue">
                     <%= generalInfo.messagesUnread %>
                     <span class="visually-hidden">Correos no leídos</span>
                 </span>
@@ -33,7 +29,7 @@
                 <!-- Botón de perfil normal -->
                 <button id="button-nav-profile" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <% if (generalInfo.hasProfilePic) { %>
-                        <img src="/profilePic/<%= generalInfo.idUser %>" alt="Foto de perfil" width="50">
+                        <img src="/fotoPerfil/<%= generalInfo.idUser %>" alt="Foto de perfil" width="50">
                     <% } else { %>
                         <img src="/img/default/profile.png" alt="Foto de perfil" width="50">
                     <% } %>
@@ -48,12 +44,12 @@
                     </svg>
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a href="/profile" class="dropdown-item">Mi perfil</a></li>
+                  <li><a href="/personal/perfil" class="dropdown-item">Mi perfil</a></li>
                   <!-- Sólo se muestra en pantallas MD -->
                   <li id="li-nav-mail" class="d-none">
-                    <a href="/mail" class="dropdown-item">
+                    <a href="/personal/correo" class="dropdown-item">
                         Mi correo
-                        <span class="badge rounded-pill bg-riu-secondary-light">
+                        <span class="badge rounded-pill bg-riu-blue">
                             <%= generalInfo.messagesUnread %>
                             <span class="visually-hidden">Correos no leídos</span>
                         </span>

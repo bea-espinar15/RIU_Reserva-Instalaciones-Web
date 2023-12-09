@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 
-<head>
-    <%- include("../public/head.html") %>
-</head>
-
 <body>
     <footer class="d-flex align-items-center justify-content-between bg-riu-dark-gray">
         <div id="div-footer-left" class="d-flex align-items-center">
             <!-- Logo y nombre -->
             <div class="d-flex flex-column align-items-center">
                 <% if (generalInfo.hasLogo) { %>
-                    <img src="/universityPic/<%= generalInfo.idUniversity %>" alt="Logo <%= generalInfo.name %>" width="60">
+                    <img src="/fotoUniversidad/<%= generalInfo.idUniversity %>" alt="Logo <%= generalInfo.name %>" width="60">
                 <% } else { %>
                     <img src="/img/default/university.png" alt="Logo universidad por defecto" width="60">
                 <% } %>

@@ -148,22 +148,22 @@ app.use("/usuario", userLogged, userBanned, routerUser);
 
 // - Otras peticiones GET -
 // Imagen del usuario
-app.get("/profilePic/:id", userLogged, userBanned, accessPicAllowed, (request, response, next) => {
+app.get("/fotoPerfil/:id", userLogged, userBanned, accessPicAllowed, (request, response, next) => {
     response.end(undefined);
 });
 
 // Logo de la universidad
-app.get("/universityPic/:id", userLogged, userBanned, (request, response, next) => {
+app.get("/fotoUniversidad/:id", userLogged, userBanned, (request, response, next) => {
     response.end(undefined);
 });
 
 // Foto del tipo de instalación
-app.get("/facilityTypePic/:id", userLogged, userBanned, (request, response, next) => {
+app.get("/fotoTipoInstalación/:id", userLogged, userBanned, (request, response, next) => {
     response.end(undefined);
 });
 
 // Foto de la instalación
-app.get("/facilityPic/:id", userLogged, userBanned, (request, response, next) => {
+app.get("/fotoInstalación/:id", userLogged, userBanned, (request, response, next) => {
     response.end(undefined);
 });
 

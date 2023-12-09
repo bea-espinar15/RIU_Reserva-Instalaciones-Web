@@ -1,0 +1,130 @@
+hr {
+    margin-bottom: 2rem !important;
+}
+
+.div-reservations {
+    padding: 4rem 4rem;
+}
+
+.div-reservations h2 {
+    font-size: 1.5rem;
+}
+
+.div-reservation-extended p {
+    margin-bottom: 0rem;
+}
+
+.p-queue-message {
+    margin: 1rem;
+    margin-bottom: 0rem;
+}
+
+.button-cancel-reservation {
+    margin: 0rem 0.5rem 0.5rem 0rem;
+    padding: 0.5rem !important;
+    width: 7rem;
+}
+
+/* Accordions */
+.accordion-item {
+    margin: 1rem 0rem;
+}
+
+.accordion-button:focus {
+    box-shadow: none !important;
+}
+
+.accordion-button:not(.collapsed) {
+    color: var(--black) !important;
+    background-color: var(--primary-light) !important;
+}
+
+.old {
+    background-color: var(--reservations-gray) !important;
+}
+
+.old.accordion-button:not(.collapsed) {
+    color: var(--black) !important;
+    background-color: var(--gray) !important;
+}
+
+/* Información de la reserva */
+.div-reservation-info {
+    margin-left: 1rem;
+}
+
+.div-reservation-info img {
+    margin-left: 0.5rem;
+}
+
+/* --- MODAL CANCELAR RESERVA --- */
+
+.button-modal-cancel {
+    padding: 0.5rem 1.3rem;
+    border: none;
+    border-radius: 2rem;
+    color: var(--white);
+}
+
+/* --- RESPONSIVENESS --- */
+
+/* Monitores más largos */
+@media (max-width: 1920.02px) {
+    
+}
+
+/* Monitores largos - XXL */
+@media (max-width: 1400.02px) {
+    .accordion-body {
+        flex-direction: column !important;
+    }
+
+    .div-old-reservation-date {
+        align-items: start !important;
+    }
+
+    .div-reservation-info-main {
+        flex-direction: column !important;
+    }
+}
+
+/* Monitores laptop - XL */
+@media (max-width: 1200.02px) {
+    .div-modal-cancel {
+        justify-content: start !important;
+    }
+    
+    .button-cancel-reservation {
+        margin-top: 1rem;
+    }
+}
+
+/* Tablets - LG */
+@media (max-width: 992.02px) {
+    #div-reservations-container {
+        flex-direction: column !important;
+    }
+
+    #div-current-reservations {
+        padding-bottom: 2rem;
+    }
+
+    #div-old-reservations {
+        padding-top: 0rem;
+    }
+}
+
+/* Móviles - SM */
+@media (max-width: 576.02px) {
+    #div-current-reservations {
+        padding: 3rem 1rem 2rem 1rem;
+    }
+
+    #div-old-reservations {
+        padding: 0rem 1rem 4rem 1rem;
+    }
+
+    .div-reservations h2 {
+        font-size: 1.1rem;
+    }
+}

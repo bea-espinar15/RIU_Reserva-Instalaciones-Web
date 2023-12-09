@@ -3,6 +3,8 @@
 
 <head>
     <%- include("../public/head.html") %>
+    <!-- Importar CSS específicos -->
+    <link rel="stylesheet" href="/css/reservations.css">
 </head>
 
 <body>
@@ -11,6 +13,147 @@
 
     <!-- Importar nav -->
     <%- include("nav", { generalInfo: generalInfo }) %>
+
+    <!-- RESERVAS -->
+    <div id="div-reservations-container" class="d-flex">
+        <!-- ACTUALES -->
+        <div class="col">   
+            <div id="div-current-reservations" class="div-reservations accordion">
+                <div>
+                    <h1>Reservas pendientes</h1>
+                </div>
+                <hr>
+                <div>
+                    <!-- Si no hay reservas actuales, mostrar mensaje -->
+                    <% if (currentReservations.length === 0) { %>
+                        <p>Actualmente no tienes ninguna reserva pendiente</p>                    
+                    <% } else { currentReservations.forEach((cr, i) => { %>
+                                <div class="accordion-item">
+                                    <!-- Exterior -->
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#div-current-reservation-<%= i %>" aria-expanded="false" aria-controls="div-current-reservation-<%= i %>">
+                                            <!-- Foto instalación reservada -->
+                                            <% if (currentReservations.hasPic) { %>
+                                                <img src="/fotoInstalación/<%= cr.idFacility %>" alt="Foto instalación reservada" width="60" height="60">
+                                            <% } else { %>
+                                                <img src="/img/default/facility.png" alt="Foto instalación reservada" width="60" height="60">
+                                            <% } %>
+                                            <!-- Info de la reserva -->
+                                            <div class="div-reservation-info d-flex flex-column">
+                                                <div class="div-reservation-info-main d-flex align-items-center">
+                                                    <h2 class="m-0">
+                                                        <%= cr.facilityName %>
+                                                        <% if (cr.queued) { %>
+                                                            <img src="/img/icons/queued.png" alt="Estás en cola de espera" title="Estás en cola de espera" width="20" height="20">
+                                                        <% } %>
+                                                    </h2>                                                    
+                                                </div>                                            
+                                                <p class="m-0 mt-2"><%= cr.date %></p>
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <!-- Desplegable -->
+                                    <div id="div-current-reservation-<%= i %>" class="accordion-collapse collapse" data-bs-parent="#div-current-reservations">
+                                        <% if (cr.queued) { %>
+                                            <p class="p-queue-message font-bold">¡Atención! Estás en la cola de espera. Si los que tienes delante cancelan su reserva, será tuya.</p>
+                                        <% } %>
+                                        <div class="accordion-body d-flex">
+                                            <!-- Datos reserva -->
+                                            <div class="div-reservation-extended col">
+                                                <p>Hora: <%= cr.hour %></p>
+                                                <p>Nº Personas: <%= cr.nPeople %></p>
+                                                <p>Reserva realizada el <%= cr.reservationDate%></p>
+                                            </div>
+                                            <div class="div-modal-cancel col d-flex align-items-end justify-content-end">
+                                                <!-- MODAL CANCELAR -->
+                                                <button class="button-riu bg-riu-primary button-cancel-reservation" data-bs-toggle="modal" data-bs-target="#div-modal-cancel-<%= i %>">Cancelar</button>
+                                                <div class="modal fade" id="div-modal-cancel-<%= i %>" aria-labelledby="label-modal-cancel-<%= i %>" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <!-- Header -->
+                                                            <div class="modal-header">
+                                                                <button type="button" class="button-modal-x" data-bs-dismiss="modal" aria-label="Close">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="20" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                                      </svg>
+                                                                </button>
+                                                            </div>
+                                                            <!-- Body: mensaje de confirmación -->
+                                                            <div class="modal-body d-flex">
+                                                                <!-- Resumen Viaje-->
+                                                                <p>¿Estás seguro de que quieres cancelar tu reserva? No se puede deshacer esta acción.</p>
+                                                            </div>
+                                                            <!-- Footer -->
+                                                            <div class="modal-footer">
+                                                                <form>
+                                                                    <button type="button" class="button-modal-cancel bg-riu-gray" data-bs-dismiss="modal" >No</button>
+                                                                    <button id="button-sb-cancel" class="button-modal-cancel bg-riu-primary ms-2" data-idReservation="<%= cr.id %>">Sí</button>
+                                                                </form>                                                        
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                    <% }); } %>
+                </div> 
+            </div>
+        </div>
+        
+        <!-- PASADAS -->
+        <div class="col">   
+            <div id="div-old-reservations" class="div-reservations accordion">
+                <div>
+                    <h1>Reservas pasadas</h1>
+                </div>
+                <hr>
+                <div>
+                    <!-- Si no hay reservas actuales, mostrar mensaje -->
+                    <% if (oldReservations.length === 0) { %>
+                        <p>Todavía no has hecho ninguna reserva.</p>                    
+                    <% } else { oldReservations.forEach((or, i) => { %>
+                                <div class="accordion-item">
+                                    <!-- Exterior -->
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed old" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#div-old-reservation-<%= i %>" aria-expanded="false" aria-controls="div-old-reservation-<%= i %>">
+                                            <!-- Foto instalación reservada -->
+                                            <% if (oldReservations.hasPic) { %>
+                                                <img src="/fotoInstalación/<%= or.idFacility %>" alt="Foto instalación reservada" width="60" height="60">
+                                            <% } else { %>
+                                                <img src="/img/default/facility.png" alt="Foto instalación reservada" width="60" height="60" class="bg-riu-primary">
+                                            <% } %>
+                                            <!-- Info de la reserva -->
+                                            <div class="div-reservation-info d-flex flex-column">
+                                                <h2><%= or.facilityName %></h2>              
+                                                <p class="m-0"><%= or.date %></p>
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <!-- Desplegable -->
+                                    <div id="div-old-reservation-<%= i %>" class="accordion-collapse collapse" data-bs-parent="#div-old-reservations">
+                                        <div class="accordion-body d-flex">
+                                            <!-- Datos reserva -->
+                                            <div class="div-reservation-extended col">
+                                                <p>Hora: <%= or.hour %></p>
+                                                <p>Nº Personas: <%= or.nPeople %></p>
+                                            </div>
+                                            <div class="div-old-reservation-date col d-flex flex-column align-items-end">
+                                                <!-- Fecha reserva -->
+                                                <p class="m-0">Reserva realizada el <%= or.reservationDate%></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                    <% }); } %>
+                </div> 
+            </div>
+        </div>
+    
+    </div>
 
     <!-- Importar footer -->
     <%- include("footer", { generalInfo: generalInfo }) %>

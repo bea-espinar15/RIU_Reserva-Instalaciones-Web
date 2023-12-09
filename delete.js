@@ -160,12 +160,25 @@ const oldReservations = [
         id: 1,
         enabled: 1,
         idUser: 1,
-        idFacility: 18,
+        idFacility: 3,
+        facilityName: 'Laboratorio 3 - Informática',
         nPeople: 1,
         date: '2023-11-15',
         hour: '09:00:00',
-        row: 0,
-        reservationDate: '2023-10-26 18:06:23'
+        queued: 0,
+        reservationDate: '2023-10-26'
+    },
+    {
+        id: 4,
+        enabled: 1,
+        idUser: 1,
+        idFacility: 4,
+        facilityName: 'Laboratorio 4 - Informática',
+        nPeople: 1,
+        date: '2023-11-15',
+        hour: '09:00:00',
+        queued: 0,
+        reservationDate: '2023-10-26'
     }];
 
 const currentReservations = [
@@ -174,30 +187,34 @@ const currentReservations = [
         enabled: 1,
         idUser: 1,
         idFacility: 1,
+        facilityName: 'Laboratorio 1 - Informática',
         nPeople: 15,
         date: '2023-12-20',
         hour: '09:00:00',
-        row: 0,
-        reservationDate: '2023-11-26 18:06:24'
+        queued: 0,
+        reservationDate: '2023-11-26'
     },
     {
         id: 3,
         enabled: 1,
         idUser: 1,
-        idFacility: 15,
+        idFacility: 2,
+        facilityName: 'Laboratorio 2 - Informática',
         nPeople: 87,
         date: '2023-12-13',
         hour: '09:00:00',
-        row: 0,
-        reservationDate: '2023-11-26 18:06:25'
+        queued: 1,
+        reservationDate: '2023-11-26'
     }];
 
 const messages = [
     {
         id: 1,
-        idSender: 1,
-        idReceiver: 2,
-        message: 'Hola Jesús',
+        idSender: 2,
+        senderUsername: "jescacer",
+        idReceiver: 1,
+        receiverUsername: "beaesp01",
+        message: 'Hola Beatriz',
         subject: 'Primer mensaje',
         sendDate: '2023-11-25 09:00:00',
         readDate: '2023-11-26 10:10:00'
@@ -205,10 +222,23 @@ const messages = [
     {
         id: 2,
         idSender: 2,
+        senderUsername: "jescacer",
         idReceiver: 1,
-        message: 'Hola Beatriz',
-        subject: 'Segndo mensaje',
-        sendDate: '2023-11-25 10:10:10',
+        receiverUsername: "beaesp01",
+        message: '¿Qué tal?',
+        subject: 'Segundo mensaje',
+        sendDate: '2023-11-25 09:00:20',
+        readDate: '2023-11-26 10:10:00'
+    },
+    {
+        id: 3,
+        idSender: 2,
+        senderUsername: "jescacer",
+        idReceiver: 1,
+        receiverUsername: "beaesp01",
+        message: 'Adiós Beatriz',
+        subject: 'Tercer mensaje',
+        sendDate: '2023-11-25 09:00:40',
         readDate: null
     }];
 
@@ -219,6 +249,8 @@ module.exports = {
     facilityTypes: facilityTypes,
     facility: facility,
     reservations: reservations,
+    oldReservations: oldReservations,
+    currentReservations: currentReservations,
     messages: messages
 }
 

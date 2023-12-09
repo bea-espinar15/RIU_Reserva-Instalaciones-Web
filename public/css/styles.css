@@ -8,7 +8,8 @@
     --dark-gray: #454545;
     --red: #B92525;
     --green: #157824;
-    --light-green: #eaf9ee;
+    --light-green: #EAF9EE;
+    --blue: #0098D7;
 
     /* Colores parametrizables */
     --primary-h: 0;
@@ -18,7 +19,7 @@
     --secondary-s: 43%;
     --secondary-l: 27%;
     --filter-dark: 0.6; /* Oscurecer un 40% */
-    --filter-light: 2; /* Aclarar un 100% */
+    --filter-light: 1.8; /* Aclarar un 80% */
   
     /* Construimos los colores */
     --primary: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
@@ -30,6 +31,7 @@
    
     /* Otros colores */
     --footer-gray: #bababa;
+    --reservations-gray: #b8b8b8;
 }
 
 /* --- GENERAL --- */
@@ -116,6 +118,10 @@ hr {
     background-color: var(--light-green);
 }
 
+.bg-riu-blue {
+    background-color: var(--blue);
+}
+
 /* --- INPUT --- */
 label {
     color: var(--gray);
@@ -149,8 +155,12 @@ input, select {
     border-radius: 2em;
 }
 
+.font-bold {
+    font-weight: bold;
+}
+
 /* --- Modal Response --- */
-#button-modal-error-x {
+.button-modal-x {
     border: none;
     background: none;
 }

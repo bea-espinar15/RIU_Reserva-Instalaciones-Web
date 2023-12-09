@@ -20,7 +20,7 @@ const testData = require("../delete");
 
 // --- Peticiones GET ---
 // [!] Mensajes
-RouterPersonal.get("/mensajes", (request, response, next) => {
+RouterPersonal.get("/correo", (request, response, next) => {
     response.render("mail", {
         error: undefined,
         generalInfo: {
@@ -33,8 +33,9 @@ RouterPersonal.get("/mensajes", (request, response, next) => {
             idUser: testData.users[0].id,
             hasProfilePic: false
         },
-        messages: testData.messages
-        
+        messages: testData.messages,
+        universityMail: testData.university.mail,
+        isAdmin: true
     });
 });
 
