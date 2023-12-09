@@ -43,6 +43,13 @@
 }
 
 /* --- ADMIN --- */
+.div-admin-index {
+    margin-top: 1rem !important;
+    margin-top: 1rem !important;
+    margin-left: 7rem;
+    margin-right: 7rem;
+}
+
 #div-welcome-admin {
     padding: 5rem 3rem 0rem 3rem;
     text-align: center;

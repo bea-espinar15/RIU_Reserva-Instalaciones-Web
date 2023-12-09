@@ -14,12 +14,12 @@
     <!-- Importar nav -->
     <%- include("nav", { generalInfo: generalInfo }) %>
 
-        <div id="div-welcome-admin" class="font-bold">
-            <h1>¡Bienvenido, administrador/a <%= adminName %>!</h1>
+        <div id="div-welcome-admin">
+            <h1 class="font-bold">¡Bienvenido, administrador/a <%= adminName %>!</h1>
         </div>        
 
-        <!-- Tipos de instalaciones -->
-        <div id="div-facilities" class="row row-cols-1 row-cols-lg-2 row-cols-xxl-4">
+        <!-- Funcionalidades -->
+        <div id="div-facilities" class="div-admin-index row row-cols-1 row-cols-lg-2 row-cols-xxl-4">
             <!-- Configuración -->
             <div class="div-card">
                 <a href="/admin/configuracion">
