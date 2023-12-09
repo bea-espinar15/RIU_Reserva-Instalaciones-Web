@@ -3,17 +3,126 @@
 
 <head>
     <%- include("../public/head.html") %>
+        <!-- Importar CSS específicos -->
+        <link rel="stylesheet" href="/css/users.css">
 </head>
 
 <body>
     <!-- Importar modal error -->
     <%- include("../public/modal.html") %>
-    
-    <!-- Importar nav -->
-    <%- include("nav", { generalInfo: generalInfo }) %>
 
-    <!-- Importar footer -->
-    <%- include("footer", { generalInfo: generalInfo }) %>
+        <!-- Importar nav -->
+        <%- include("nav", { generalInfo: generalInfo }) %>
+
+            <h1 id="h1-admin-users">Gestión de usuarios</h1>
+            <hr class="mx-4 mx-lg-5">
+
+            <div id="div-container" class="d-flex">
+                <!-- Usuarios -->
+                <div id="div-users-container" class="col-xl-7">
+                    <!-- Búsqueda y filtrado -->
+                    <div id="div-search" class="d-flex">                        
+                        <div class="d-flex align-items-center">
+                            <input id="input-search-user" type="search" class="rounded" placeholder="Buscar usuario...">
+                            <button id="button-search" type="button" class="ms-2 rounded">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                </svg>
+                            </button>                      
+                        </div>
+                        <label id="label-checkbox" class="d-flex align-items-center">
+                            <input id="input-validation-pending" type="checkbox" class="checkbox-riu">
+                            Pendiente de validar
+                        </label>
+                    </div>
+                    <!-- Lista usuarios -->
+                    <div>
+                        <% users.forEach((user, i) => { %>
+                            <!-- Card usuario -->
+                            <div class="div-card-general div-card-user d-flex align-items-center">
+                                <div class="div-card-info d-flex">
+                                    <!-- Foto de perfil -->
+                                    <% if (user.hasPic) { %>
+                                        <img src="/fotoPerfil/<%= generalInfo.idUser %>" alt="Foto de perfil" width="70" height="70" class="img-profile-pic">
+                                    <% } else { %>
+                                        <img src="/img/default/profile.png" alt="Foto de perfil" width="70" height="70" class="img-profile-pic">
+                                    <% } %>
+                                    <!-- Info del usuario -->
+                                    <div class="div-user-info d-flex flex-column">
+                                        <h2>
+                                            <%= user.name %> 
+                                            <%= user.lastname1 %> 
+                                            <%= user.lastname2 %> 
+                                            <% if (!user.enabled) { %>
+                                                <img src="/img/icons/banned.png" alt="Usuario baneado" width="25" height="25">
+                                            <% } else if (user.validated) { %>
+                                                <img src="/img/icons/accepted.png" alt="Usuario normal" width="25" height="25">
+                                            <% } else { %>
+                                                <img src="/img/icons/pending.png" alt="Usuario pendiente de validar" width="25" height="25">
+                                            <% } %>
+                                        </h2>
+                                        <p><%= user.mail %>@<%= universityMail %></p>
+                                        <p><%= user.facultyName %></p>
+                                    </div>
+                                </div>
+                                <!-- Botones -->
+                                <% if (user.enabled) { %>
+                                    <div class="div-buttons d-flex flex-column">
+                                            <% if (user.validated) { %>
+                                                <button type="button" class="button-users bg-riu-red" data-idUser="<%= user.id %>">Banear</button>
+                                            <% } else { %>
+                                                <button type="button" class="button-users bg-riu-green" data-idUser="<%= user.id %>">Validar</button>
+                                            <% } %>
+                                            <button type="button" class="button-users bg-riu-primary-light button-make-admin" data-idUser="<%= user.id %>">Hacer Admin</button>                            
+                                    </div>
+                                <% } %>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+                <!-- Administradores -->
+                <div id="div-admins-container" class="col-xl-5">
+                    <div id="div-admins">
+                        <h2>Administradores</h2>
+                        <!-- Lista admins -->
+                        <div>
+                            <% admins.forEach((admin, i) => { %>
+                                <!-- Card admin -->
+                                <div class="div-card-general div-card-admin d-flex d-flex align-items-center">
+                                    <div class="div-card-info d-flex">
+                                        <!-- Foto de perfil -->
+                                        <% if (admin.hasPic) { %>
+                                            <img src="/fotoPerfil/<%= admin.id %>" alt="Foto de perfil" width="70" height="70" class="img-profile-pic">
+                                        <% } else { %>
+                                            <img src="/img/default/profile.png" alt="Foto de perfil" width="70" height="70" class="img-profile-pic">
+                                        <% } %>
+                                        <!-- Info del admin -->
+                                        <div class="div-admin-info d-flex align-items-center justify-content-between w-100">
+                                            <div class="d-flex flex-column">
+                                                <% if (admin.id === generalInfo.idUser) { %>
+                                                    <h2>Tú</h2>
+                                                <% } else { %>                                            
+                                                    <h2>
+                                                        <%= admin.name %> 
+                                                        <%= admin.lastname1 %> 
+                                                        <%= admin.lastname2 %>
+                                                    </h2>
+                                                <% } %>
+                                                <p><%= admin.mail %>@<%= universityMail %></p>
+                                            </div>
+                                            <!-- Facultad -->
+                                            <p class="p-admin-faculty"><%= admin.facultyName %></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Importar footer -->
+            <%- include("footer", { generalInfo: generalInfo }) %>
 </body>
 
 </html>

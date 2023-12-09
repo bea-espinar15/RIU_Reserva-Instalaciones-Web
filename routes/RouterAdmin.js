@@ -72,7 +72,9 @@ RouterAdmin.get("/usuarios", (request, response, next) => {
             hasProfilePic: false,
             isAdmin: true
         },
-        users: testData.users
+        users: testData.users,
+        admins: testData.admins,
+        universityMail: testData.university.mail
     });
 });
 

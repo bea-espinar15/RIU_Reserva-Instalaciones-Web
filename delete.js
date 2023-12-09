@@ -41,10 +41,52 @@ const users = [
         mail: 'beaesp01',
         password: '1234',
         role: 0,
-        idFaculty: 1
+        idFaculty: 1,
+        facultyName: 'Facultad de Informática'
     },
     {
+        id: 2,
+        enabled: 1,
+        validated: 0,
+        name: 'Lucas',
+        lastname1: 'Bravo',
+        lastname2: 'Fairen',
+        mail: 'lucbravo',
+        password: '1234',
+        role: 1,
+        idFaculty: 1,
+        facultyName: 'Facultad de Informática'
+    },
+    {
+        id: 5,
+        enabled: 0,
+        validated: 1,
+        name: 'Santiago',
+        lastname1: 'Moral',
+        lastname2: 'Santorio',
+        mail: 'sanmosan',
+        password: '1234',
+        role: 1,
+        idFaculty: 1,
+        facultyName: 'Facultad de Informática'
+    }];
+
+const admins = [
+    {
         id: 3,
+        enabled: 1,
+        validated: 1,
+        name: 'Antonio',
+        lastname1: 'Navarro',
+        lastname2: 'XXX',
+        mail: 'anavarro',
+        password: '1234',
+        role: 0,
+        idFaculty: 1,
+        facultyName: 'Facultad de Informática'
+    },
+    {
+        id: 4,
         enabled: 1,
         validated: 1,
         name: 'Jesús',
@@ -53,7 +95,8 @@ const users = [
         mail: 'jescacer',
         password: '1234',
         role: 1,
-        idFaculty: 1
+        idFaculty: 1,
+        facultyName: 'Facultad de Informática'
     }];
 
 const facilityTypes = [
@@ -265,6 +308,7 @@ module.exports = {
     university: university,
     faculties: faculties,
     users: users,
+    admins: admins,
     facilityTypes: facilityTypes,
     facility: facility,
     reservations: reservations,

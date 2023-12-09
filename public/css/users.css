@@ -1,0 +1,228 @@
+/* --- GENERAL --- */
+
+#h1-admin-users {
+    margin: 3rem 0rem 0rem 3rem;
+}
+
+#input-search-user {
+    border: 1px solid #2a3a13;
+    width: 25em;
+    padding: 5px 10px;
+}
+
+#button-search {
+    border: 1px solid #2a3a13;
+    background-color: white;
+    padding: 5px 8px;
+}
+
+#label-checkbox {
+    margin-left: 2rem;
+    color: black;
+}
+
+/* -- Listas -- */
+
+.div-card-general {
+    margin: 1rem 0rem;
+    border: 0.1rem solid var(--primary-dark);
+    border-left: 1.5rem solid;
+    border-radius: 1rem;
+    background-color: var(--white);
+}
+
+.img-profile-pic {
+    margin: 1rem 1rem;
+}
+
+.div-card-general h2 {
+    margin: 0.6rem 0rem 0rem 0rem;
+    font-size: 1.5rem;
+}
+
+.div-card-general p {
+    margin: 0rem 0rem 0.6rem 0rem;
+}
+
+.div-card-user {
+    border-left-color: var(--gray);
+}
+
+.div-buttons {
+    margin: 0rem 1rem 0rem auto;
+}
+
+/* -- Usuarios -- */
+.button-users {
+    padding: 0.5rem 1.7rem;
+    border: none;
+    border-radius: 2rem;
+    color: white;
+}
+
+.button-users:hover {
+    filter: brightness(90%);
+}
+
+#div-users-container {
+    padding: 1rem 3rem;
+}
+
+.div-user-info {
+    margin: 0.5rem 1rem 0.5rem 0rem !important;
+}
+
+/* -- Admin -- */
+#div-admins-container {
+    padding: 2rem 4rem 0rem 2rem;
+}
+
+#div-admins {
+    padding: 2rem;
+    border: 0.1rem solid var(--primary-light);
+    border-radius: 2rem;
+}
+
+.button-make-admin {
+    margin-top: 0.5rem;
+}
+
+.div-card-admin {
+    border-left-color: var(--primary-light);
+}
+
+.div-admin-info {
+    margin-right: 1rem !important;
+}
+
+.p-admin-faculty {
+    align-self: end;;
+    margin: 0rem 1rem 0rem 0rem !important;
+}
+
+/* --- RESPONSIVENESS --- */
+
+/* Monitores más largos */
+@media (max-width: 1920.02px) {
+    .div-admin-info {
+        flex-direction: column;
+        align-items: start !important;
+        margin: 0.5rem 0rem;
+    }
+
+    .p-admin-faculty {
+        align-self: start;
+        margin-bottom: 0.5rem !important;
+    }
+}
+
+/* Monitores largos - XXL */
+@media (max-width: 1400.02px) {
+    #div-search {
+        flex-direction: column;
+    }
+
+    #label-checkbox {
+        margin-top: 0.5rem;
+        margin-left: 0rem;
+    }
+}
+
+/* Monitores laptop - XL */
+@media (max-width: 1200.02px) {
+    #div-container {
+        flex-direction: column;
+    }
+
+    #div-admins-container {
+        margin-bottom: 3rem;
+        padding: 2rem 3rem 0rem 3rem;
+    }
+
+    
+    .p-admin-faculty {
+        align-self: start !important;
+        margin: 0rem 0rem 0.5rem 0rem !important;
+    }
+}
+
+/* Móviles - MD */
+@media (max-width: 768.02px) {
+    .div-card-user {
+        flex-direction: column;
+        align-items: start !important;
+    }
+
+    .div-buttons {
+        flex-direction: row !important;
+        margin: 0rem auto 1rem auto;
+    }
+
+    .button-make-admin {
+        margin-top: 0rem;
+        margin-left: 0.5rem;
+    }
+
+    .div-admin-info {
+        flex-direction: column;
+        align-items: start !important;
+        margin: 0.5rem 0rem;
+    }
+
+    .p-admin-faculty {
+        align-self: start;
+        margin-bottom: 0.5rem !important;
+    }
+}
+
+/* Móviles - SM */
+@media (max-width: 576.02px) {
+    #h1-admin-users {
+        margin: 2rem auto 0rem auto;
+    }
+    
+    #div-users-container {
+        padding: 1rem 1rem;
+    }
+
+    .div-card-info {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin: 0rem auto;
+    }
+
+    .img-profile-pic {
+        margin: 1rem 0rem 0rem 0rem;
+    }
+
+    .div-user-info {
+        margin: 0rem 0.5rem 0.5rem 0.5rem !important;
+    }
+
+    .div-buttons {
+        flex-direction: column !important;
+    }
+
+    .button-make-admin {
+        margin-top: 0.5rem;
+        margin-left: 0rem;
+    }
+
+    #div-admins-container {
+        padding: 2rem 1rem 0rem 1rem;
+    }
+
+    #div-admins {
+        padding: 0rem;
+        border: none;
+    }
+
+    .div-admin-info {
+        margin: 0rem auto 0.5rem auto !important;
+    }
+
+    .p-admin-faculty {
+        align-self: center;
+    }
+}
