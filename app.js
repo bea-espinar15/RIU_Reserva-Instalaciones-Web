@@ -74,9 +74,9 @@ const daoRes = new DAOReservations(pool);
 const daoUni = new DAOUniversities(pool);
 const daoUse = new DAOUsers(pool);
 // Crear instancias de los Controllers
-const facController = new FacilityController(daoFac);
+const facController = new FacilityController(daoFac, daoMes);
 const mesController = new MessageController(daoMes);
-const resController = new ReservationController(daoRes);
+const resController = new ReservationController(daoRes, daoMes);
 const uniController = new UniversityController(daoUni);
 const useController = new UserController(daoUse, daoUni, daoMes, daoFac);
 
@@ -92,13 +92,12 @@ app.locals.universityMails = ["ucm.es", "uam.es"];
 // --- Middlewares ---
 // Comprobar que el usuario ha iniciado sesión
 function userLogged(request, response, next) {
-    // if (request.session.currentUser) {
-    //     next();
-    // }
-    // else {
-    //     response.redirect("/login");
-    // }
-    next();
+    if (request.session.currentUser) {
+        next();
+    }
+    else {
+        response.redirect("/login");
+    }
 };
 
 // [!] Comprobar que el usuario no está baneado

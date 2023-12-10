@@ -44,11 +44,12 @@ $(() => {
             let facility = divFacility.data("facility");
             // Rellenar contenido del div
             nameFacility.attr("value", facility.name);
-            typeFacility.attr("value", facility.facilityTypeName);
+            typeFacility.val(facility.facilityTypeName);
             startHourFacility.attr("value", facility.startHour);
             endHourFacility.attr("value", facility.endHour);
-            resTypeFacility.attr("value", facility.reservationType);
-            completeFacility.attr("value", facility.complete);
+            resTypeFacility.val(facility.reservationType);
+            if (facility.complete) { completeFacility.prop("checked", true); }
+            else { completeFacility.prop("checked", false); }
             capacityFacility.attr("value", facility.capacity);
             // Desactivar inputs
             nameFacility.removeAttr("disabled");
@@ -75,7 +76,7 @@ $(() => {
         startHourFacility.attr("value", "");
         endHourFacility.attr("value", "");
         resTypeFacility.attr("value", "");
-        completeFacility.attr("value", "");
+        completeFacility.prop("checked", false);
         capacityFacility.attr("value", "");
         // Desactivar inputs
         nameFacility.removeAttr("disabled");

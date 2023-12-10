@@ -15,7 +15,7 @@ class DAOUsers {
                 callback(-1);
             }
             else {
-                let querySQL = "SELECT * FROM RIU_USU_Usuario AS USU JOIN RIU_FAC_Facultad AS FAC ON USU.id_facultad = FAC.id WHERE activo = 1 AND USU.correo = ? AND FAC.id_universidad = ?";
+                let querySQL = "SELECT USU.* FROM RIU_USU_Usuario AS USU JOIN RIU_FAC_Facultad AS FAC ON USU.id_facultad = FAC.id WHERE activo = 1 AND USU.correo = ? AND FAC.id_universidad = ?";
                 connection.query(querySQL, [userMail, idUniversity], (error, rows) => {
                     connection.release();
                     if (error) {
