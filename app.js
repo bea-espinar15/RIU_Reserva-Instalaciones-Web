@@ -68,23 +68,26 @@ const pool = mySQL.createPool(mySQLconfig.config);
 
 // --- DAOs y Controllers ---
 // Crear instancias de los DAOs
-// app.locals.daoFac = new DAOFacilities(pool);
-// app.locals.daoMes = new DAOMessages(pool);
-// app.locals.daoRes = new DAOReservations(pool);
-// app.locals.daoUni = new DAOUniversities(pool);
-// app.locals.daoUse = new DAOUsers(pool);
+const daoFac = new DAOFacilities(pool);
+const daoMes = new DAOMessages(pool);
+const daoRes = new DAOReservations(pool);
+const daoUni = new DAOUniversities(pool);
+const daoUse = new DAOUsers(pool);
 // Crear instancias de los Controllers
-// app.locals.facController = new FacilityController(daoFac);
-// app.locals.mesController = new MessageController(daoMes);
-// app.locals.resController = new ReservationController(daoRes);
-// app.locals.uniController = new UniversityController(daoUni);
-// app.locals.useController = new UserController(daoUse);
+const facController = new FacilityController(daoFac);
+const mesController = new MessageController(daoMes);
+const resController = new ReservationController(daoRes);
+const uniController = new UniversityController(daoUni);
+const useController = new UserController(daoUse, daoUni, daoMes, daoFac);
 
 // [!] BORRAR
 const testData = require("./delete"); 
 
-// --- VARIABLES GLOBALES de plantilla ---
+// --- VARIABLES GLOBALES ---
+const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const passwordRegex = /(?=.*[A-Za-z])(?=.*\d).{8,}/;
 
+app.locals.universityMails = ["ucm.es", "uam.es"];
 
 // --- Middlewares ---
 // [!] Comprobar que el usuario ha iniciado sesión
@@ -142,9 +145,13 @@ app.get("/reservas", userLogged, userBanned, (request, response, next) => {
 });
 
 // - Routers -
-app.use("/admin", userLogged, userBanned, isAdmin, routerAdmin);
-app.use("/personal", userLogged, userBanned, routerPersonal);
-app.use("/usuario", userLogged, userBanned, routerUser);
+routerAdmin.routerConfig(facController, mesController, resController, uniController, useController);
+routerUser.routerConfig(facController, mesController, resController, uniController, useController);
+routerPersonal.routerConfig(facController, mesController, resController, uniController, useController);
+
+app.use("/admin", userLogged, userBanned, isAdmin, routerAdmin.RouterAdmin);
+app.use("/personal", userLogged, userBanned, routerPersonal.RouterPersonal);
+app.use("/usuario", userLogged, userBanned, routerUser.RouterUser);
 
 // - Otras peticiones GET -
 // Imagen del usuario
@@ -167,7 +174,33 @@ app.get("/fotoInstalación/:id", userLogged, userBanned, (request, response, nex
     response.end(undefined);
 });
 
+// Correos de las universidades registradas
+app.get("/correosDisponibles", uniController.universityMails);
+
+// [TODO]
+
 // --- Peticiones POST ---
+
+// Login
+app.post(
+    "/login",
+    // Ninguno de los campos vacíos 
+    check("mail", "1").notEmpty(),
+    check("password", "1").notEmpty(),
+    // Correo es uno de los disponibles
+    check("mail", "2")
+        .custom((mail) => {
+            if (mailRegex.test(mail)) {
+                let mailAfterAt = mail.split("@")[1];
+                return app.locals.universityMails.includes(mailAfterAt);
+            }
+            else {
+                return false;
+            }
+        }),
+    useController.login
+);
+
 // [TODO]
 
 // --- Middlewares de respuestas y errores ---

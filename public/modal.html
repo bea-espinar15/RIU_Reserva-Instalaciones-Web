@@ -8,16 +8,16 @@
 
 <body>
     <!-- Botón escondido para abrir el modal cuando haya error -->
-    <button id="b" type="button" hidden="true" data-bs-toggle="modal" data-bs-target="#modal-response">Helou</button>
+    <button id="button-modal-error" type="button" hidden="true" data-bs-toggle="modal" data-bs-target="#modal-response">Helou</button>
     <div id="modal-response" aria-labelledby="Modal Respuesta" aria-hidden="true" class="modal fade">
         <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content">
                 <!-- Header -->
-                <!-- [!] Establecer color fondo con jQuery (bg-riu-light-gray o bg-riu-light-green)-->
-                <div class="modal-header d-flex justify-content-between">
+                <!-- Establecer color fondo con jQuery (bg-riu-light-gray o bg-riu-light-green)-->
+                <div id="div-modal-error-header" class="modal-header d-flex justify-content-between">
                     <div class="d-flex">
                         <!-- Icono de error o éxito (jQuery) -->
-                        <img src="" alt="" height="30">
+                        <img id="img-modal-error" src="" alt="" width="30">
                         <!-- Título del error/mensaje (jQuery) -->
                         <h1 id="h1-modal-error" class="modal-title"></h1>
                     </div>                        
@@ -30,7 +30,7 @@
                 </div>
                 <!-- Body (jQuery) -->
                 <div class="modal-body"> 
-                    <p></p>
+                    <p id="p-modal-error"></p>
                 </div>
                 <!-- Footer -->
                 <div class="modal-footer d-flex justify-content-center">

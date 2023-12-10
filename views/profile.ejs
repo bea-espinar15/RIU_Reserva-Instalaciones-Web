@@ -5,9 +5,11 @@
     <%- include("../public/head.html") %>
     <!-- Importar CSS específicos -->
     <link rel="stylesheet" href="/css/profile.css">
+    <!-- Importar JS específicos -->
+    <script src="/js/profile.js"></script>
 </head>
 
-<body>
+<body data-error="<%= error %>">
     <!-- Importar modal error -->
     <%- include("../public/modal.html") %>
     
@@ -28,7 +30,7 @@
                     <label for="input-profile-lastname2">Segundo apellido</label>
                     <input id="input-profile-lastname2" disabled="true" type="text" value="<%= user.lastname2 %>">
                     <label for="input-profile-mail">Correo</label>
-                    <input id="input-profile-mail" disabled="true" type="mail" value="<%= user.mail %>@<%= universityMail %>">
+                    <input id="input-profile-mail" disabled="true" type="email" value="<%= user.mail %>@<%= universityMail %>">
                 </div>      
                 <!-- Foto de perfil -->
                 <div class="col-6 d-flex flex-column align-items-center mx-auto">

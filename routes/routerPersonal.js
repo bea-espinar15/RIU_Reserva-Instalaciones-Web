@@ -18,48 +18,56 @@ const RouterPersonal = express.Router();
 // [!] BORRAR
 const testData = require("../delete");
 
-// --- Peticiones GET ---
-// [!] Mensajes
-RouterPersonal.get("/correo", (request, response, next) => {
-    response.render("mail", {
-        error: undefined,
-        generalInfo: {
-            hasLogo: false,
-            idUniversity: testData.university.id,
-            name: testData.university.name,
-            web: testData.university.web,
-            address: testData.university.address,
-            messagesUnread: 5,
-            idUser: testData.users[0].id,
-            hasProfilePic: false,
-            isAdmin: true
-        },
-        messages: testData.messages,
-        universityMail: testData.university.mail
+// Obtener pool
+function routerConfig(facController, mesController, resController, uniController, useController) {
+
+    // --- Peticiones GET ---
+    // [!] Mensajes
+    RouterPersonal.get("/correo", (request, response, next) => {
+        response.render("mail", {
+            error: undefined,
+            generalInfo: {
+                hasLogo: false,
+                idUniversity: testData.university.id,
+                name: testData.university.name,
+                web: testData.university.web,
+                address: testData.university.address,
+                messagesUnread: 5,
+                idUser: testData.users[0].id,
+                hasProfilePic: false,
+                isAdmin: true
+            },
+            messages: testData.messages,
+            universityMail: testData.university.mail
+        });
     });
-});
 
-// [!] Perfil
-RouterPersonal.get("/perfil", (request, response, next) => {
-    response.render("profile", {
-        error: undefined,
-        generalInfo: {
-            hasLogo: false,
-            idUniversity: testData.university.id,
-            name: testData.university.name,
-            web: testData.university.web,
-            address: testData.university.address,
-            messagesUnread: 5,
-            idUser: testData.users[0].id,
-            hasProfilePic: false,
-            isAdmin: true
-        },
-        user: testData.users[0],
-        universityMail: testData.university.mail
+    // [!] Perfil
+    RouterPersonal.get("/perfil", (request, response, next) => {
+        response.render("profile", {
+            error: undefined,
+            generalInfo: {
+                hasLogo: false,
+                idUniversity: testData.university.id,
+                name: testData.university.name,
+                web: testData.university.web,
+                address: testData.university.address,
+                messagesUnread: 5,
+                idUser: testData.users[0].id,
+                hasProfilePic: false,
+                isAdmin: true
+            },
+            user: testData.users[0],
+            universityMail: testData.university.mail
+        });
     });
-});
 
-// --- Peticiones POST ---
-// [TODO]
+    // --- Peticiones POST ---
+    // [TODO]
 
-module.exports = RouterPersonal;
+}
+
+module.exports = {
+    RouterPersonal: RouterPersonal,
+    routerConfig: routerConfig
+};

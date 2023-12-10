@@ -5,9 +5,11 @@
     <%- include("../public/head.html") %>
     <!-- Importar CSS específicos -->
     <link rel="stylesheet" href="/css/auth.css">
+    <!-- Importar JS específicos -->
+    <script src="/js/sign_up.js"></script>
 </head>
 
-<body>
+<body data-error="<%= error %>">
     <!-- Importar modal error -->
     <%- include("../public/modal.html") %>
     
@@ -20,7 +22,7 @@
                 <input id="input-name" type="text" placeholder="Nombre">
                 <input id="input-lastname-1" type="text" placeholder="Primer apellido">
                 <input id="input-lastname-2" type="text" placeholder="Segundo apellido">
-                <input id="input-mail" type="mail" placeholder="Correo">
+                <input id="input-mail" type="email" placeholder="Correo">
                 <input id="input-password" type="password" placeholder="Contraseña">
                 <label id="label-faculty" for="input-faculty">Selecciona tu facultad</label>
                 <select id="input-faculty">

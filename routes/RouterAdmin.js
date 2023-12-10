@@ -18,107 +18,115 @@ const RouterAdmin = express.Router();
 // [!] BORRAR
 const testData = require("../delete");
 
-// --- Peticiones GET ---
-// [!] Inicio
-RouterAdmin.get("/inicio", (request, response, next) => {
-    response.render("admin_index", {
-        error: undefined,
-        generalInfo: {
-            hasLogo: false,
-            idUniversity: testData.university.id,
-            name: testData.university.name,
-            web: testData.university.web,
-            address: testData.university.address,
-            messagesUnread: 5,
-            idUser: testData.users[0].id,
-            hasProfilePic: false,
-            isAdmin: true
-        },
-        adminName: testData.users[0].name
+// Obtener pool
+function routerConfig(facController, mesController, resController, uniController, useController) {
+
+    // --- Peticiones GET ---
+    // [!] Inicio
+    RouterAdmin.get("/inicio", (request, response, next) => {
+        response.render("admin_index", {
+            error: undefined,
+            generalInfo: {
+                hasLogo: false,
+                idUniversity: testData.university.id,
+                name: testData.university.name,
+                web: testData.university.web,
+                address: testData.university.address,
+                messagesUnread: 5,
+                idUser: testData.users[0].id,
+                hasProfilePic: false,
+                isAdmin: true
+            },
+            adminName: testData.users[0].name
+        });
     });
-});
 
-// [!] Configuración
-RouterAdmin.get("/configuracion", (request, response, next) => {
-    response.render("admin_settings", {
-        error: undefined,
-        generalInfo: {
-            hasLogo: false,
-            idUniversity: testData.university.id,
-            name: testData.university.name,
-            web: testData.university.web,
-            address: testData.university.address,
-            messagesUnread: 5,
-            idUser: testData.users[0].id,
-            hasProfilePic: false,
-            isAdmin: true
-        },
-        university: testData.university
+    // [!] Configuración
+    RouterAdmin.get("/configuracion", (request, response, next) => {
+        response.render("admin_settings", {
+            error: undefined,
+            generalInfo: {
+                hasLogo: false,
+                idUniversity: testData.university.id,
+                name: testData.university.name,
+                web: testData.university.web,
+                address: testData.university.address,
+                messagesUnread: 5,
+                idUser: testData.users[0].id,
+                hasProfilePic: false,
+                isAdmin: true
+            },
+            university: testData.university
+        });
     });
-});
 
-// [!] Usuarios
-RouterAdmin.get("/usuarios", (request, response, next) => {
-    response.render("admin_users", {
-        error: undefined,
-        generalInfo: {
-            hasLogo: false,
-            idUniversity: testData.university.id,
-            name: testData.university.name,
-            web: testData.university.web,
-            address: testData.university.address,
-            messagesUnread: 5,
-            idUser: testData.users[0].id,
-            hasProfilePic: false,
-            isAdmin: true
-        },
-        users: testData.users,
-        admins: testData.admins,
-        universityMail: testData.university.mail
+    // [!] Usuarios
+    RouterAdmin.get("/usuarios", (request, response, next) => {
+        response.render("admin_users", {
+            error: undefined,
+            generalInfo: {
+                hasLogo: false,
+                idUniversity: testData.university.id,
+                name: testData.university.name,
+                web: testData.university.web,
+                address: testData.university.address,
+                messagesUnread: 5,
+                idUser: testData.users[0].id,
+                hasProfilePic: false,
+                isAdmin: true
+            },
+            users: testData.users,
+            admins: testData.admins,
+            universityMail: testData.university.mail
+        });
     });
-});
 
-// [!] Instalaciones
-RouterAdmin.get("/instalaciones", (request, response, next) => {
-    response.render("admin_facilities", {
-        error: undefined,
-        generalInfo: {
-            hasLogo: false,
-            idUniversity: testData.university.id,
-            name: testData.university.name,
-            web: testData.university.web,
-            address: testData.university.address,
-            messagesUnread: 5,
-            idUser: testData.users[0].id,
-            hasProfilePic: false,
-            isAdmin: true
-        },
-        facilities: testData.facilities,
-        facilityTypes: testData.facilityTypes
+    // [!] Instalaciones
+    RouterAdmin.get("/instalaciones", (request, response, next) => {
+        response.render("admin_facilities", {
+            error: undefined,
+            generalInfo: {
+                hasLogo: false,
+                idUniversity: testData.university.id,
+                name: testData.university.name,
+                web: testData.university.web,
+                address: testData.university.address,
+                messagesUnread: 5,
+                idUser: testData.users[0].id,
+                hasProfilePic: false,
+                isAdmin: true
+            },
+            facilities: testData.facilities,
+            facilityTypes: testData.facilityTypes
+        });
     });
-});
 
-// [!] Reservas
-RouterAdmin.get("/reservas", (request, response, next) => {
-    response.render("admin_reservations", {
-        error: undefined,
-        generalInfo: {
-            hasLogo: false,
-            idUniversity: testData.university.id,
-            name: testData.university.name,
-            web: testData.university.web,
-            address: testData.university.address,
-            messagesUnread: 5,
-            idUser: testData.users[0].id,
-            hasProfilePic: false,
-            isAdmin: true
-        },
-        reservations: testData.reservations,
-        filters: ["15-10-2001", "Lucas", "Informática", "Laboratorio 1 - Informática"]
+    // [!] Reservas
+    RouterAdmin.get("/reservas", (request, response, next) => {
+        response.render("admin_reservations", {
+            error: undefined,
+            generalInfo: {
+                hasLogo: false,
+                idUniversity: testData.university.id,
+                name: testData.university.name,
+                web: testData.university.web,
+                address: testData.university.address,
+                messagesUnread: 5,
+                idUser: testData.users[0].id,
+                hasProfilePic: false,
+                isAdmin: true
+            },
+            reservations: testData.reservations,
+            filters: ["15-10-2001", "Lucas", "Informática", "Laboratorio 1 - Informática"]
+        });
     });
-});
 
-// --- Peticiones POST ---
-// [TODO]
+    // --- Peticiones POST ---
+    // [TODO]
 
-module.exports = RouterAdmin;
+}
+
+module.exports = {
+    RouterAdmin: RouterAdmin,
+    routerConfig: routerConfig
+};

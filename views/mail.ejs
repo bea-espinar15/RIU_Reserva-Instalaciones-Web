@@ -5,9 +5,11 @@
     <%- include("../public/head.html") %>
     <!-- Importar CSS específicos -->
     <link rel="stylesheet" href="/css/mail.css">
+    <!-- Importar JS específicos -->
+    <script src="/js/mail.js"></script>
 </head>
 
-<body>
+<body data-error="<%= error %>">
     <!-- Importar modal error -->
     <%- include("../public/modal.html") %>
     

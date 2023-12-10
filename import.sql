@@ -119,11 +119,11 @@ INSERT INTO RIU_FAC_Facultad (nombre, id_universidad) VALUES
 
 -- USUARIOS
 INSERT INTO RIU_USU_Usuario (validado, nombre, apellido1, apellido2, correo, contraseña, rol, id_facultad) VALUES
-(1, 'Beatriz', 'Espinar', 'Aragón', 'beaesp01@ucm.es', '1234', 0, 1),
-(1, 'Lucas', 'Bravo', 'Fairen', 'lucbravo@ucm.es', '1234', 0, 1),
-(1, 'Jesús', 'Cáceres', 'Tello', 'jescacer@ucm.es', '1234', 1, 1),
+(1, 'Beatriz', 'Espinar', 'Aragón', 'beaesp01', '1234', 0, 1),
+(1, 'Lucas', 'Bravo', 'Fairen', 'lucbravo', '1234', 0, 1),
+(1, 'Jesús', 'Cáceres', 'Tello', 'jescacer', '1234', 1, 1),
 
-(1, 'Julia', 'Chacón', 'Labella', 'julia.chacon@uam.es', '1234', 1, 5);
+(1, 'Julia', 'Chacón', 'Labella', 'julia.chacon', '1234', 1, 5);
 
 
 -- TIPO INSTALACIÓN
