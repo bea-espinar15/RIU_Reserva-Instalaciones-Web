@@ -4,8 +4,12 @@ $(() => {
     const facilitiesContainer = $("#div-facilities-container");
     const showFacilityContainer = $("#div-show-facility");
     const buttonNewFacility = $("#button-new-facility");
-    const facilities = $(".button-see-more");
+    const facilities = $(".div-facility");
+    const buttonsSeeMore = $(".button-see-more");
     const buttonBack = $("#button-facility-back");
+    const inputSearch = $("#input-search-facility");
+    const buttonSearch = $("#button-search");
+    const noFacilityMessage = $("#p-no-facilities");
     // Contenido de la instalación
     const nameFacility = $("#input-facility-name");
     const typeFacility = $("#input-facility-type");
@@ -20,10 +24,21 @@ $(() => {
     facilitiesContainer.show();
     showFacilityContainer.hide();
 
+    // Número de resultados
+    if (facilities.length === 0) {
+        noFacilityMessage.text("No hay ningún resultado que coincida.");
+    }
+    else if (facilities.length === 1) {
+        noFacilityMessage.text(`Ver ${facilities.length} resultado`);
+    }
+    else {
+        noFacilityMessage.text(`Ver ${facilities.length} resultados`);
+    }
+
     // Cargar foto
             
     // Cuando se pulsa una instalación, se muestran sus detalles
-    facilities.each(function(i, fac) {
+    buttonsSeeMore.each(function(i, fac) {
         let divFacility = $(this);
         divFacility.on("click", () => {
             let facility = divFacility.data("facility");
@@ -91,4 +106,33 @@ $(() => {
             buttonModalNewType.click();
         }        
     });
+
+    // Búsqueda por nombre
+    buttonSearch.on("click", (event) => {
+        event.preventDefault();
+        let anyFacility = 0;
+        let facilitiesArray = facilities.toArray();
+        facilitiesArray.filter((divFac) => {
+            let divFacility = $(divFac);
+            let facility = divFacility.data("facility");
+            if ((facility.name).toLowerCase().includes((inputSearch.val()).toLowerCase())) {
+                anyFacility++;
+                divFacility.show();
+            }
+            else {
+                divFacility.hide();
+            }            
+        });
+        
+        if (anyFacility === 0) {
+            noFacilityMessage.text("No hay ningún resultado que coincida.");
+        }
+        else if (anyFacility === 1) {
+            noFacilityMessage.text(`Ver ${anyFacility} resultado`);
+        }
+        else {
+            noFacilityMessage.text(`Ver ${anyFacility} resultados`);
+        }   
+    });
+
 });

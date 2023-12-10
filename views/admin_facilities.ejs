@@ -35,16 +35,10 @@
             <!-- Resultados -->
             <div class="mt-4">
                 <!-- Mensaje Nº resultados -->
-                <% if (facilities.length === 0) { %>
-                    <p>No hay ningún resultado que coincida.</p>
-                <% } else if (facilities.length === 1) { %>
-                    <p>Ver <%= facilities.length %> resultado</p>
-                <% } else { %>
-                    <p>Ver <%= facilities.length %> resultados</p>
-                <% } %>
+                <p id="p-no-facilities"></p>
                 <!-- Lista -->
                 <% facilities.forEach(fac => { %>
-                    <div class="div-facility d-flex justify-content-between">
+                    <div class="div-facility justify-content-between" data-facility="<%= JSON.stringify(fac) %>">
                         <div class="d-flex flex-column">
                             <h2><%= fac.name %></h2>
                             <p><%= fac.facilityTypeName %></p>

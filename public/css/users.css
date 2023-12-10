@@ -45,6 +45,8 @@
 }
 
 .div-card-user {
+    display: flex;
+    flex-direction: row;
     border-left-color: var(--gray);
 }
 
