@@ -42,7 +42,7 @@
                                             <!-- Info de la reserva -->
                                             <div class="div-reservation-info d-flex flex-column">
                                                 <div class="div-reservation-info-main d-flex align-items-center">
-                                                    <h2 class="m-0">
+                                                    <h2 class="m-0 me-2">
                                                         <%= cr.facilityName %>
                                                         <% if (cr.queued) { %>
                                                             <img src="/img/icons/queued.png" alt="Estás en cola de espera" title="Estás en cola de espera" width="20" height="20">
@@ -128,7 +128,7 @@
                                             <% } %>
                                             <!-- Info de la reserva -->
                                             <div class="div-reservation-info d-flex flex-column">
-                                                <h2><%= or.facilityName %></h2>              
+                                                <h2 class="me-2"><%= or.facilityName %></h2>              
                                                 <p class="m-0"><%= or.date %></p>
                                             </div>
                                         </button>

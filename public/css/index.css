@@ -64,7 +64,7 @@
 /* --- RESPONSIVENESS --- */
 
 /* Monitores más largos */
-@media (max-width: 1920.02px) {
+@media (max-width: 1919.98px) {
     #div-facilities {
         margin: 5rem 7rem;
     }
@@ -79,7 +79,7 @@
 }
 
 /* Tablets - LG */
-@media (max-width: 992.02px) {
+@media (max-width: 991.98px) {
     #div-facilities {
         margin: 4rem 2rem;
     }
@@ -95,7 +95,7 @@
 }
 
 /* Móviles - MD */
-@media (max-width: 768.02px) {
+@media (max-width: 767.98px) {
     #div-facilities {
         margin: 2rem 1rem;
     }

@@ -242,22 +242,22 @@ footer a {
 /* --- RESPONSIVENESS --- */
 
 /* Monitores más largos */
-@media (max-width: 1920.02px) {
+@media (max-width: 1919.98px) {
     
 }
 
 /* Monitores largos - XXL */
-@media (max-width: 1400.02px) {
+@media (max-width: 1399.98px) {
 
 }
 
 /* Monitores laptop - XL */
-@media (max-width: 1200.02px) {
+@media (max-width: 1199.98px) {
 
 }
 
 /* Tablets - LG */
-@media (max-width: 992.02px) {
+@media (max-width: 991.98px) {
     #h1-nav {
         display: none;
     }
@@ -273,7 +273,7 @@ footer a {
 }
 
 /* Móviles - MD */
-@media (max-width: 768.02px) {
+@media (max-width: 767.98px) {
     #a-nav-mail {
         display: none;
     }

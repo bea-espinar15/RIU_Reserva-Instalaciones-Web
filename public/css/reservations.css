@@ -113,7 +113,7 @@ hr {
 
 /* --- RESPONSIVENESS --- */
 /* Monitores largos - XXL */
-@media (max-width: 1400.02px) {
+@media (max-width: 1399.98px) {
     .accordion-body {
         flex-direction: column !important;
     }
@@ -132,7 +132,7 @@ hr {
 }
 
 /* Monitores laptop - XL */
-@media (max-width: 1200.02px) {
+@media (max-width: 1199.98px) {
     .div-modal-cancel {
         justify-content: start !important;
     }
@@ -147,7 +147,7 @@ hr {
 }
 
 /* Tablets - LG */
-@media (max-width: 992.02px) {
+@media (max-width: 991.98px) {
     #div-reservations-container {
         flex-direction: column !important;
     }
@@ -169,7 +169,7 @@ hr {
     }
 
     #div-results {
-        padding-right: 3rem;
+        padding: 0rem 3rem;
     }
 
     #div-results-header {
@@ -181,13 +181,8 @@ hr {
      }
 }
 
-/* Móviles - MD */
-@media (max-width: 768.02px) {
-
-}
-
 /* Móviles - SM */
-@media (max-width: 576.02px) {
+@media (max-width: 575.98px) {
     #div-current-reservations {
         padding: 3rem 1rem 2rem 1rem;
     }
@@ -209,10 +204,6 @@ hr {
     }
 
     #div-results {
-        padding: 0rem 0rem;
-    }
-
-    #div-reservations-results {
-        padding-right: 1.5rem;
+        padding: 0rem 2rem;
     }
 }

@@ -24,7 +24,7 @@
 /* --- RESPONSIVENESS --- */
 
 /* Tablets - LG */
-@media (max-width: 992.02px) {
+@media (max-width: 991.98px) {
     #div-settings h1 {
         margin: 3rem auto 1rem auto;
     }
@@ -49,7 +49,7 @@
 }
 
 /* Móviles - SM */
-@media (max-width: 576.02px) {
+@media (max-width: 575.98px) {
     #div-settings img {
         width: 10rem;
     }

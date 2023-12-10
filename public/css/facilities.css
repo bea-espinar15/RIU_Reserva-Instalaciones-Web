@@ -96,10 +96,67 @@
     color: var(--white);
 }
 
+/* --- USUARIO --- */
+#div-filter {
+    margin-top: 0.5rem;
+}
+
+#div-filter label {
+    margin-right: 1rem;
+    color: var(--black);
+}
+
+#input-n-people {
+    width: 4.5rem;
+}
+
+#button-filter {
+    margin-left: auto;
+    padding: 0.5rem 1rem;
+}
+
+#div-facility-res-pic {
+    text-align: center;
+}
+
+#div-facility-res-pic h2 {
+    margin: 2rem 0rem 0.5rem 0rem;
+}
+
+#div-facility-res-pic p {
+    margin-bottom: 0rem;
+    color: var(--primary-dark);
+}
+
+#div-hours .badge {
+    margin: 0.3rem 0.3rem;
+    padding: 0.5rem 1rem;
+    font-size: 1.4rem;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+#button-reserve {
+    margin-top: 5rem;
+    width: 13rem;
+}
+
+/* -- Modal reserva -- */ 
+#input-facility-n-people {
+    width: 4.5rem;
+}
+
+.button-modal-cancel {
+    padding: 0.5rem 1.3rem;
+    border: none;
+    border-radius: 2rem;
+    color: var(--white);
+}
+
 /* --- RESPONSIVENESS --- */
 
 /* Monitores largos - XXL */
-@media (max-width: 1400.02px) {
+@media (max-width: 1399.98px) {
     #input-search-facility {
         width: 14rem;
     }
@@ -115,10 +172,14 @@
     #div-show-facility img {
         width: 12rem;
     }
+
+    #div-modal-reserve img {
+        width: 20px; 
+    }
 }
 
 /* Monitores laptop - XL */
-@media (max-width: 1200.02px) {
+@media (max-width: 1199.98px) {
     #div-search {
         flex-direction: column;
     }
@@ -143,17 +204,35 @@
     #div-facility-pic {
         margin-top: 2rem;
     }
+
+    /* -- USUARIO -- */
+    #div-filter {
+        flex-direction: column;
+        align-items: start !important;
+    }
+
+    #button-filter {
+        margin-left: 0rem;
+    }
+
+    .div-show-facility-res {
+        flex-direction: column;
+    }
+
+    #label-facility-date {
+        margin-top: 2rem !important;
+    }
 }
 
 /* Tablets - LG */
-@media (max-width: 992.02px) {
+@media (max-width: 991.98px) {
     #div-container {
         padding: 3rem 2rem;
     }
 }
 
 /* Móviles - MD */
-@media (max-width: 768.02px) {
+@media (max-width: 767.98px) {
     #div-container {
         flex-direction: column;
     }
@@ -165,6 +244,7 @@
 
     #div-show-facility {
         margin-top: 2rem;
+        padding-left: 0rem;
     }
 
     .div-facility {
@@ -176,10 +256,20 @@
         padding: 0.4rem 1rem;
         width: auto;
     }
+
+    /* -- USUARIO -- */
+    #div-filter {
+        flex-direction: row;
+        align-items: center !important;
+    }
+
+    #button-filter {
+        margin-left: auto;
+    }
 }
 
 /* Móviles - SM */
-@media (max-width: 576.02px) {
+@media (max-width: 575.98px) {
     .div-facility {
         flex-direction: column;
     }
@@ -196,5 +286,15 @@
     .input-facility-pic {
         border: none;
         font-size: 0.8rem;
+    }
+
+    /* -- USUARIO -- */
+    #div-filter {
+        flex-direction: column;
+        align-items: start !important;
+    }
+
+    #button-filter {
+        margin-left: 0rem;
     }
 }

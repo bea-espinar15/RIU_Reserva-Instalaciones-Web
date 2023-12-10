@@ -36,7 +36,7 @@ hr {
 
 /* --- RESPONSIVENESS --- */
 /* Tablets - LG */
-@media (max-width: 992.02px) {
+@media (max-width: 991.98px) {
     #div-profile {
         padding: 0rem 4rem;
     }
@@ -51,14 +51,14 @@ hr {
 }
 
 /* Móviles - MD */
-@media (max-width: 768.02px) {
+@media (max-width: 767.98px) {
     #div-new-pass {
         margin-left: 1rem;
     }
 }
 
 /* Móviles - SM */
-@media (max-width: 576.02px) {
+@media (max-width: 575.98px) {
     #div-profile {
         padding: 0rem 2rem;
     }

@@ -3,6 +3,8 @@
 
 <head>
     <%- include("../public/head.html") %>
+    <!-- Importar CSS específicos -->
+    <link rel="stylesheet" href="/css/facilities.css">
 </head>
 
 <body>
@@ -12,7 +14,106 @@
     <!-- Importar nav -->
     <%- include("nav", { generalInfo: generalInfo }) %>
 
-    
+    <div id="div-container" class="d-flex">
+        <!-- Lista de instalaciones -->
+        <div id="div-facilities-container" class="col-md-5 d-flex flex-column">
+            <h1 class="mb-0"><%= facilityTypeName %></h1>
+            <!-- Filtro aforo -->
+            <div id="div-filter" class="d-flex align-items-center">
+                <div class="d-flex align-items-center">
+                    <label for="input-n-people">¿Cuántos vais a ser?</label>
+                    <input id="input-n-people" type="number" min="1" max="500"> 
+                </div>                                     
+                <button id="button-filter" type="button" class="button-riu bg-riu-primary">Ver disponibles</button>               
+            </div>
+            <!-- Resultados -->
+            <div class="mt-4">
+                <!-- Mensaje Nº resultados -->
+                <% if (facilities.length === 0) { %>
+                    <p>No hay ningún resultado que coincida.</p>
+                <% } %>
+                <!-- Lista -->
+                <% facilities.forEach(fac => { %>
+                    <div class="div-facility d-flex justify-content-between" data-idFacility="<%= fac.id %>">
+                        <div class="d-flex flex-column">
+                            <h2><%= fac.name %></h2>
+                            <p><%= fac.startHour %> - <%= fac.endHour %></p>
+                        </div>
+                        <button type="button" class="button-see-more bg-riu-primary-dark align-items-end">Reservar</button>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+        <!-- Visualización instalación -->
+        <div id="div-show-facility" class="div-show-facility-res col-md-7 d-flex">
+            <!-- Foto -->
+            <div id="div-facility-res-pic" class="col-xl-4 d-flex flex-column align-items-center">
+                <img src="/img/default/facility.png" alt="Imagen instalación" width="270">
+                <!-- [!] JQuery -->
+                <h2>Laboratorio 1</h2>
+                <p>¡Atención! Esta instalación es colectiva. Otros pueden reservarla al mismo tiempo si el aforo lo permite.</p>
+            </div>
+            <!-- Info instalación -->
+            <form class="col-xl-7 offset-xl-1 d-flex flex-column">
+                <!-- Fecha -->
+                <label id="label-facility-date" for="input-facility-date">Día de la reserva</label>
+                <input id="input-facility-date" type="date">
+                <!-- Hora -->
+                <p class="mt-2 mb-1">Hora:</p>
+                <div id="div-hours">
+                    <span class="badge bg-riu-gray">09:00</span>
+                    <span class="badge bg-riu-red">10:00</span>
+                    <span class="badge bg-riu-red">11:00</span>
+                    <span class="badge bg-riu-red">12:00</span>
+                    <span class="badge bg-riu-blue">13:00</span>
+                    <span class="badge bg-riu-gray">14:00</span>
+                    <span class="badge bg-riu-gray">15:00</span>
+                    <span class="badge bg-riu-gray">16:00</span>
+                    <span class="badge bg-riu-red">17:00</span>
+                    <span class="badge bg-riu-gray">18:00</span>
+                </div>
+                <!-- Botón reservar -->
+                <button id="button-reserve" type="button" data-bs-toggle="modal" data-bs-target="#div-modal-reserve" class="button-riu bg-riu-primary">Termina tu reserva</button>
+                <!-- Modal confirmar reserva -->
+                <div id="div-modal-reserve" class="modal fade" aria-labelledby="label-modal-reserve" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <!-- Header -->
+                            <div class="modal-header bg-riu-primary">
+                                Confirmar reserva
+                                <button type="button" class="button-modal-x" data-bs-dismiss="modal" aria-label="Close">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#ffffff" height="20" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <!-- Body: formulario -->
+                            <div class="modal-body d-flex flex-column">
+                                <!-- Fecha y hora -->
+                                <p>Fecha: 21/02/2024</p>
+                                <p>Hora: 13:00</p>
+                                <!-- N-people -->
+                                <div>
+                                    <label for="input-facility-n-people">¿Cuántos vais a ser?</label>
+                                    <input id="input-facility-n-people" type="number">
+                                </div>
+                                <!-- Cola -->
+                                <p>
+                                    <img src="/img/icons/queued.png" alt="Símbolo atención" width="20" height="20">
+                                    ¡Atención! Esta instalación está llena, así que entrarás en la cola de espera. Si los que están antes cancelan la suya y puedes entrar, se te avisará.
+                                </p>
+                            </div>
+                            <!-- Footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="button-modal-cancel bg-riu-gray" data-bs-dismiss="modal" >Cancelar</button>
+                                <button id="button-sb-reserve" class="button-modal-new-type bg-riu-primary">Confirmar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- Importar footer -->
     <%- include("footer", { generalInfo: generalInfo }) %>

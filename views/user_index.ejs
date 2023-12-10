@@ -18,7 +18,7 @@
     <div id="div-facilities" class="row row-cols-1 row-cols-lg-2 row-cols-xxl-4">
         <% facilityTypes.forEach(type => { %>
             <div class="div-card">
-                <a href="/usuario/facilities/<%= type.id %>">
+                <a href="/usuario/instalaciones/<%= type.id %>">
                     <div class="card-user card align-items-center">
                             <% if (type.hasPic) { %>
                                 <img src="/fotoTipoInstalación/<%= type.id %>" alt="Foto <%= type.name %>" class="card-img-top">

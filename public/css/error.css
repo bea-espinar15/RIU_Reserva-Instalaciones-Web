@@ -28,7 +28,7 @@ button {
 /* --- RESPONSIVENESS --- */
 
 /* Monitores más largos */
-@media (max-width: 1920.02px) {
+@media (max-width: 1919.98px) {
     h1 {
         margin: 5rem 0rem 1.5rem 0rem;
     }
@@ -48,7 +48,7 @@ button {
 }
 
 /* Monitores laptop - XL */
-@media (max-width: 1200.02px) {
+@media (max-width: 1199.98px) {
     img {
         width: 12rem;
     }
@@ -63,7 +63,7 @@ button {
 }
 
 /* Tablets - LG */
-@media (max-width: 992.02px) {
+@media (max-width: 991.98px) {
     img {
         width: 8rem;
     }
@@ -78,7 +78,7 @@ button {
 }
 
 /* Móviles - MD */
-@media (max-width: 768.02px) {
+@media (max-width: 767.98px) {
     img {
         width: 6rem;
         margin: 1.5rem 0rem 2.5rem 1.5rem;

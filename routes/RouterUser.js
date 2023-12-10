@@ -53,6 +53,7 @@ RouterUser.get("/instalaciones/:id", (request, response, next) => {
             hasProfilePic: false,
             isAdmin: false
         },
+        facilityTypeName: testData.facilityTypes[0].name,
         facilities: testData.facilities
     });
 });
