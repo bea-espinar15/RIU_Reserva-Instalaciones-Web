@@ -11,11 +11,67 @@ class UserController {
         this.daoMes = daoMes;
         this.daoFac = daoFac;
 
+        this.users = this.users.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
     }
 
     // Métodos
+    // -- GET --
+    // Obtener todos los usuarios
+    users(request, response, next) {
+        this.daoUse.readAll(request.session.university.id, (error, users) => {
+            if (error) {
+                errorHandler.manageError(error, "error", next);
+            }
+            else {
+                // Obtener nº mensajes no leídos del usuario
+                this.daoMes.messagesUnread(request.session.currentUser.id, (error, nUnreadMessages) => {
+                    if (error) {
+                        errorHandler.manageError(error, "error", next);
+                    }
+                    else {
+                        // Separar admins de no-admins
+                        let regularUsers = new Array();
+                        let admins = new Array();
+                        users.forEach((user) => {
+                            if (user.rol) {
+                                admins.push(user);
+                            }
+                            else {
+                                regularUsers.push(user);
+                            }
+                        });
+                        next({
+                            ajax: false,
+                            status: 200,
+                            redirect: "admin_users",
+                            data: {
+                                error: undefined,
+                                generalInfo: {
+                                    idUniversity: request.session.university.id,
+                                    name: request.session.university.name,
+                                    web: request.session.university.web,
+                                    address: request.session.university.address,
+                                    hasLogo: request.session.university.hasLogo,
+                                    idUser: request.session.currentUser.id,
+                                    isAdmin: request.session.currentUser.rol,
+                                    hasProfilePic: request.session.currentUser.hasProfilePic,
+                                    messagesUnread: nUnreadMessages
+                                },
+                                users: regularUsers,
+                                admins: admins,
+                                universityMail: request.session.university.mail
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    // -- POST -- 
+    // Inicio sesión
     login(request, response, next) {
         const errors = validationResult(request);
         if (errors.isEmpty()) {

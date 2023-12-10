@@ -5,10 +5,50 @@ class DAOUsers {
     constructor(pool) {
         this.pool = pool;
 
+        this.readAll = this.readAll.bind(this);
         this.readByUniversity = this.readByUniversity.bind(this);
     }
     
     // Métodos
+    // Leer todos los usuarios (de una universidad)
+    readAll(idUniversity, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "SELECT USU.*, FAC.nombre AS nombreFacultad FROM RIU_USU_Usuario AS USU JOIN RIU_FAC_Facultad AS FAC ON USU.id_facultad = FAC.id WHERE FAC.id_universidad = ?"
+                connection.query(querySQL, [idUniversity], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        let users = new Array();
+                        rows.forEach(row => {
+                            let user = {
+                                id: row.id,
+                                enabled: row.activo,
+                                validated: row.validado,
+                                name: row.nombre,
+                                lastname1: row.apellido1,
+                                lastname2: row.apellido2,
+                                mail: row.correo,
+                                hasPic: row.foto ? true : false,
+                                rol: row.rol,
+                                idFaculty: row.id_facultad,
+                                facultyName: row.nombreFacultad
+                            };
+                            users.push(user);
+                        });
+                        callback(null, users);
+                    }
+                });
+            }
+        });
+    }
+
+    // Leer usuario (por universidad)
     readByUniversity(userMail, idUniversity, callback) {
         this.pool.getConnection((error, connection) => {
             if (error) {

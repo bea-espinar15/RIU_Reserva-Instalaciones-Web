@@ -22,25 +22,8 @@ const testData = require("../delete");
 function routerConfig(facController, mesController, resController, uniController, useController) {
 
     // --- Peticiones GET ---
-    // [!] Mensajes
-    RouterPersonal.get("/correo", (request, response, next) => {
-        response.render("mail", {
-            error: undefined,
-            generalInfo: {
-                hasLogo: false,
-                idUniversity: testData.university.id,
-                name: testData.university.name,
-                web: testData.university.web,
-                address: testData.university.address,
-                messagesUnread: 5,
-                idUser: testData.users[0].id,
-                hasProfilePic: false,
-                isAdmin: true
-            },
-            messages: testData.messages,
-            universityMail: testData.university.mail
-        });
-    });
+    // Mensajes
+    RouterPersonal.get("/correo", mesController.mails);
 
     // [!] Perfil
     RouterPersonal.get("/perfil", (request, response, next) => {
