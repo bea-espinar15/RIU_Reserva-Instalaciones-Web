@@ -31,4 +31,12 @@ $(() => {
         buttonModalError.click();
     }
 
+    // Logout
+    const buttonLogout = $("#a-logout");
+    const formLogout = $("#form-logout");
+    buttonLogout.on("click", () => {
+        formLogout.submit();
+    });
+
+
 });

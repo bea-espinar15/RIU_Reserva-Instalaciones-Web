@@ -12,6 +12,7 @@ class UserController {
         this.daoFac = daoFac;
 
         this.login = this.login.bind(this);
+        this.logout = this.logout.bind(this);
     }
 
     // Métodos
@@ -107,6 +108,19 @@ class UserController {
         else {
             errorHandler.manageError(parseInt(errors.array()[0].msg), "login", next);
         }
+    }
+
+    // Cerrar sesión
+    logout(request, response, next) {
+        request.session.destroy();
+        next({
+            ajax: false,
+            status: 200,
+            redirect: "login",
+            data: {
+                error: undefined
+            }
+        });
     }
 }
 

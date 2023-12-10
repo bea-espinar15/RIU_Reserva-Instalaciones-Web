@@ -9,9 +9,11 @@
                 <% if (generalInfo.hasLogo) { %>
                     <img src="/fotoUniversidad/<%= generalInfo.idUniversity %>" alt="Logo <%= generalInfo.name %>" width="60">
                 <% } else { %>
-                    <img src="/img/default/university.png" alt="Logo universidad por defecto" width="60">
+                        <img src="/img/default/university.png" alt="Logo universidad por defecto" width="60">
                 <% } %>
-                <h1 id="h1-nav"><%= generalInfo.name %></h1>
+                <h1 id="h1-nav">
+                    <%= generalInfo.name %>
+                </h1>
             </a>
         </div>
         <!-- Correo y menú -->
@@ -19,10 +21,12 @@
             <!-- Correo con nº no leídos -->
             <a id="a-nav-mail" href="/personal/correo" class="position-relative">
                 <img src="/img/mail.png" alt="Símbolo correo" width="60">
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-riu-blue">
-                    <%= generalInfo.messagesUnread %>
-                    <span class="visually-hidden">Correos no leídos</span>
-                </span>
+                <% if (generalInfo.messagesUnread > 0 ) { %>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-riu-blue">
+                        <%= generalInfo.messagesUnread %>
+                        <span class="visually-hidden">Correos no leídos</span>
+                    </span>
+                <% } %>
             </a>
             <!-- Menú dropdown de Perfil -->
             <div class="dropdown">
@@ -34,31 +38,37 @@
                         <img src="/img/default/profile.png" alt="Foto de perfil" width="50">
                     <% } %>
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="white" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
                     </svg>
                 </button>
                 <!-- Menú hamburguesa -->
                 <button id="button-nav-hamburger" type="button" data-bs-toggle="dropdown" aria-expanded="false" class="d-none">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="white" class="bi bi-list" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+                        <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
                     </svg>
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a href="/personal/perfil" class="dropdown-item">Mi perfil</a></li>
-                  <!-- Sólo se muestra en pantallas MD -->
-                  <li id="li-nav-mail" class="d-none">
-                    <a href="/personal/correo" class="dropdown-item">
-                        Mi correo
-                        <span class="badge rounded-pill bg-riu-blue">
-                            <%= generalInfo.messagesUnread %>
-                            <span class="visually-hidden">Correos no leídos</span>
-                        </span>
+                    <li><a href="/personal/perfil" class="dropdown-item">Mi perfil</a></li>
+                    <!-- Sólo se muestra en pantallas MD -->
+                    <li id="li-nav-mail" class="d-none">
+                        <a href="/personal/correo" class="dropdown-item">
+                            Mi correo
+                            <% if (generalInfo.messagesUnread > 0 ) { %>
+                                <span class="badge rounded-pill bg-riu-blue">
+                                    <%= generalInfo.messagesUnread %>
+                                    <span class="visually-hidden">Correos no leídos</span>
+                                </span>
+                            <% } %>
                         </a>
-                  </li>
-                  <% if (!generalInfo.isAdmin) { %>
-                    <li><a href="/usuario/reservas" class="dropdown-item">Mis reservas</a></li>
-                  <% } %>
-                  <li><a id="a-logout" class="dropdown-item"><button class="m-0 p-0">Cerrar sesión</button></a></li>
+                    </li>
+                    <% if (!generalInfo.isAdmin) { %>
+                        <li><a href="/usuario/reservas" class="dropdown-item">Mis reservas</a></li>
+                    <% } %>
+                    <li>
+                        <form id="form-logout" method="POST" action="/logout">
+                            <a id="a-logout" class="dropdown-item"><button class="m-0 p-0">Cerrar sesión</button></a>
+                        </form>
+                    </li>
                 </ul>
             </div>
         </div>

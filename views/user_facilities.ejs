@@ -18,7 +18,7 @@
 
     <div id="div-container" class="d-flex">
         <!-- Lista de instalaciones -->
-        <div id="div-facilities-container" class="col-md-5 d-flex flex-column">
+        <div id="div-facilities-container" class="col-md-5 flex-column">
             <h1 class="mb-0"><%= facilityTypeName %></h1>
             <!-- Filtro aforo -->
             <div id="div-filter" class="d-flex align-items-center">
@@ -31,29 +31,33 @@
             <!-- Resultados -->
             <div class="mt-4">
                 <!-- Mensaje Nº resultados -->
-                <% if (facilities.length === 0) { %>
-                    <p>No hay ningún resultado que coincida.</p>
-                <% } %>
+                <p id="p-no-facilities">No hay ningún resultado que coincida.</p>
                 <!-- Lista -->
                 <% facilities.forEach(fac => { %>
-                    <div class="div-facility d-flex justify-content-between" data-idFacility="<%= fac.id %>">
+                    <div class="div-facility justify-content-between" data-facility="<%= JSON.stringify(fac) %>">
                         <div class="d-flex flex-column">
                             <h2><%= fac.name %></h2>
                             <p><%= fac.startHour %> - <%= fac.endHour %></p>
                         </div>
-                        <button type="button" class="button-see-more bg-riu-primary-dark align-items-end">Reservar</button>
+                        <button type="button" class="button-see-more bg-riu-primary-dark align-items-end" data-facility="<%= JSON.stringify(fac) %>">Reservar</button>
                     </div>
                 <% }); %>
             </div>
         </div>
         <!-- Visualización instalación -->
-        <div id="div-show-facility" class="div-show-facility-res col-md-7 d-flex">
+        <div id="div-show-facility" class="div-show-facility-res col-md-7">
             <!-- Foto -->
             <div id="div-facility-res-pic" class="col-xl-4 d-flex flex-column align-items-center">
+                <button id="button-facility-back" class="button-riu bg-riu-primary d-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="white" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z" />
+                    </svg>
+                    Atrás
+                </button>
                 <img src="/img/default/facility.png" alt="Imagen instalación" width="270">
-                <!-- [!] JQuery -->
-                <h2>Laboratorio 1</h2>
-                <p>¡Atención! Esta instalación es colectiva. Otros pueden reservarla al mismo tiempo si el aforo lo permite.</p>
+                <!-- JQuery -->
+                <h2 id="h2-facility-name"></h2>
+                <p id="p-warning-res-type">¡Atención! Esta instalación es colectiva. Otros pueden reservarla al mismo tiempo si el aforo lo permite.</p>
             </div>
             <!-- Info instalación -->
             <form class="col-xl-7 offset-xl-1 d-flex flex-column">
@@ -62,18 +66,7 @@
                 <input id="input-facility-date" type="date">
                 <!-- Hora -->
                 <p class="mt-2 mb-1">Hora:</p>
-                <div id="div-hours">
-                    <span class="badge bg-riu-gray">09:00</span>
-                    <span class="badge bg-riu-red">10:00</span>
-                    <span class="badge bg-riu-red">11:00</span>
-                    <span class="badge bg-riu-red">12:00</span>
-                    <span class="badge bg-riu-blue">13:00</span>
-                    <span class="badge bg-riu-gray">14:00</span>
-                    <span class="badge bg-riu-gray">15:00</span>
-                    <span class="badge bg-riu-gray">16:00</span>
-                    <span class="badge bg-riu-red">17:00</span>
-                    <span class="badge bg-riu-gray">18:00</span>
-                </div>
+                <div id="div-hours"></div>
                 <!-- Botón reservar -->
                 <button id="button-reserve" type="button" data-bs-toggle="modal" data-bs-target="#div-modal-reserve" class="button-riu bg-riu-primary">Termina tu reserva</button>
                 <!-- Modal confirmar reserva -->

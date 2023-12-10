@@ -18,7 +18,7 @@
 
     <div id="div-container" class="d-flex">
         <!-- Lista de instalaciones -->
-        <div id="div-facilities-container" class="col-md-5 d-flex flex-column">
+        <div id="div-facilities-container" class="col-md-5 flex-column">
             <h1>Instalaciones</h1>
             <!-- Búsqueda y Nueva instalación -->
             <div id="div-search" class="d-flex">                        
@@ -44,18 +44,24 @@
                 <% } %>
                 <!-- Lista -->
                 <% facilities.forEach(fac => { %>
-                    <div class="div-facility d-flex justify-content-between" data-idFacility="<%= fac.id %>">
+                    <div class="div-facility d-flex justify-content-between">
                         <div class="d-flex flex-column">
                             <h2><%= fac.name %></h2>
                             <p><%= fac.facilityTypeName %></p>
                         </div>
-                        <button type="button" class="button-see-more bg-riu-primary-dark align-items-end">Ver más</button>
+                        <button type="button" class="button-see-more bg-riu-primary-dark align-items-end" data-facility="<%= JSON.stringify(fac) %>">Ver más</button>
                     </div>
                 <% }); %>
             </div>
         </div>
         <!-- Visualización instalación -->
-        <div id="div-show-facility" class="col-md-7 d-flex flex-column">
+        <div id="div-show-facility" class="col-md-7 flex-column">
+            <button id="button-facility-back" class="button-riu bg-riu-primary d-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="white" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z" />
+                </svg>
+                Atrás
+            </button>
             <h2>Detalles de la instalación</h2>
             <form class="d-flex flex-column w-100">
                 <div id="div-facility-form" class="d-flex">
@@ -70,15 +76,15 @@
                             <% facilityTypes.forEach((type => { %>
                                 <option value="<%= type.name %>"><%= type.name %></option>
                             <% })); %>
-                            <option id="option-new-type" value="Nuevo tipo...">Nuevo tipo...</option>
+                            <option value="Nuevo tipo...">Nuevo tipo...</option>
                         </select>
                         <button id="button-modal-new-type" type="button" hidden="true" data-bs-toggle="modal" data-bs-target="#div-modal-new-type">Nuevo</button>
                         <!-- Hora inicio -->
                         <label for="input-facility-start-hour">Hora inicio</label>
-                        <input id="input-facility-start-hour" type="time">
+                        <input id="input-facility-start-hour" type="time" step="3600">
                         <!-- Hora fin -->
                         <label for="input-facility-end-hour">Hora fin</label>
-                        <input id="input-facility-end-hour" type="time">
+                        <input id="input-facility-end-hour" type="time" step="3600">
                         <!-- Tipo de reserva -->
                         <label for="input-facility-res-type">Tipo de reserva</label>
                         <select id="input-facility-res-type">
@@ -97,7 +103,7 @@
                     <!-- Foto -->
                     <div id="div-facility-pic" class="col-xl-7 offset-xl-1 d-flex flex-column align-items-center">
                         <img src="/img/default/facility.png" alt="Imagen instalación" width="270">
-                        <input type="file" class="input-facility-pic">
+                        <input id="input-facility-picture" type="file" class="input-facility-pic">
                     </div>
                 </div>
                 <input id="input-sb-facility" type="submit" value="Guardar" class="button-riu bg-riu-primary align-self-center">

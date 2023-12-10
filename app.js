@@ -90,8 +90,14 @@ const passwordRegex = /(?=.*[A-Za-z])(?=.*\d).{8,}/;
 app.locals.universityMails = ["ucm.es", "uam.es"];
 
 // --- Middlewares ---
-// [!] Comprobar que el usuario ha iniciado sesión
+// Comprobar que el usuario ha iniciado sesión
 function userLogged(request, response, next) {
+    // if (request.session.currentUser) {
+    //     next();
+    // }
+    // else {
+    //     response.redirect("/login");
+    // }
     next();
 };
 
@@ -200,6 +206,9 @@ app.post(
         }),
     useController.login
 );
+
+// Logout
+app.post("/logout", useController.logout);
 
 // [TODO]
 

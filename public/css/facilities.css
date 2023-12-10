@@ -33,6 +33,8 @@
 
 /* -- Lista instalaciones -- */
 .div-facility {
+    display: flex;
+    flex-direction: row;
     margin: 1rem 0rem;
     padding: 0.8rem 1rem;
     border: 0.1rem solid var(--primary-dark);
@@ -58,6 +60,8 @@
 
 /* -- Instalación (nueva o editar) -- */
 #div-show-facility {
+    display: flex;
+    flex-direction: row;
     padding: 0rem 5rem;
 }
 
@@ -266,6 +270,14 @@
     #button-filter {
         margin-left: auto;
     }
+
+    #button-facility-back {
+        display: flex !important;
+        align-items: center;
+        padding: 0.2rem 1.5rem 0.2rem 1rem;
+        margin-bottom: 1.5rem;
+        width: 7rem;
+    }
 }
 
 /* Móviles - SM */
@@ -280,6 +292,7 @@
     }
 
     #div-show-facility {
+        flex-direction: column;
         padding: 0rem 1rem;
     }
 
