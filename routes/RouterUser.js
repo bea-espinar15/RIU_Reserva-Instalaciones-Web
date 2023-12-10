@@ -15,71 +15,22 @@ const multerFactory = multer({ storage: multer.memoryStorage() });
 // --- Crear router ---
 const RouterUser = express.Router();
 
-// [!] BORRAR
-const testData = require("../delete");
-
 // Obtener pool
 function routerConfig(facController, mesController, resController, uniController, useController) {
 
     // --- Peticiones GET ---
-    // [!] Inicio
-    RouterUser.get("/inicio", (request, response, next) => {
-        response.render("user_index", {
-            error: undefined,
-            generalInfo: {
-                hasLogo: false,
-                idUniversity: testData.university.id,
-                name: testData.university.name,
-                web: testData.university.web,
-                address: testData.university.address,
-                messagesUnread: 5,
-                idUser: testData.users[0].id,
-                hasProfilePic: false,
-                isAdmin: false
-            },
-            facilityTypes: testData.facilityTypes
-        });
-    });
+    // Inicio
+    RouterUser.get("/inicio", facController.facilityTypes);
 
-    // [!] Instalaciones
-    RouterUser.get("/instalaciones/:id", (request, response, next) => {
-        response.render("user_facilities", {
-            error: undefined,
-            generalInfo: {
-                hasLogo: false,
-                idUniversity: testData.university.id,
-                name: testData.university.name,
-                web: testData.university.web,
-                address: testData.university.address,
-                messagesUnread: 5,
-                idUser: testData.users[0].id,
-                hasProfilePic: false,
-                isAdmin: false
-            },
-            facilityTypeName: testData.facilityTypes[0].name,
-            facilities: testData.facilities
-        });
-    });
+    // Instalaciones
+    RouterUser.get(
+        "/instalaciones/:id", 
+        check("id", "-2").isNumeric(), 
+        facController.facilitiesByType
+    );
 
-    // [!] Reservas
-    RouterUser.get("/reservas", (request, response, next) => {
-        response.render("user_reservations", {
-            error: undefined,
-            generalInfo: {
-                hasLogo: false,
-                idUniversity: testData.university.id,
-                name: testData.university.name,
-                web: testData.university.web,
-                address: testData.university.address,
-                messagesUnread: 5,
-                idUser: testData.users[0].id,
-                hasProfilePic: false,
-                isAdmin: false
-            },
-            currentReservations: testData.currentReservations,
-            oldReservations: testData.oldReservations
-        });
-    });
+    // Reservas
+    RouterUser.get("/reservas", resController.userReservations);
 
     
     // --- Peticiones POST ---

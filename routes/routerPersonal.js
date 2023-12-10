@@ -15,9 +15,6 @@ const multerFactory = multer({ storage: multer.memoryStorage() });
 // --- Crear router ---
 const RouterPersonal = express.Router();
 
-// [!] BORRAR
-const testData = require("../delete");
-
 // Obtener pool
 function routerConfig(facController, mesController, resController, uniController, useController) {
 
@@ -25,25 +22,8 @@ function routerConfig(facController, mesController, resController, uniController
     // Mensajes
     RouterPersonal.get("/correo", mesController.mails);
 
-    // [!] Perfil
-    RouterPersonal.get("/perfil", (request, response, next) => {
-        response.render("profile", {
-            error: undefined,
-            generalInfo: {
-                hasLogo: false,
-                idUniversity: testData.university.id,
-                name: testData.university.name,
-                web: testData.university.web,
-                address: testData.university.address,
-                messagesUnread: 5,
-                idUser: testData.users[0].id,
-                hasProfilePic: false,
-                isAdmin: true
-            },
-            user: testData.users[0],
-            universityMail: testData.university.mail
-        });
-    });
+    // Perfil
+    RouterPersonal.get("/perfil", mesController.profile);
 
     // --- Peticiones POST ---
     // [TODO]

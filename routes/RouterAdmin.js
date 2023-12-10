@@ -15,9 +15,6 @@ const multerFactory = multer({ storage: multer.memoryStorage() });
 // --- Crear router ---
 const RouterAdmin = express.Router();
 
-// [!] BORRAR
-const testData = require("../delete");
-
 // Obtener pool
 function routerConfig(facController, mesController, resController, uniController, useController) {
 
@@ -28,27 +25,8 @@ function routerConfig(facController, mesController, resController, uniController
     // Configuración
     RouterAdmin.get("/configuracion", mesController.adminSettings);
 
-    // [!] Usuarios
+    // Usuarios
     RouterAdmin.get("/usuarios", useController.users);
-    // RouterAdmin.get("/usuarios", (request, response, next) => {
-    //     response.render("admin_users", {
-    //         error: undefined,
-    //         generalInfo: {
-    //             hasLogo: false,
-    //             idUniversity: testData.university.id,
-    //             name: testData.university.name,
-    //             web: testData.university.web,
-    //             address: testData.university.address,
-    //             messagesUnread: 5,
-    //             idUser: testData.users[0].id,
-    //             hasProfilePic: false,
-    //             isAdmin: true
-    //         },
-    //         users: testData.users,
-    //         admins: testData.admins,
-    //         universityMail: testData.university.mail
-    //     });
-    // });
 
     // Instalaciones
     RouterAdmin.get("/instalaciones", facController.facilities);

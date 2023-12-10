@@ -8,6 +8,7 @@ class MessageController {
         this.daoMes = daoMes;
 
         this.mails = this.mails.bind(this);
+        this.profile = this.profile.bind(this);
         this.adminIndex = this.adminIndex.bind(this);
         this.adminSettings = this.adminSettings.bind(this);
     }
@@ -38,6 +39,39 @@ class MessageController {
                             messagesUnread: 0
                         },
                         messages: messages,
+                        universityMail: request.session.university.mail
+                    }
+                });
+            }
+        });
+    }
+
+    // Cargar perfil
+    profile(request, response, next) {
+        // Obtener mensajes no leídos
+        this.daoMes.messagesUnread(request.session.currentUser.id, (error, nUnreadMessages) => {
+            if (error) {
+                errorHandler.manageError(error, "error", next);
+            }
+            else {
+                next({
+                    ajax: false,
+                    status: 200,
+                    redirect: "profile",
+                    data: {
+                        error: undefined,
+                        generalInfo: {
+                            idUniversity: request.session.university.id,
+                            name: request.session.university.name,
+                            web: request.session.university.web,
+                            address: request.session.university.address,
+                            hasLogo: request.session.university.hasLogo,
+                            idUser: request.session.currentUser.id,
+                            isAdmin: request.session.currentUser.rol,
+                            hasProfilePic: request.session.currentUser.hasProfilePic,
+                            messagesUnread: nUnreadMessages
+                        },
+                        user: request.session.currentUser,
                         universityMail: request.session.university.mail
                     }
                 });

@@ -55,7 +55,7 @@ class DAOMessages {
                 callback(-1);
             }
             else {
-                let querySQL = "SELECT COUNT(*) AS noLeidos FROM RIU_MEN_Mensaje AS MEN WHERE id_usuario_destino = ? AND fecha_leído = NULL";
+                let querySQL = "SELECT COUNT(*) AS noLeidos FROM RIU_MEN_Mensaje AS MEN WHERE id_usuario_destino = ? AND fecha_leído IS NULL";
                 connection.query(querySQL, [idUser], (error, rows) => {
                     connection.release();
                     if (error) {

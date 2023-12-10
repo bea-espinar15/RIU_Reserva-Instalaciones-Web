@@ -12,6 +12,11 @@ function generateError(cod) {
             title = "Error con la Base de Datos";
             message = "Lo sentimos, se ha producido un error en la conexión con la Base de Datos. Por favor, vuelve a intentarlo en unos instantes.";
         } break;
+        case -2: {
+            code = 400;
+            title = "Petición incorrecta";
+            message = "Esta dirección no es válida.";
+        } break;
         // Bad Request
         case 1: {
             code = 400;
