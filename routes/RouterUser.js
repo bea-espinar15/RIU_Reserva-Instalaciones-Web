@@ -20,17 +20,18 @@ function routerConfig(facController, mesController, resController, uniController
 
     // --- Peticiones GET ---
     // Inicio
-    RouterUser.get("/inicio", facController.facilityTypes);
+    RouterUser.get("/inicio", mesController.unreadMessages, facController.facilityTypes);
 
     // Instalaciones
     RouterUser.get(
         "/instalaciones/:id", 
         check("id", "-2").isNumeric(), 
+        mesController.unreadMessages, 
         facController.facilitiesByType
     );
 
     // Reservas
-    RouterUser.get("/reservas", resController.userReservations);
+    RouterUser.get("/reservas", mesController.unreadMessages, resController.userReservations);
 
     
     // --- Peticiones POST ---

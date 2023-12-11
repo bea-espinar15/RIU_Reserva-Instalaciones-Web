@@ -122,6 +122,10 @@ hr {
     background-color: var(--blue);
 }
 
+.bg-riu-res-gray {
+    background-color: var(--reservations-gray);
+}
+
 /* --- INPUT --- */
 label {
     color: var(--gray);

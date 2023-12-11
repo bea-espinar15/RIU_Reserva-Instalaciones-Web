@@ -20,19 +20,19 @@ function routerConfig(facController, mesController, resController, uniController
 
     // --- Peticiones GET ---
     // Inicio
-    RouterAdmin.get("/inicio", mesController.adminIndex);
+    RouterAdmin.get("/inicio", mesController.unreadMessages, useController.adminIndex);
 
     // Configuración
-    RouterAdmin.get("/configuracion", mesController.adminSettings);
+    RouterAdmin.get("/configuracion", mesController.unreadMessages, uniController.adminSettings);
 
     // Usuarios
-    RouterAdmin.get("/usuarios", useController.users);
+    RouterAdmin.get("/usuarios",  mesController.unreadMessages, useController.users);
 
     // Instalaciones
-    RouterAdmin.get("/instalaciones", facController.facilities);
+    RouterAdmin.get("/instalaciones", mesController.unreadMessages, facController.facilities);
 
     // Reservas
-    RouterAdmin.get("/reservas", resController.reservations);
+    RouterAdmin.get("/reservas", mesController.unreadMessages, resController.reservations);
 
     // --- Peticiones POST ---
     // [TODO]

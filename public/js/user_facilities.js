@@ -60,7 +60,7 @@ $(() => {
             let facility = divFacility.data("facility");
             // Rellenar contenido del div
             nameFacility.text(facility.name);
-            if (facility.typeRes) { warningResType.show(); }
+            if (!facility.typeRes) { warningResType.show(); }
             else { warningResType.hide(); }
             // Generar horas
             let hours = generateHours(facility.startHour, facility.endHour);

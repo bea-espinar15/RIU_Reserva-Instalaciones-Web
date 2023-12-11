@@ -23,38 +23,30 @@ class FacilityController {
                 errorHandler.manageError(error, "error", next);
             }
             else {
-                // Obtener nº mensajes no leídos del usuario
-                this.daoMes.messagesUnread(request.session.currentUser.id, (error, nUnreadMessages) => {
+                this.daoFac.readAllTypes(idUniversity, (error, types) => {
                     if (error) {
                         errorHandler.manageError(error, "error", next);
                     }
                     else {
-                        this.daoFac.readAllTypes(idUniversity, (error, types) => {
-                            if (error) {
-                                errorHandler.manageError(error, "error", next);
-                            }
-                            else {
-                                next({
-                                    ajax: false,
-                                    status: 200,
-                                    redirect: "admin_facilities",
-                                    data: {
-                                        error: undefined,
-                                        generalInfo: {
-                                            idUniversity: request.session.university.id,
-                                            name: request.session.university.name,
-                                            web: request.session.university.web,
-                                            address: request.session.university.address,
-                                            hasLogo: request.session.university.hasLogo,
-                                            idUser: request.session.currentUser.id,
-                                            isAdmin: request.session.currentUser.rol,
-                                            hasProfilePic: request.session.currentUser.hasProfilePic,
-                                            messagesUnread: nUnreadMessages
-                                        },
-                                        facilities: facilities,
-                                        facilityTypes: types
-                                    }
-                                });
+                        next({
+                            ajax: false,
+                            status: 200,
+                            redirect: "admin_facilities",
+                            data: {
+                                error: undefined,
+                                generalInfo: {
+                                    idUniversity: request.session.university.id,
+                                    name: request.session.university.name,
+                                    web: request.session.university.web,
+                                    address: request.session.university.address,
+                                    hasLogo: request.session.university.hasLogo,
+                                    idUser: request.session.currentUser.id,
+                                    isAdmin: request.session.currentUser.rol,
+                                    hasProfilePic: request.session.currentUser.hasProfilePic,
+                                    messagesUnread: request.unreadMessages
+                                },
+                                facilities: facilities,
+                                facilityTypes: types
                             }
                         });
                     }
@@ -70,32 +62,24 @@ class FacilityController {
                 errorHandler.manageError(error, "error", next);
             }
             else {
-                // Obtener mensajes no leídos
-                this.daoMes.messagesUnread(request.session.currentUser.id, (error, nUnreadMessages) => {
-                    if (error) {
-                        errorHandler.manageError(error, "error", next);
-                    }
-                    else {
-                        next({
-                            ajax: false,
-                            status: 200,
-                            redirect: "user_index",
-                            data: {
-                                error: undefined,
-                                generalInfo: {
-                                    idUniversity: request.session.university.id,
-                                    name: request.session.university.name,
-                                    web: request.session.university.web,
-                                    address: request.session.university.address,
-                                    hasLogo: request.session.university.hasLogo,
-                                    idUser: request.session.currentUser.id,
-                                    isAdmin: request.session.currentUser.rol,
-                                    hasProfilePic: request.session.currentUser.hasProfilePic,
-                                    messagesUnread: nUnreadMessages
-                                },
-                                facilityTypes: types
-                            }
-                        });
+                next({
+                    ajax: false,
+                    status: 200,
+                    redirect: "user_index",
+                    data: {
+                        error: undefined,
+                        generalInfo: {
+                            idUniversity: request.session.university.id,
+                            name: request.session.university.name,
+                            web: request.session.university.web,
+                            address: request.session.university.address,
+                            hasLogo: request.session.university.hasLogo,
+                            idUser: request.session.currentUser.id,
+                            isAdmin: request.session.currentUser.rol,
+                            hasProfilePic: request.session.currentUser.hasProfilePic,
+                            messagesUnread: request.unreadMessages
+                        },
+                        facilityTypes: types
                     }
                 });
             }
@@ -112,33 +96,25 @@ class FacilityController {
                     errorHandler.manageError(error, "error", next);
                 }
                 else {
-                    // Obtener nº mensajes no leídos del usuario
-                    this.daoMes.messagesUnread(request.session.currentUser.id, (error, nUnreadMessages) => {
-                        if (error) {
-                            errorHandler.manageError(error, "error", next);
-                        }
-                        else {
-                            next({
-                                ajax: false,
-                                status: 200,
-                                redirect: "user_facilities",
-                                data: {
-                                    error: undefined,
-                                    generalInfo: {
-                                        idUniversity: request.session.university.id,
-                                        name: request.session.university.name,
-                                        web: request.session.university.web,
-                                        address: request.session.university.address,
-                                        hasLogo: request.session.university.hasLogo,
-                                        idUser: request.session.currentUser.id,
-                                        isAdmin: request.session.currentUser.rol,
-                                        hasProfilePic: request.session.currentUser.hasProfilePic,
-                                        messagesUnread: nUnreadMessages
-                                    },
-                                    facilities: facilities,
-                                    facilityTypeName: facilities[0].facilityTypeName
-                                }
-                            });
+                    next({
+                        ajax: false,
+                        status: 200,
+                        redirect: "user_facilities",
+                        data: {
+                            error: undefined,
+                            generalInfo: {
+                                idUniversity: request.session.university.id,
+                                name: request.session.university.name,
+                                web: request.session.university.web,
+                                address: request.session.university.address,
+                                hasLogo: request.session.university.hasLogo,
+                                idUser: request.session.currentUser.id,
+                                isAdmin: request.session.currentUser.rol,
+                                hasProfilePic: request.session.currentUser.hasProfilePic,
+                                messagesUnread: request.unreadMessages
+                            },
+                            facilities: facilities,
+                            facilityTypeName: facilities[0].facilityTypeName
                         }
                     });
                 }

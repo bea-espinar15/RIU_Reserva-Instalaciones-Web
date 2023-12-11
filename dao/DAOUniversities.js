@@ -78,6 +78,43 @@ class DAOUniversities {
             }
         });
     }
+
+    // Leer todas las facultades de una universidad
+    readAllFaculties(mail, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "SELECT FAC.* FROM RIU_FAC_Facultad AS FAC JOIN RIU_UNI_Universidad AS UNI ON FAC.id_universidad = UNI.id WHERE correo = ?";
+                connection.query(querySQL, [mail], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.length === 0) {
+                            callback(-1);
+                        }
+                        else {
+                            // Construir objeto
+                            let faculties = new Array();
+                            rows.forEach((row) => {
+                                let faculty = {
+                                    id: row.id,
+                                    name: row.nombre,
+                                    idUniversity: row.id_universidad
+                                };
+                                faculties.push(faculty);
+                            });
+                            
+                            callback(null, faculties);
+                        }
+                    }
+                });
+            }
+        });
+    }
 }
 
 module.exports = DAOUniversities;

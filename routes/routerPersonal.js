@@ -23,7 +23,7 @@ function routerConfig(facController, mesController, resController, uniController
     RouterPersonal.get("/correo", mesController.mails);
 
     // Perfil
-    RouterPersonal.get("/perfil", mesController.profile);
+    RouterPersonal.get("/perfil", mesController.unreadMessages, useController.profile);
 
     // --- Peticiones POST ---
     // [TODO]

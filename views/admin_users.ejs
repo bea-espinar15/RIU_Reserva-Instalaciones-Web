@@ -42,7 +42,7 @@
                         <p id="p-no-users" class="mt-2">No hay ningún resultado que coincida.</p>
                         <% users.forEach((user, i) => { %>
                             <!-- Card usuario -->
-                            <div class="div-card-general div-card-user align-items-center" data-user="<%= JSON.stringify(user) %>">
+                            <div class="div-card-general div-card-user align-items-center <% if (!user.enabled) { %> bg-riu-res-gray <% } %>" data-user="<%= JSON.stringify(user) %>">
                                 <div class="div-card-info d-flex">
                                     <!-- Foto de perfil -->
                                     <% if (user.hasPic) { %>
@@ -73,10 +73,10 @@
                                     <div class="div-buttons d-flex flex-column">
                                             <% if (user.validated) { %>
                                                 <button type="button" class="button-users bg-riu-red" data-idUser="<%= user.id %>">Banear</button>
+                                                <button type="button" class="button-users bg-riu-primary-light button-make-admin" data-idUser="<%= user.id %>">Hacer Admin</button>
                                             <% } else { %>
                                                 <button type="button" class="button-users bg-riu-green" data-idUser="<%= user.id %>">Validar</button>
-                                            <% } %>
-                                            <button type="button" class="button-users bg-riu-primary-light button-make-admin" data-idUser="<%= user.id %>">Hacer Admin</button>                            
+                                            <% } %>                   
                                     </div>
                                 <% } %>
                             </div>
@@ -114,7 +114,7 @@
                                                 <p><%= admin.mail %>@<%= universityMail %></p>
                                             </div>
                                             <!-- Facultad -->
-                                            <p class="p-admin-faculty align-self-start"><%= admin.facultyName %></p>
+                                            <p class="p-admin-faculty"><%= admin.facultyName %></p>
                                         </div>
                                     </div>
                                 </div>

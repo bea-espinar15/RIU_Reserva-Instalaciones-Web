@@ -12,6 +12,8 @@ class UserController {
         this.daoFac = daoFac;
 
         this.users = this.users.bind(this);
+        this.profile = this.profile.bind(this);
+        this.adminIndex = this.adminIndex.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
     }
@@ -25,47 +27,88 @@ class UserController {
                 errorHandler.manageError(error, "error", next);
             }
             else {
-                // Obtener nº mensajes no leídos del usuario
-                this.daoMes.messagesUnread(request.session.currentUser.id, (error, nUnreadMessages) => {
-                    if (error) {
-                        errorHandler.manageError(error, "error", next);
+                // Separar admins de no-admins
+                let regularUsers = new Array();
+                let admins = new Array();
+                users.forEach((user) => {
+                    if (user.rol) {
+                        admins.push(user);
                     }
                     else {
-                        // Separar admins de no-admins
-                        let regularUsers = new Array();
-                        let admins = new Array();
-                        users.forEach((user) => {
-                            if (user.rol) {
-                                admins.push(user);
-                            }
-                            else {
-                                regularUsers.push(user);
-                            }
-                        });
-                        next({
-                            ajax: false,
-                            status: 200,
-                            redirect: "admin_users",
-                            data: {
-                                error: undefined,
-                                generalInfo: {
-                                    idUniversity: request.session.university.id,
-                                    name: request.session.university.name,
-                                    web: request.session.university.web,
-                                    address: request.session.university.address,
-                                    hasLogo: request.session.university.hasLogo,
-                                    idUser: request.session.currentUser.id,
-                                    isAdmin: request.session.currentUser.rol,
-                                    hasProfilePic: request.session.currentUser.hasProfilePic,
-                                    messagesUnread: nUnreadMessages
-                                },
-                                users: regularUsers,
-                                admins: admins,
-                                universityMail: request.session.university.mail
-                            }
-                        });
+                        regularUsers.push(user);
                     }
                 });
+                next({
+                    ajax: false,
+                    status: 200,
+                    redirect: "admin_users",
+                    data: {
+                        error: undefined,
+                        generalInfo: {
+                            idUniversity: request.session.university.id,
+                            name: request.session.university.name,
+                            web: request.session.university.web,
+                            address: request.session.university.address,
+                            hasLogo: request.session.university.hasLogo,
+                            idUser: request.session.currentUser.id,
+                            isAdmin: request.session.currentUser.rol,
+                            hasProfilePic: request.session.currentUser.hasProfilePic,
+                            messagesUnread: request.unreadMessages
+                        },
+                        users: regularUsers,
+                        admins: admins,
+                        universityMail: request.session.university.mail
+                    }
+                });
+            }
+        });
+    }
+
+    // Cargar perfil
+    profile(request, response, next) {
+        next({
+            ajax: false,
+            status: 200,
+            redirect: "profile",
+            data: {
+                error: undefined,
+                generalInfo: {
+                    idUniversity: request.session.university.id,
+                    name: request.session.university.name,
+                    web: request.session.university.web,
+                    address: request.session.university.address,
+                    hasLogo: request.session.university.hasLogo,
+                    idUser: request.session.currentUser.id,
+                    isAdmin: request.session.currentUser.rol,
+                    hasProfilePic: request.session.currentUser.hasProfilePic,
+                    messagesUnread: request.unreadMessages
+                },
+                user: request.session.currentUser,
+                universityMail: request.session.university.mail
+            }
+        });
+    }
+
+    // Cargar inicio de admin
+    adminIndex (request, response, next) {
+        next({
+            ajax: false,
+            status: 200,
+            redirect: "admin_index",
+            data: {
+                error: undefined,
+                generalInfo: {
+                    idUniversity: request.session.university.id,
+                    name: request.session.university.name,
+                    web: request.session.university.web,
+                    address: request.session.university.address,
+                    hasLogo: request.session.university.hasLogo,
+                    idUser: request.session.currentUser.id,
+                    isAdmin: request.session.currentUser.rol,
+                    hasProfilePic: request.session.currentUser.hasProfilePic,
+                    messagesUnread: request.unreadMessages
+                },
+                adminName: request.session.currentUser.name
             }
         });
     }

@@ -8,11 +8,13 @@ class UniversityController {
         this.daoUni = daoUni;
         
         this.universityMails = this.universityMails.bind(this);
+        this.faculties = this.faculties.bind(this);
+        this.adminSettings = this.adminSettings.bind(this);
     }
 
     // Métodos
     // Obtener correos de las universidades registradas
-    universityMails (request, response, next) {
+    universityMails(request, response, next) {
         this.daoUni.readAll((error, universities) => {
             if (error) {                
                 errorHandler.manageAJAXError(error, next);
@@ -34,6 +36,48 @@ class UniversityController {
                 });
             }
         });        
+    }
+
+    // Obtener facultades de una universidad a partir de su correo
+    faculties(request, response, next) {
+        this.daoUni.readAllFaculties(request.query.mail, (error, faculties) => {
+            if (error) {                
+                errorHandler.manageAJAXError(error, next);
+            }
+            else {                
+                // Manejar respuesta
+                next({
+                    ajax: true,
+                    data: {
+                        faculties: faculties 
+                    }
+                });
+            }
+        });  
+    }
+
+    // Cargar configuración de admin
+    adminSettings(request, response, next) {
+        next({
+            ajax: false,
+            status: 200,
+            redirect: "admin_settings",
+            data: {
+                error: undefined,
+                generalInfo: {
+                    idUniversity: request.session.university.id,
+                    name: request.session.university.name,
+                    web: request.session.university.web,
+                    address: request.session.university.address,
+                    hasLogo: request.session.university.hasLogo,
+                    idUser: request.session.currentUser.id,
+                    isAdmin: request.session.currentUser.rol,
+                    hasProfilePic: request.session.currentUser.hasProfilePic,
+                    messagesUnread: request.unreadMessages
+                },
+                university: request.session.university
+            }
+        });
     }
 }
 

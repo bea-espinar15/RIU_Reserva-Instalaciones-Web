@@ -21,33 +21,25 @@ class ReservationController {
                 errorHandler.manageError(error, "error", next);
             }
             else {
-                // Obtener nº mensajes no leídos del usuario
-                this.daoMes.messagesUnread(request.session.currentUser.id, (error, nUnreadMessages) => {
-                    if (error) {
-                        errorHandler.manageError(error, "error", next);
-                    }
-                    else {
-                        next({
-                            ajax: false,
-                            status: 200,
-                            redirect: "admin_reservations",
-                            data: {
-                                error: undefined,
-                                generalInfo: {
-                                    idUniversity: idUniversity,
-                                    name: request.session.university.name,
-                                    web: request.session.university.web,
-                                    address: request.session.university.address,
-                                    hasLogo: request.session.university.hasLogo,
-                                    idUser: request.session.currentUser.id,
-                                    isAdmin: request.session.currentUser.rol,
-                                    hasProfilePic: request.session.currentUser.hasProfilePic,
-                                    messagesUnread: nUnreadMessages
-                                },
-                                reservations: reservations,
-                                filters: new Array()
-                            }
-                        });    
+                next({
+                    ajax: false,
+                    status: 200,
+                    redirect: "admin_reservations",
+                    data: {
+                        error: undefined,
+                        generalInfo: {
+                            idUniversity: idUniversity,
+                            name: request.session.university.name,
+                            web: request.session.university.web,
+                            address: request.session.university.address,
+                            hasLogo: request.session.university.hasLogo,
+                            idUser: request.session.currentUser.id,
+                            isAdmin: request.session.currentUser.rol,
+                            hasProfilePic: request.session.currentUser.hasProfilePic,
+                            messagesUnread: request.unreadMessages
+                        },
+                        reservations: reservations,
+                        filters: new Array()
                     }
                 });
             }
@@ -61,50 +53,45 @@ class ReservationController {
                 errorHandler.manageError(error, "error", next);
             }
             else {
-                // Obtener nº mensajes no leídos del usuario
-                this.daoMes.messagesUnread(request.session.currentUser.id, (error, nUnreadMessages) => {
-                    if (error) {
-                        errorHandler.manageError(error, "error", next);
+                // Separar actuales de antiguas
+                let currentReservations = new Array();
+                let oldReservations = new Array();
+                let today = new Date();
+                reservations.forEach((res) => {
+                    // Pasar la fecha a objeto Date para comparar
+                    let formattedDate = res.date.split('/');
+                    formattedDate = new Date(`${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}`);
+                    // Comparar fecha con hoy                            
+                    if (formattedDate < today) {
+                        // Si es antigua y se quedó en cola es como si no hubiera existido
+                        if (!res.queued) {
+                            oldReservations.push(res);
+                        }                                
                     }
                     else {
-                        // Separar actuales de antiguas
-                        let currentReservations = new Array();
-                        let oldReservations = new Array();
-                        let today = new Date();
-                        reservations.forEach((res) => {
-                            // Pasar la fecha a objeto Date para comparar
-                            let formattedDate = res.date.split('/');
-                            formattedDate = new Date(`${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}`);
-                            
-                            if (formattedDate < today) {
-                                oldReservations.push(res);
-                            }
-                            else {
-                                currentReservations.push(res);
-                            }
-                        });
+                        currentReservations.push(res);
+                    }
+                });
 
-                        next({
-                            ajax: false,
-                            status: 200,
-                            redirect: "user_reservations",
-                            data: {
-                                error: undefined,
-                                generalInfo: {
-                                    idUniversity: request.session.university.id,
-                                    name: request.session.university.name,
-                                    web: request.session.university.web,
-                                    address: request.session.university.address,
-                                    hasLogo: request.session.university.hasLogo,
-                                    idUser: request.session.currentUser.id,
-                                    isAdmin: request.session.currentUser.rol,
-                                    hasProfilePic: request.session.currentUser.hasProfilePic,
-                                    messagesUnread: nUnreadMessages
-                                },
-                                currentReservations: currentReservations,
-                                oldReservations: oldReservations
-                            }
-                        });    
+                next({
+                    ajax: false,
+                    status: 200,
+                    redirect: "user_reservations",
+                    data: {
+                        error: undefined,
+                        generalInfo: {
+                            idUniversity: request.session.university.id,
+                            name: request.session.university.name,
+                            web: request.session.university.web,
+                            address: request.session.university.address,
+                            hasLogo: request.session.university.hasLogo,
+                            idUser: request.session.currentUser.id,
+                            isAdmin: request.session.currentUser.rol,
+                            hasProfilePic: request.session.currentUser.hasProfilePic,
+                            messagesUnread: request.unreadMessages
+                        },
+                        currentReservations: currentReservations,
+                        oldReservations: oldReservations
                     }
                 });
             }
