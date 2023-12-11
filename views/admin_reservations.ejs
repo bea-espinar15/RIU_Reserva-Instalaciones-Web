@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/reservations.css">
 </head>
 
-<body data-error="<%= error %>">
+<body data-error="<%= JSON.stringify(error) %>">
     <!-- Importar modal error -->
     <%- include("../public/modal.html") %>
     

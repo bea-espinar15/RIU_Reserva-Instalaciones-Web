@@ -12,11 +12,13 @@ class MessageController {
     }
 
     // Métodos
+
+    // --- GET ---
     // Cargar mensajes
     mails (request, response, next) {
         this.daoMes.readAll(request.session.currentUser.id, (error, messages) => {
             if (error) {
-                errorHandler.manageError(error, "error", next);
+                errorHandler.manageError(error, {}, "error", next);
             }
             else {
                 next({
@@ -49,7 +51,7 @@ class MessageController {
         // Obtener mensajes no leídos
         this.daoMes.messagesUnread(request.session.currentUser.id, (error, nUnreadMessages) => {
             if (error) {
-                errorHandler.manageError(error, "error", next);
+                errorHandler.manageError(error, {}, "error", next);
             }
             else {
                 request.unreadMessages = nUnreadMessages;
@@ -57,6 +59,8 @@ class MessageController {
             }
         });
     }
+
+    // --- POST ---
 
 }
 

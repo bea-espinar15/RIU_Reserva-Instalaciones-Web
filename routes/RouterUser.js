@@ -8,12 +8,16 @@ const path = require("path");
 const express = require("express");
 const multer = require("multer");
 const { check, validationResult } = require("express-validator");
+const moment = require('moment');
 
 // --- Multer ---
 const multerFactory = multer({ storage: multer.memoryStorage() });
 
 // --- Crear router ---
 const RouterUser = express.Router();
+
+// --- BodyParser (Express) ---
+RouterUser.use(express.urlencoded({extended: true}));
 
 // Obtener pool
 function routerConfig(facController, mesController, resController, uniController, useController) {
@@ -33,8 +37,31 @@ function routerConfig(facController, mesController, resController, uniController
     // Reservas
     RouterUser.get("/reservas", mesController.unreadMessages, resController.userReservations);
 
-    
     // --- Peticiones POST ---
+    // Reservar
+    RouterUser.post(
+        "/reservar",
+        // Ninguno de los campos vacíos 
+        check("date", "1").notEmpty(),
+        check("hour", "1").notEmpty(),
+        check("idFacility", "1").notEmpty(),
+        check("idFacilityType", "1").notEmpty(),
+        check("nPeople", "1").notEmpty(),
+        // Campos son números
+        check("idFacility", "-4").isNumeric(),
+        check("idFacilityType", "-4").isNumeric(),
+        check("nPeople", "7").isNumeric(),
+        // Nº personas > 0
+        check("nPeople", "7").custom((nPeople) => { return nPeople > 0 }),
+        // Comprobar que la fecha no cae en sábado o domingo
+        check("date", "9").custom((date) => {
+            let dateObj = new Date(date);
+            return !(dateObj.getDay() === 0 || dateObj.getDay() === 6);
+        }),   
+        mesController.unreadMessages,     
+        resController.reserve
+    );
+    
     // [TODO]
 
 }

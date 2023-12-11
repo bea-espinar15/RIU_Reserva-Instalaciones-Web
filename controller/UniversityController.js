@@ -15,6 +15,8 @@ class UniversityController {
     }
 
     // Métodos
+
+    // --- GET ---
     // Obtener correos de las universidades registradas
     universityMails(request, response, next) {
         this.daoUni.readAll((error, universities) => {
@@ -64,7 +66,7 @@ class UniversityController {
         if (errors.isEmpty()) {
             this.daoUni.readPic(request.params.id, (error, pic) => {
                 if (error) {
-                    errorHandler.manageError(error, "error", next);
+                    errorHandler.manageError(error, {}, "error", next);
                 }
                 else {
                     next({
@@ -76,7 +78,7 @@ class UniversityController {
             });
         }
         else {
-            errorHandler.manageError(parseInt(errors.array()[0].msg), "error", next);
+            errorHandler.manageError(parseInt(errors.array()[0].msg), {}, "error", next);
         }
     }
 
@@ -103,6 +105,8 @@ class UniversityController {
             }
         });
     }
+
+    // --- POST ---
 }
 
 module.exports = UniversityController;

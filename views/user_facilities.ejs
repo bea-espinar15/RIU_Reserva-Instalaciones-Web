@@ -9,7 +9,7 @@
     <script src="/js/user_facilities.js"></script>
 </head>
 
-<body data-error="<%= error %>">
+<body data-error="<%= JSON.stringify(error) %>">
     <!-- Importar modal error -->
     <%- include("../public/modal.html") %>
     
@@ -60,13 +60,17 @@
                 <p id="p-warning-res-type">¡Atención! Esta instalación es colectiva. Otros pueden reservarla al mismo tiempo si el aforo lo permite.</p>
             </div>
             <!-- Info instalación -->
-            <form class="col-xl-7 offset-xl-1 d-flex flex-column">
+            <form id="form-reserve" method="POST" action="/usuario/reservar" class="col-xl-7 offset-xl-1 d-flex flex-column">
                 <!-- Fecha -->
                 <label id="label-facility-date" for="input-facility-date">Día de la reserva</label>
-                <input id="input-facility-date" type="date">
+                <input id="input-facility-date" name="date" type="date">
                 <!-- Hora -->
                 <p class="mt-2 mb-1">Hora:</p>
                 <div id="div-hours"></div>
+                <input id="input-hour" name="hour" type="hour" hidden="true">
+                <!-- Info instalación (oculto) -->
+                <input id="input-id-facility" name="idFacility" type="text" hidden="true">
+                <input id="input-id-facility-type" name="idFacilityType" type="text" hidden="true">
                 <!-- Botón reservar -->
                 <button id="button-reserve" type="button" data-bs-toggle="modal" data-bs-target="#div-modal-reserve" class="button-riu bg-riu-primary">Termina tu reserva</button>
                 <!-- Modal confirmar reserva -->
@@ -85,12 +89,12 @@
                             <!-- Body: formulario -->
                             <div class="modal-body d-flex flex-column">
                                 <!-- Fecha y hora -->
-                                <p>Fecha: 21/02/2024</p>
-                                <p>Hora: 13:00</p>
+                                <p id="p-date"></p>
+                                <p id="p-hour"></p>
                                 <!-- N-people -->
                                 <div>
                                     <label for="input-facility-n-people">¿Cuántos vais a ser?</label>
-                                    <input id="input-facility-n-people" type="number">
+                                    <input id="input-facility-n-people" name="nPeople" type="number" min="1">
                                 </div>
                                 <!-- Cola -->
                                 <p class="d-none">

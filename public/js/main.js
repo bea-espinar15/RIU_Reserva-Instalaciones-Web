@@ -22,6 +22,7 @@ $(() => {
         }
         // Error
         else {
+            console.log(error.title);
             modalErrorHeader.addClass("bg-riu-light-gray");
             imgModalError.attr("src","/img/icons/error.png");
             imgModalError.attr("alt","Icono de error");

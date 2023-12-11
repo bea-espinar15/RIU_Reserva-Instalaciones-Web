@@ -23,18 +23,19 @@ class UserController {
     }
 
     // Métodos
-    // -- GET --
+
+    // --- GET ---
     // Comprobar si un usuario está baneado
     userBanned(request, response, next) {
         this.daoUse.read(request.session.currentUser.id, (error, user) => {
             if (error) {
-                errorHandler.manageError(error, "error", next);
+                errorHandler.manageError(error, {}, "error", next);
             }
             else {
                 if (!user.enabled) {
                     // Cerrarle sesión y redirigirle al login
                     request.session.destroy();
-                    errorHandler.manageError(6, "login", next);
+                    errorHandler.manageError(6, {}, "login", next);
                 }
                 else {
                     next();
@@ -67,7 +68,7 @@ class UserController {
     users(request, response, next) {
         this.daoUse.readAll(request.session.university.id, (error, users) => {
             if (error) {
-                errorHandler.manageError(error, "error", next);
+                errorHandler.manageError(error, {}, "error", next);
             }
             else {
                 // Separar admins de no-admins
@@ -113,7 +114,7 @@ class UserController {
         if (errors.isEmpty()) {
             this.daoUse.readPic(request.params.id, (error, pic) => {
                 if (error) {
-                    errorHandler.manageError(error, "error", next);
+                    errorHandler.manageError(error, {}, "error", next);
                 }
                 else {
                     next({
@@ -125,7 +126,7 @@ class UserController {
             });
         }
         else {
-            errorHandler.manageError(parseInt(errors.array()[0].msg), "error", next);
+            errorHandler.manageError(parseInt(errors.array()[0].msg), {}, "error", next);
         }
     }
 
@@ -189,7 +190,7 @@ class UserController {
             // Obtener universidad
             this.daoUni.readByMail(uniMail, (error, university) => {
                 if (error) {
-                    errorHandler.manageError(error, next);
+                    errorHandler.manageError(error, {}, "error", next);
                 }
                 else {
                     // Obtener usuario
@@ -197,22 +198,22 @@ class UserController {
                     this.daoUse.readByUniversity(userMail, idUniversity, (error, user) => {
                         // Comprobar que existe en esa universidad
                         if (error) {
-                            errorHandler.manageError(error, "login", next);
+                            errorHandler.manageError(error, {}, "login", next);
                         }
                         else {
                             // Comprobar que el usuario está validado
                             if (!user.validated) {
-                                errorHandler.manageError(4, "login", next);
+                                errorHandler.manageError(4, {}, "login", next);
                             }
                             // Comprobar contraseña
                             else if (request.body.password != user.password) {
-                                errorHandler.manageError(5, "login", next);
+                                errorHandler.manageError(5, {}, "login", next);
                             }
                             else {
                                 // Obtener nº mensajes no leídos del usuario
                                 this.daoMes.messagesUnread(user.id, (error, nUnreadMessages) => {
                                     if (error) {
-                                        errorHandler.manageError(error, "login", next);
+                                        errorHandler.manageError(error, {}, "login", next);
                                     }
                                     else {
                                         // Quitar contraseña, no se guarda en la sesión
@@ -248,7 +249,7 @@ class UserController {
                                             // Obtener tipos de instalaciones de la universidad
                                             this.daoFac.readAllTypes(university.id, (error, types) => {
                                                 if (error) {
-                                                    errorHandler.manageError(error, "login", next);
+                                                    errorHandler.manageError(error, {}, "login", next);
                                                 }
                                                 else {
                                                     data.facilityTypes = types;
@@ -270,7 +271,7 @@ class UserController {
             });
         }
         else {
-            errorHandler.manageError(parseInt(errors.array()[0].msg), "login", next);
+            errorHandler.manageError(parseInt(errors.array()[0].msg), {}, "login", next);
         }
     }
 

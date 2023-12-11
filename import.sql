@@ -125,11 +125,12 @@ INSERT INTO RIU_USU_Usuario (activo, validado, nombre, apellido1, apellido2, cor
 (1, 0, 'Nicolas', 'Espinosa', 'Mooser', 'nicespmo', '1234', 0, 1),
 (1, 0, 'Axel', 'He', 'Expósito', 'axelheex', '1234', 0, 1),
 (0, 1, 'Andrés', 'Cardenal', 'Antón', 'ancardan', '1234', 0, 1),
+
 (1, 1, 'Jesús', 'Cáceres', 'Tello', 'jescacer', '1234', 1, 1),
 (1, 1, 'Antonio', 'Navarro', 'Martín', 'anavarro', '1234', 1, 1),
 (1, 1, 'Carlos', 'González', 'Calvo', 'cargonca', '1234', 1, 1),
 
-(1, 'Julia', 'Chacón', 'Labella', 'julia.chacon', '1234', 1, 5);
+(1, 1, 'Julia', 'Chacón', 'Labella', 'julia.chacon', '1234', 1, 5);
 
 
 -- TIPO INSTALACIÓN
@@ -187,8 +188,33 @@ INSERT INTO RIU_RES_Reserva (activo, id_usuario, id_instalación, n_personas, fe
 
 
 -- CORREO
+-- 1 Beatriz
+-- 2 Lucas
+-- 3 Santiago
+-- 4 Nicolas
+-- 5 Axel
+-- 6 Andrés
+-- 7 Jesús*
+-- 8 Antonio*
+-- 9 Carlos*
+
 INSERT INTO RIU_MEN_Mensaje (id_usuario_origen, id_usuario_destino, mensaje, asunto, fecha_envío, fecha_leído) VALUES
-(1, 2, 'Hola Beatriz', 'Segundo mensaje', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
+(7, 1, 'Hola Beatriz, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
+
+(7, 2, 'Hola Lucas, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
+
+(7, 3, 'Hola Santiago, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
+
+(7, 6, 'Hola Andrés, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
+(7, 6, 'Hola Andrés, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
+
+(8, 7, 'Hola Jesús, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
+(8, 7, 'Hola Jesús, tu cuenta ahora es de administrador', 'Ahora eres admin', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
+
+(8, 9, 'Hola Carlos, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
+(8, 9, 'Hola Carlos, tu cuenta ahora es de administrador', 'Ahora eres admin', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
+
+(1, 2, 'Hola Lucas', 'Saludo', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
 (1, 3, 'Hola Jesús', 'Primer mensaje', '2023-11-25 10:10:10', '2023-11-26 10:10:10'),
 
 (2, 1, 'Adiós Lucas', 'Primera respuesta', '2023-11-26 23:18:06', '2023-11-27 23:18:06'),

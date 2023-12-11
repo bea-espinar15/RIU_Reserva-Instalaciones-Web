@@ -16,17 +16,19 @@ class FacilityController {
     }
 
     // Métodos
+
+    // --- GET ---
     // Instalaciones de una universidad
     facilities(request, response, next) {
         let idUniversity = request.session.university.id;
         this.daoFac.readAll(idUniversity, (error, facilities) => {
             if (error) {
-                errorHandler.manageError(error, "error", next);
+                errorHandler.manageError(error, {}, "error", next);
             }
             else {
                 this.daoFac.readAllTypes(idUniversity, (error, types) => {
                     if (error) {
-                        errorHandler.manageError(error, "error", next);
+                        errorHandler.manageError(error, {}, "error", next);
                     }
                     else {
                         next({
@@ -60,7 +62,7 @@ class FacilityController {
     facilityTypes(request, response, next) {
         this.daoFac.readAllTypes(request.session.university.id, (error, types) => {
             if (error) {
-                errorHandler.manageError(error, "error", next);
+                errorHandler.manageError(error, {}, "error", next);
             }
             else {
                 next({
@@ -94,9 +96,14 @@ class FacilityController {
             let idType = request.params.id;
             this.daoFac.readFacilitiesByType(idType, (error, facilities) => {
                 if (error) {
-                    errorHandler.manageError(error, "error", next);
+                    errorHandler.manageError(error, {}, "error", next);
                 }
                 else {
+                    // Actualizar variables de sesión
+                    request.session.facilities = facilities;
+                    request.session.facilityTypeName = facilities[0].facilityTypeName;
+                    request.session.facilityTypeHasPic = facilities[0].facilityTypeHasPic;
+                    // Render
                     next({
                         ajax: false,
                         status: 200,
@@ -123,7 +130,7 @@ class FacilityController {
             });
         }
         else {
-            errorHandler.manageError(parseInt(errors.array()[0].msg), "error", next);
+            errorHandler.manageError(parseInt(errors.array()[0].msg), {}, "error", next);
         }
     }
 
@@ -133,7 +140,7 @@ class FacilityController {
         if (errors.isEmpty()) {
             this.daoFac.readFacilityTypePic(request.params.id, (error, pic) => {
                 if (error) {
-                    errorHandler.manageError(error, "error", next);
+                    errorHandler.manageError(error, {}, "error", next);
                 }
                 else {
                     next({
@@ -145,7 +152,7 @@ class FacilityController {
             });
         }
         else {
-            errorHandler.manageError(parseInt(errors.array()[0].msg), "error", next);
+            errorHandler.manageError(parseInt(errors.array()[0].msg), {}, "error", next);
         }
     }
 
@@ -155,7 +162,7 @@ class FacilityController {
         if (errors.isEmpty()) {
             this.daoFac.readFacilityPic(request.params.id, (error, pic) => {
                 if (error) {
-                    errorHandler.manageError(error, "error", next);
+                    errorHandler.manageError(error, {}, "error", next);
                 }
                 else {
                     next({
@@ -167,9 +174,11 @@ class FacilityController {
             });
         }
         else {
-            errorHandler.manageError(parseInt(errors.array()[0].msg), "error", next);
+            errorHandler.manageError(parseInt(errors.array()[0].msg), {}, "error", next);
         }
     }
+
+    // --- POST ---
 }
 
 module.exports = FacilityController;

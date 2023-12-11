@@ -169,7 +169,7 @@ input, select {
 }
 
 .button-riu:hover {
-    background-color: hsl(var(--primary-h), var(--primary-s), calc(var(--primary-l) * 0.8));
+    filter: brightness(90%);
 }
 
 /* --- Otros --- */
@@ -190,15 +190,12 @@ input, select {
 
 #button-modal-error-ok {
     padding: 1rem 2rem;
-} 
-
-#button-modal-error-ok:hover {
-    background-color: var(--primary);
-} 
+}
 
 #h1-modal-error {
     margin-left: 1rem !important;
     font-size: 1.3rem;
+    color: var(--black);
 }
 
 #img-modal-error {

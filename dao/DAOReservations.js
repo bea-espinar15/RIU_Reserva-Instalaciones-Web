@@ -7,11 +7,35 @@ class DAOReservations {
     constructor(pool){
         this.pool = pool;
         
+        this.create = this.create.bind(this);
         this.readAll = this.readAll.bind(this);
         this.readAllByUser = this.readAllByUser.bind(this);
+        this.readByUnique = this.readByUnique.bind(this);
+        this.readByDateAndHour = this.readByDateAndHour.bind(this);
     }
 
     // Métodos
+    // Crear reserva
+    create(reservation, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "INSERT INTO RIU_RES_Reserva (id_usuario, id_instalación, n_personas, fecha, hora, cola) VALUES (?, ?, ?, ?, ?, ?)";
+                connection.query(querySQL, [reservation.idUser, reservation.idFacility, reservation.nPeople, reservation.date, reservation.hour, reservation.queued], (error, row) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        callback(null);
+                    }
+                });
+            }
+        });
+    }
+
     // Leer todas
     readAll(idUniversity, callback) {
         this.pool.getConnection((error, connection) => {
@@ -22,7 +46,7 @@ class DAOReservations {
                 let querySQL = "SELECT RES.*, INS.nombre AS nombreInstalación, USU.correo AS correoUsuario"
                 + " FROM ((RIU_RES_Reserva AS RES JOIN RIU_INS_Instalación AS INS ON RES.id_instalación = INS.id)"
                 + " JOIN RIU_TIN_Tipo_Instalación AS TIN ON INS.id_tipo = TIN.id)"
-                + " JOIN RIU_USU_Usuario AS USU ON RES.id_usuario = USU.id WHERE TIN.id_universidad = ?";
+                + " JOIN RIU_USU_Usuario AS USU ON RES.id_usuario = USU.id WHERE TIN.id_universidad = ? ORDER BY RES.fecha ASC";
                 connection.query(querySQL, [idUniversity], (error, rows) => {
                     connection.release();
                     if (error) {
@@ -63,7 +87,7 @@ class DAOReservations {
             else {
                 let querySQL = "SELECT RES.*, INS.nombre AS nombreInstalación, INS.foto AS fotoInstalación, TIN.id AS idTipoInstalación, TIN.foto AS fotoTipoInstalación"
                 + " FROM (RIU_RES_Reserva AS RES JOIN RIU_INS_Instalación AS INS ON RES.id_instalación = INS.id) JOIN RIU_TIN_Tipo_Instalación AS TIN ON INS.id_tipo = TIN.id"
-                + " WHERE RES.id_usuario = ?";
+                + " WHERE RES.id_usuario = ? ORDER BY RES.fecha ASC";
                 connection.query(querySQL, [idUser], (error, rows) => {
                     connection.release();
                     if (error) {
@@ -97,6 +121,83 @@ class DAOReservations {
         });
     }
 
+    // Leer reservas realizadas en un momento
+    readByUnique(idUser, idFacility, date, hour, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "SELECT * FROM RIU_RES_Reserva AS RES WHERE id_usuario = ? AND id_instalación = ? AND fecha = ? AND hora = ? AND activo = 1";
+                connection.query(querySQL, [idUser, idFacility, date, hour], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.length > 1) {
+                            callback(-1);
+                        }
+                        else if (rows.length === 0) {
+                            callback(null, null);
+                        }
+                        else {
+                            // Construir objeto
+                            let reservation = {
+                                id: rows[0].id,
+                                enabled: rows[0].activo,
+                                idUser: rows[0].id_usuario,
+                                idFacility: rows[0].id_instalación,
+                                nPeople: rows[0].n_personas,
+                                date: utils.formatDate(rows[0].fecha),
+                                hour: utils.formatHour(rows[0].hora),
+                                queued: rows[0].cola ? true : false,
+                                reservationDate: utils.formatDate(rows[0].fecha_reserva)
+                            }
+                            callback(null, reservation);
+                        }    
+                    }
+                });
+            }
+        });
+    }
+
+    // Leer reservas realizadas en un momento
+    readByDateAndHour(date, hour, idFacility, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "SELECT * FROM RIU_RES_Reserva AS RES WHERE fecha = ? AND hora = ? AND id_instalación = ?";
+                connection.query(querySQL, [date, hour, idFacility], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        // Construir objeto
+                        let reservations = new Array();
+                        rows.forEach(row => {
+                            let reservation = {
+                                id: row.id,
+                                enabled: row.activo,
+                                idUser: row.id_usuario,
+                                idFacility: row.id_instalación,
+                                nPeople: row.n_personas,
+                                date: utils.formatDate(row.fecha),
+                                hour: utils.formatHour(row.hora),
+                                queued: row.cola ? true : false,
+                                reservationDate: utils.formatDate(row.fecha_reserva)
+                            }
+                            reservations.push(reservation);
+                        });
+                        callback(null, reservations);
+                    }
+                });
+            }
+        });
+    }
 }
 
 module.exports = DAOReservations;
