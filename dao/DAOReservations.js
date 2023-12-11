@@ -19,7 +19,8 @@ class DAOReservations {
                 callback(-1);
             }
             else {
-                let querySQL = "SELECT RES.*, INS.nombre AS nombreInstalación, USU.correo AS correoUsuario FROM ((RIU_RES_Reserva AS RES JOIN RIU_INS_Instalación AS INS ON RES.id_instalación = INS.id)"
+                let querySQL = "SELECT RES.*, INS.nombre AS nombreInstalación, USU.correo AS correoUsuario"
+                + " FROM ((RIU_RES_Reserva AS RES JOIN RIU_INS_Instalación AS INS ON RES.id_instalación = INS.id)"
                 + " JOIN RIU_TIN_Tipo_Instalación AS TIN ON INS.id_tipo = TIN.id)"
                 + " JOIN RIU_USU_Usuario AS USU ON RES.id_usuario = USU.id WHERE TIN.id_universidad = ?";
                 connection.query(querySQL, [idUniversity], (error, rows) => {
@@ -42,7 +43,7 @@ class DAOReservations {
                                 queued: row.cola ? true : false,
                                 reservationDate: utils.formatDate(row.fecha_reserva),
                                 facilityName: row.nombreInstalación,
-                                userName: row.correoUsuario
+                                userName: row.correoUsuario                                
                             }
                             reservations.push(reservation);
                         });
@@ -60,7 +61,9 @@ class DAOReservations {
                 callback(-1);
             }
             else {
-                let querySQL = "SELECT RES.*, INS.nombre AS nombreInstalación FROM RIU_RES_Reserva AS RES JOIN RIU_INS_Instalación AS INS ON RES.id_instalación = INS.id WHERE RES.id_usuario = ?";
+                let querySQL = "SELECT RES.*, INS.nombre AS nombreInstalación, INS.foto AS fotoInstalación, TIN.id AS idTipoInstalación, TIN.foto AS fotoTipoInstalación"
+                + " FROM (RIU_RES_Reserva AS RES JOIN RIU_INS_Instalación AS INS ON RES.id_instalación = INS.id) JOIN RIU_TIN_Tipo_Instalación AS TIN ON INS.id_tipo = TIN.id"
+                + " WHERE RES.id_usuario = ?";
                 connection.query(querySQL, [idUser], (error, rows) => {
                     connection.release();
                     if (error) {
@@ -80,7 +83,10 @@ class DAOReservations {
                                 hour: utils.formatHour(row.hora),
                                 queued: row.cola ? true : false,
                                 reservationDate: utils.formatDate(row.fecha_reserva),
-                                facilityName: row.nombreInstalación
+                                facilityName: row.nombreInstalación,
+                                hasPic: row.fotoInstalación ? true : false,
+                                idFacilityType: row.idTipoInstalación,
+                                typeHasPic: row.fotoTipoInstalación ? true : false
                             }
                             reservations.push(reservation);
                         });

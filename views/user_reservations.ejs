@@ -36,8 +36,10 @@
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#div-current-reservation-<%= i %>" aria-expanded="false" aria-controls="div-current-reservation-<%= i %>">
                                             <!-- Foto instalación reservada -->
-                                            <% if (currentReservations.hasPic) { %>
-                                                <img src="/fotoInstalación/<%= cr.idFacility %>" alt="Foto instalación reservada" width="60" height="60">
+                                            <% if (cr.hasPic) { %>
+                                                <img src="/fotoInstalacion/<%= cr.idFacility %>" alt="Foto instalación reservada" width="60" height="60">
+                                            <% } else if (cr.typeHasPic) { %>
+                                                <img src="/fotoTipoInstalacion/<%= cr.idFacilityType %>" alt="Foto instalación reservada" width="60" height="60">
                                             <% } else { %>
                                                 <img src="/img/default/facility.png" alt="Foto instalación reservada" width="60" height="60">
                                             <% } %>
@@ -122,9 +124,10 @@
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed old" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#div-old-reservation-<%= i %>" aria-expanded="false" aria-controls="div-old-reservation-<%= i %>">
-                                            <!-- Foto instalación reservada -->
-                                            <% if (oldReservations.hasPic) { %>
-                                                <img src="/fotoInstalación/<%= or.idFacility %>" alt="Foto instalación reservada" width="60" height="60">
+                                            <% if (or.hasPic) { %>
+                                                <img src="/fotoInstalacion/<%= or.idFacility %>" alt="Foto instalación reservada" width="60" height="60">
+                                            <% } else if (or.typeHasPic) { %>
+                                                <img src="/fotoTipoInstalacion/<%= or.idFacilityType %>" alt="Foto instalación reservada" width="60" height="60">
                                             <% } else { %>
                                                 <img src="/img/default/facility.png" alt="Foto instalación reservada" width="60" height="60">
                                             <% } %>

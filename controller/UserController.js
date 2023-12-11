@@ -5,13 +5,17 @@ const errorHandler = require("../errorHandler");
 
 class UserController {
     // Constructor
-    constructor(daoUse, daoUni, daoMes, daoFac) {
+    constructor(daoUse, daoUni, daoFac, daoMes) {
         this.daoUse = daoUse;
         this.daoUni = daoUni;
-        this.daoMes = daoMes;
         this.daoFac = daoFac;
+        this.daoMes = daoMes;
 
+        this.userBanned = this.userBanned.bind(this);
+        this.isAdmin = this.isAdmin.bind(this);
+        this.accessPicAllowed = this.accessPicAllowed.bind(this);
         this.users = this.users.bind(this);
+        this.profilePic = this.profilePic.bind(this);
         this.profile = this.profile.bind(this);
         this.adminIndex = this.adminIndex.bind(this);
         this.login = this.login.bind(this);
@@ -20,6 +24,45 @@ class UserController {
 
     // Métodos
     // -- GET --
+    // Comprobar si un usuario está baneado
+    userBanned(request, response, next) {
+        this.daoUse.read(request.session.currentUser.id, (error, user) => {
+            if (error) {
+                errorHandler.manageError(error, "error", next);
+            }
+            else {
+                if (!user.enabled) {
+                    // Cerrarle sesión y redirigirle al login
+                    request.session.destroy();
+                    errorHandler.manageError(6, "login", next);
+                }
+                else {
+                    next();
+                }
+            }
+        });
+    }
+
+    // Comprobar si un usuario es admin
+    isAdmin(request, response, next) {        
+        if (request.session.currentUser.rol) {
+            next();
+        }
+        else {
+            errorHandler.manageAJAXError(-3, next);
+        }
+    }
+
+    // Comprobar si un usuario (no admin) está intentando acceder a otra foto de perfil
+    accessPicAllowed(request, response, next) {
+        if (request.session.currentUser.rol || parseInt(request.params.id) === request.session.currentUser.id) {
+            next();
+        }
+        else {
+            errorHandler.manageAJAXError(-3, next);
+        }
+    }
+
     // Obtener todos los usuarios
     users(request, response, next) {
         this.daoUse.readAll(request.session.university.id, (error, users) => {
@@ -62,6 +105,28 @@ class UserController {
                 });
             }
         });
+    }
+
+    // Obtener foto de perfil de un usuario
+    profilePic(request, response, next) {        
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            this.daoUse.readPic(request.params.id, (error, pic) => {
+                if (error) {
+                    errorHandler.manageError(error, "error", next);
+                }
+                else {
+                    next({
+                        ajax: true,
+                        error: false,
+                        img: pic
+                    });
+                }
+            });
+        }
+        else {
+            errorHandler.manageError(parseInt(errors.array()[0].msg), "error", next);
+        }
     }
 
     // Cargar perfil
@@ -194,10 +259,10 @@ class UserController {
                                                         data: data
                                                     });
                                                 }
-                                            });                                            
+                                            });
                                         }
                                     }
-                                });
+                                });                                
                             }
                         }
                     });

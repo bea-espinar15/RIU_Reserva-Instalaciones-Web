@@ -26,7 +26,11 @@
             <label for="input-filter-date">Fecha</label>
             <input id="input-filter-date" type="date">
             <label for="input-filter-faculty">Facultad</label>
-            <select id="input-faculty"></select>
+            <select id="input-faculty">
+                <% faculties.forEach((fac) => { %>
+                    <option value="<%= fac.name %>"><%= fac.name %></option>
+                <% }); %>
+            </select>
             <label for="input-filter-facility">Instalación</label>
             <input id="input-filter-facility" type="text" placeholder="Escribe aquí...">
             <input id="input-sb-filter" type="submit" value="Filtrar" class="button-riu bg-riu-primary">

@@ -7,9 +7,9 @@
         <div>
             <a id="a-nav" href="/inicio" class="d-flex align-items-center">
                 <% if (generalInfo.hasLogo) { %>
-                    <img src="/fotoUniversidad/<%= generalInfo.idUniversity %>" alt="Logo <%= generalInfo.name %>" width="60">
+                    <img src="/fotoUniversidad/<%= generalInfo.idUniversity %>" alt="Logo <%= generalInfo.name %>" width="60" height="60">
                 <% } else { %>
-                        <img src="/img/default/university.png" alt="Logo universidad por defecto" width="60">
+                    <img src="/img/default/university.png" alt="Logo universidad por defecto" width="60">
                 <% } %>
                 <h1 id="h1-nav">
                     <%= generalInfo.name %>

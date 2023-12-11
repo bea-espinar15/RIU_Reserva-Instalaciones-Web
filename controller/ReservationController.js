@@ -4,9 +4,9 @@ const errorHandler = require("../errorHandler");
 
 class ReservationController {
     // Constructor
-    constructor (daoRes, daoMes) {
+    constructor (daoRes, daoUni) {
         this.daoRes = daoRes;
-        this.daoMes = daoMes;
+        this.daoUni = daoUni;
 
         this.reservations = this.reservations.bind(this);
         this.userReservations = this.userReservations.bind(this);
@@ -21,27 +21,36 @@ class ReservationController {
                 errorHandler.manageError(error, "error", next);
             }
             else {
-                next({
-                    ajax: false,
-                    status: 200,
-                    redirect: "admin_reservations",
-                    data: {
-                        error: undefined,
-                        generalInfo: {
-                            idUniversity: idUniversity,
-                            name: request.session.university.name,
-                            web: request.session.university.web,
-                            address: request.session.university.address,
-                            hasLogo: request.session.university.hasLogo,
-                            idUser: request.session.currentUser.id,
-                            isAdmin: request.session.currentUser.rol,
-                            hasProfilePic: request.session.currentUser.hasProfilePic,
-                            messagesUnread: request.unreadMessages
-                        },
-                        reservations: reservations,
-                        filters: new Array()
+                // Obtener facultades
+                this.daoUni.readAllFaculties(request.session.university.mail, (error, faculties) => {
+                    if (error) {
+                        errorHandler.manageError(error, "error", next);
                     }
-                });
+                    else {
+                        next({
+                            ajax: false,
+                            status: 200,
+                            redirect: "admin_reservations",
+                            data: {
+                                error: undefined,
+                                generalInfo: {
+                                    idUniversity: idUniversity,
+                                    name: request.session.university.name,
+                                    web: request.session.university.web,
+                                    address: request.session.university.address,
+                                    hasLogo: request.session.university.hasLogo,
+                                    idUser: request.session.currentUser.id,
+                                    isAdmin: request.session.currentUser.rol,
+                                    hasProfilePic: request.session.currentUser.hasProfilePic,
+                                    messagesUnread: request.unreadMessages
+                                },
+                                reservations: reservations,
+                                filters: new Array(),
+                                faculties: faculties
+                            }
+                        });
+                    }
+                });                
             }
         });
     }

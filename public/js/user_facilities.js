@@ -32,6 +32,7 @@ $(() => {
     const buttonFilter = $("#button-filter");
     const noFacilityMessage = $("#p-no-facilities");
     // Contenido de la instalación
+    const facilityPic = $("#img-facility-pic");
     const nameFacility = $("#h2-facility-name");
     const warningResType = $("#p-warning-res-type");
     const facilityDate = $("#input-facility-date");
@@ -58,7 +59,11 @@ $(() => {
         let divFacility = $(this);
         divFacility.on("click", () => {
             let facility = divFacility.data("facility");
+            let typeHasPic = divFacility.data("typehaspic");
             // Rellenar contenido del div
+            if (facility.hasPic) { facilityPic.attr("src", `/fotoInstalacion/${facility.id}`); }
+            else if (typeHasPic) { facilityPic.attr("src", `/fotoTipoInstalacion/${facility.idType}`); }
+            else { facilityPic.attr("src", "/img/default/facility.png"); }
             nameFacility.text(facility.name);
             if (!facility.typeRes) { warningResType.show(); }
             else { warningResType.hide(); }

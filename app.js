@@ -74,11 +74,11 @@ const daoRes = new DAOReservations(pool);
 const daoUni = new DAOUniversities(pool);
 const daoUse = new DAOUsers(pool);
 // Crear instancias de los Controllers
-const facController = new FacilityController(daoFac, daoMes);
+const facController = new FacilityController(daoFac);
 const mesController = new MessageController(daoMes);
-const resController = new ReservationController(daoRes, daoMes);
+const resController = new ReservationController(daoRes, daoUni);
 const uniController = new UniversityController(daoUni);
-const useController = new UserController(daoUse, daoUni, daoMes, daoFac);
+const useController = new UserController(daoUse, daoUni, daoFac, daoMes);
 
 // [!] BORRAR
 const testData = require("./delete"); 
@@ -100,22 +100,6 @@ function userLogged(request, response, next) {
     }
 };
 
-// [!] Comprobar que el usuario no está baneado
-function userBanned(request, response, next) {
-    next();
-};
-
-// [!] Comprobar que el usuario es admin
-function isAdmin(request, response, next) {
-    next();
-}
-
-// [!] Comprobar que el ID es el del usuario
-function accessPicAllowed(request, response, next) {
-    next();
-}
-
-
 // --- Peticiones GET ---
 
 // - Rutas -
@@ -130,7 +114,7 @@ app.get("/login", (request, response, next) => {
 });
 
 // Inicio
-app.get(["/", "/inicio"], userLogged, userBanned, (request, response, next) => {
+app.get(["/", "/inicio"], userLogged, useController.userBanned, (request, response, next) => {
     if (request.session.currentUser.rol) { // Admin
         response.redirect("/admin/inicio");
     }
@@ -140,7 +124,7 @@ app.get(["/", "/inicio"], userLogged, userBanned, (request, response, next) => {
 });
 
 // Reservas
-app.get("/reservas", userLogged, userBanned, (request, response, next) => {
+app.get("/reservas", userLogged, useController.userBanned, (request, response, next) => {
     if (request.session.currentUser.rol) { // Admin
         response.redirect("/admin/reservas");
     }
@@ -154,30 +138,46 @@ routerAdmin.routerConfig(facController, mesController, resController, uniControl
 routerUser.routerConfig(facController, mesController, resController, uniController, useController);
 routerPersonal.routerConfig(facController, mesController, resController, uniController, useController);
 
-app.use("/admin", userLogged, userBanned, isAdmin, routerAdmin.RouterAdmin);
-app.use("/personal", userLogged, userBanned, routerPersonal.RouterPersonal);
-app.use("/usuario", userLogged, userBanned, routerUser.RouterUser);
+app.use("/admin", userLogged, useController.userBanned, useController.isAdmin, routerAdmin.RouterAdmin);
+app.use("/personal", userLogged, useController.userBanned, routerPersonal.RouterPersonal);
+app.use("/usuario", userLogged, useController.userBanned, routerUser.RouterUser);
 
 // - Otras peticiones GET -
 // Imagen del usuario
-app.get("/fotoPerfil/:id", userLogged, userBanned, accessPicAllowed, (request, response, next) => {
-    response.end(undefined);
-});
+app.get(
+    "/fotoPerfil/:id", 
+    userLogged,
+    check("id", "-2").isNumeric(),
+    useController.userBanned, 
+    useController.accessPicAllowed,
+    useController.profilePic
+);
 
 // Logo de la universidad
-app.get("/fotoUniversidad/:id", userLogged, userBanned, (request, response, next) => {
-    response.end(undefined);
-});
+app.get(
+    "/fotoUniversidad/:id", 
+    userLogged,
+    check("id", "-2").isNumeric(),
+    useController.userBanned, 
+    uniController.universityPic
+);
 
 // Foto del tipo de instalación
-app.get("/fotoTipoInstalación/:id", userLogged, userBanned, (request, response, next) => {
-    response.end(undefined);
-});
+app.get(
+    "/fotoTipoInstalacion/:id", 
+    userLogged,
+    check("id", "-2").isNumeric(),
+    useController.userBanned, 
+    facController.facilityTypePic    
+);
 
 // Foto de la instalación
-app.get("/fotoInstalación/:id", userLogged, userBanned, (request, response, next) => {
-    response.end(undefined);
-});
+app.get("/fotoInstalacion/:id",
+    userLogged,
+    check("id", "-2").isNumeric(),
+    useController.userBanned,
+    facController.facilityPic
+);
 
 // Correos de las universidades registradas
 app.get("/correosDisponibles", uniController.universityMails);

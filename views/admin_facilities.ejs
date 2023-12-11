@@ -43,7 +43,7 @@
                             <h2><%= fac.name %></h2>
                             <p><%= fac.facilityTypeName %></p>
                         </div>
-                        <button type="button" class="button-see-more bg-riu-primary-dark align-items-end" data-facility="<%= JSON.stringify(fac) %>">Ver más</button>
+                        <button type="button" class="button-see-more bg-riu-primary-dark align-items-end" data-facility="<%= JSON.stringify(fac) %>" data-typehaspic="<%= (facilityTypes.find(type => type.id === fac.idType)).hasPic %>">Ver más</button>
                     </div>
                 <% }); %>
             </div>
@@ -96,7 +96,7 @@
                     </div>
                     <!-- Foto -->
                     <div id="div-facility-pic" class="col-xl-7 offset-xl-1 d-flex flex-column align-items-center">
-                        <img src="/img/default/facility.png" alt="Imagen instalación" width="270">
+                        <img id="img-facility-pic" src="" alt="Imagen instalación" width="270" height="270">
                         <input id="input-facility-picture" type="file" class="input-facility-pic">
                     </div>
                 </div>

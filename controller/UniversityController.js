@@ -1,5 +1,6 @@
 "use strict"
 
+const { validationResult } = require("express-validator");
 const errorHandler = require("../errorHandler");
 
 class UniversityController {
@@ -9,6 +10,7 @@ class UniversityController {
         
         this.universityMails = this.universityMails.bind(this);
         this.faculties = this.faculties.bind(this);
+        this.universityPic = this.universityPic.bind(this);
         this.adminSettings = this.adminSettings.bind(this);
     }
 
@@ -54,6 +56,28 @@ class UniversityController {
                 });
             }
         });  
+    }
+
+    // Obtener foto de la universidad
+    universityPic(request, response, next) {        
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            this.daoUni.readPic(request.params.id, (error, pic) => {
+                if (error) {
+                    errorHandler.manageError(error, "error", next);
+                }
+                else {
+                    next({
+                        ajax: true,
+                        error: false,
+                        img: pic
+                    });
+                }
+            });
+        }
+        else {
+            errorHandler.manageError(parseInt(errors.array()[0].msg), "error", next);
+        }
     }
 
     // Cargar configuración de admin

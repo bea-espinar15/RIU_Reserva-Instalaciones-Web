@@ -1,5 +1,6 @@
 "use strict"
 
+
 const utils = require("../utils");
 
 class DAOFacilities {
@@ -11,6 +12,8 @@ class DAOFacilities {
         this.readAllTypes = this.readAllTypes.bind(this);
         this.readFacilitiesByType = this.readFacilitiesByType.bind(this);
         this.readTypeById = this.readTypeById.bind(this);
+        this.readFacilityTypePic = this.readFacilityTypePic.bind(this);
+        this.readFacilityPic = this.readFacilityPic.bind(this);
     }
 
     // Métodos
@@ -93,7 +96,7 @@ class DAOFacilities {
                 callback(-1);
             }
             else {
-                let querySQL = "SELECT INS.*, TIN.nombre AS nombreTipo FROM RIU_INS_Instalación AS INS JOIN RIU_TIN_Tipo_Instalación AS TIN ON INS.id_tipo = TIN.id WHERE TIN.id = ?";
+                let querySQL = "SELECT INS.*, TIN.nombre AS nombreTipo, TIN.foto AS fotoTipo FROM RIU_INS_Instalación AS INS JOIN RIU_TIN_Tipo_Instalación AS TIN ON INS.id_tipo = TIN.id WHERE TIN.id = ?";
                 connection.query(querySQL, [idType], (error, rows) => {
                     connection.release();
                     if (error) {
@@ -113,7 +116,8 @@ class DAOFacilities {
                                 capacity: row.aforo,
                                 hasPic: row.foto ? true : false,
                                 idType: row.id_tipo,
-                                facilityTypeName: row.nombreTipo
+                                facilityTypeName: row.nombreTipo,
+                                facilityTypeHasPic: (row.fotoTipo ? true : false)
                             }
                             facilities.push(facility);
                         });
@@ -146,6 +150,62 @@ class DAOFacilities {
                             idUniversity: row.id_universidad
                         }
                         callback(null, type);
+                    }
+                });
+            }
+        });
+    }
+
+    // Obtener foto de un tipo de instalación
+    readFacilityTypePic(idFacilityType, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "SELECT foto FROM RIU_TIN_Tipo_Instalación AS TIN WHERE id = ?";
+                connection.query(querySQL, [idFacilityType], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.length != 1) {
+                            callback(-1);
+                        }
+                        else {
+                            // Construir objeto
+                            let pic = rows[0].foto;
+                            callback(null, pic);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    // Obtener foto de una instalación
+    readFacilityPic(idFacility, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "SELECT foto FROM RIU_INS_Instalación AS INS WHERE id = ?";
+                connection.query(querySQL, [idFacility], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.length != 1) {
+                            callback(-1);
+                        }
+                        else {
+                            // Construir objeto
+                            let pic = rows[0].foto;
+                            callback(null, pic);
+                        }
                     }
                 });
             }

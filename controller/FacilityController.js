@@ -5,13 +5,14 @@ const errorHandler = require("../errorHandler");
 
 class FacilityController {
     // Constructor
-    constructor(daoFac, daoMes) {
+    constructor(daoFac) {
         this.daoFac = daoFac;
-        this.daoMes = daoMes;
 
-        this.facilities = this.facilities.bind(this);
-        this.facilitiesByType = this.facilitiesByType.bind(this);
+        this.facilities = this.facilities.bind(this);        
         this.facilityTypes = this.facilityTypes.bind(this);
+        this.facilitiesByType = this.facilitiesByType.bind(this);
+        this.facilityTypePic = this.facilityTypePic.bind(this);
+        this.facilityPic = this.facilityPic.bind(this);
     }
 
     // Métodos
@@ -114,8 +115,53 @@ class FacilityController {
                                 messagesUnread: request.unreadMessages
                             },
                             facilities: facilities,
-                            facilityTypeName: facilities[0].facilityTypeName
+                            facilityTypeName: facilities[0].facilityTypeName,
+                            facilityTypeHasPic: facilities[0].facilityTypeHasPic
                         }
+                    });
+                }
+            });
+        }
+        else {
+            errorHandler.manageError(parseInt(errors.array()[0].msg), "error", next);
+        }
+    }
+
+    // Obtener foto de un tipo de instalación
+    facilityTypePic(request, response, next) {        
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            this.daoFac.readFacilityTypePic(request.params.id, (error, pic) => {
+                if (error) {
+                    errorHandler.manageError(error, "error", next);
+                }
+                else {
+                    next({
+                        ajax: true,
+                        error: false,
+                        img: pic
+                    });
+                }
+            });
+        }
+        else {
+            errorHandler.manageError(parseInt(errors.array()[0].msg), "error", next);
+        }
+    }
+
+    // Obtener foto de una instalación
+    facilityPic(request, response, next) {        
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            this.daoFac.readFacilityPic(request.params.id, (error, pic) => {
+                if (error) {
+                    errorHandler.manageError(error, "error", next);
+                }
+                else {
+                    next({
+                        ajax: true,
+                        error: false,
+                        img: pic
                     });
                 }
             });

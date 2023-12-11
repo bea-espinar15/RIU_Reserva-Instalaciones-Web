@@ -39,7 +39,7 @@
                             <h2><%= fac.name %></h2>
                             <p><%= fac.startHour %> - <%= fac.endHour %></p>
                         </div>
-                        <button type="button" class="button-see-more bg-riu-primary-dark align-items-end" data-facility="<%= JSON.stringify(fac) %>">Reservar</button>
+                        <button type="button" class="button-see-more bg-riu-primary-dark align-items-end" data-facility="<%= JSON.stringify(fac) %>" data-typehaspic="<%= facilityTypeHasPic %>">Reservar</button>
                     </div>
                 <% }); %>
             </div>
@@ -54,8 +54,8 @@
                     </svg>
                     Atrás
                 </button>
-                <img src="/img/default/facility.png" alt="Imagen instalación" width="270">
                 <!-- JQuery -->
+                <img id="img-facility-pic" src="" alt="Imagen instalación" width="270" height="270">                
                 <h2 id="h2-facility-name"></h2>
                 <p id="p-warning-res-type">¡Atención! Esta instalación es colectiva. Otros pueden reservarla al mismo tiempo si el aforo lo permite.</p>
             </div>

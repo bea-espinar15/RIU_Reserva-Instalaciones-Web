@@ -175,10 +175,12 @@
 
     #div-show-facility img {
         width: 12rem;
+        height: 12rem;
     }
 
     #div-modal-reserve img {
         width: 20px; 
+        height: 20px; 
     }
 }
 

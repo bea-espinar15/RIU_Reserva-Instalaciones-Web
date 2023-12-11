@@ -7,6 +7,8 @@ class DAOUniversities {
 
         this.readAll = this.readAll.bind(this);
         this.readByMail = this.readByMail.bind(this);
+        this.readPic = this.readPic.bind(this);
+        this.readAllFaculties = this.readAllFaculties.bind(this);
     }
 
     // Métodos
@@ -72,6 +74,34 @@ class DAOUniversities {
                                 hasLogo: rows[0].logo ? true : false
                             }
                             callback(null, university);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    // Obtener foto de la universidad
+    readPic(idUniversity, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "SELECT logo FROM RIU_UNI_Universidad AS UNI WHERE id = ?";
+                connection.query(querySQL, [idUniversity], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.length != 1) {
+                            callback(-1);
+                        }
+                        else {
+                            // Construir objeto
+                            let pic = rows[0].logo;
+                            callback(null, pic);
                         }
                     }
                 });

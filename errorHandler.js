@@ -17,6 +17,11 @@ function generateError(cod) {
             title = "Petición incorrecta";
             message = "Esta dirección no es válida.";
         } break;
+        case -3: {
+            code = 403;
+            title = "Acceso no premitido";
+            message = "No sé a dónde estabas intentando acceder, pero no puedes!";
+        } break;
         // Bad Request
         case 1: {
             code = 400;
@@ -42,6 +47,11 @@ function generateError(cod) {
             code = 400;
             title = "Contraseña no válida";
             message = "La contraseña introducida no es correcta";
+        } break;
+        case 6: {
+            code = 403;
+            title = "Acceso no permitido";
+            message = "Has sido baneado de la aplicación por un administrados. Si crees que ha sido un problema, contacta con un superior de tu universidad.";
         } break;
         default: {
             code = 500;

@@ -11,6 +11,7 @@ $(() => {
     const buttonSearch = $("#button-search");
     const noFacilityMessage = $("#p-no-facilities");
     // Contenido de la instalación
+    const facilityPic = $("#img-facility-pic");
     const nameFacility = $("#input-facility-name");
     const typeFacility = $("#input-facility-type");
     const buttonModalNewType = $("#button-modal-new-type");
@@ -42,7 +43,11 @@ $(() => {
         let divFacility = $(this);
         divFacility.on("click", () => {
             let facility = divFacility.data("facility");
+            let typeHasPic = divFacility.data("typehaspic");
             // Rellenar contenido del div
+            if (facility.hasPic) { facilityPic.attr("src", `/fotoInstalacion/${facility.id}`); }
+            else if (typeHasPic) { facilityPic.attr("src", `/fotoTipoInstalacion/${facility.idType}`); }
+            else { facilityPic.attr("src", "/img/default/facility.png"); }
             nameFacility.attr("value", facility.name);
             typeFacility.val(facility.facilityTypeName);
             startHourFacility.attr("value", facility.startHour);
