@@ -35,6 +35,19 @@ function routerConfig(facController, mesController, resController, uniController
     RouterAdmin.get("/reservas", mesController.unreadMessages, resController.reservations);
 
     // --- Peticiones POST ---
+    // Cambiar configuración
+    RouterAdmin.post(
+      "/cambiarConfiguracion",
+      multerFactory.single("settingsPic"),       
+      // Ninguno de los campos vacíos 
+      check("settingsName", "1").notEmpty(),
+      check("settingsAddress", "1").notEmpty(),
+      check("settingsWeb", "1").notEmpty(),
+      // Regex web correcto
+      check("settingsWeb", "13").isURL(),      
+      uniController.changeSettings  
+    );
+    
     // [TODO]
 
 }

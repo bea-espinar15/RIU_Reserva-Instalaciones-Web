@@ -117,7 +117,6 @@ class ReservationController {
     // --- POST ---
     // Hacer una reserva
     reserve(request, response, next) {
-        console.log("Hola 1");
         let data = {
             generalInfo: {
                 idUniversity: request.session.university.id,
@@ -134,10 +133,8 @@ class ReservationController {
             facilityTypeName: request.session.facilityTypeName,
             facilityTypeHasPic: request.session.facilityTypeHasPic
         }
-        console.log("Hola 2");
         const errors = validationResult(request);
         if (errors.isEmpty()) {
-            console.log("Hola 3");
             // Obtener parámetros de entrada
             let idFacility = request.body.idFacility;
             let date = request.body.date;
@@ -155,18 +152,15 @@ class ReservationController {
             else {
                 // Comprobar que la instalación es válida
                 this.daoFac.read(idFacility, request.session.university.id, (error, facility) => {
-                    console.log("Hola 4");
                     if (error) {
                         errorHandler.manageError(error, data, "user_facilities", next);
                     }
                     else {
-                        console.log("Hola 5");
                         // Comprobar que Nº personas <= Aforo
                         if (nPeople > facility.capacity) {
                             errorHandler.manageError(10, data, "user_facilities", next);
                         }
                         else {
-                            console.log("Hola 6");
                             // Comprobar hora en los intervalos válidos de la instalación
                             // Pasar horas de string a moment
                             let hourMoment = moment(hour, "HH:mm");
@@ -176,7 +170,6 @@ class ReservationController {
                                 errorHandler.manageError(11, data, "user_facilities", next);
                             }
                             else {
-                                console.log("Hola 7");
                                 // Comprobar si no había reservado ya esa instalación ese día a esa hora
                                 this.daoRes.readByUnique(request.session.currentUser.id, idFacility, date, hour, (error, reservation) => {
                                     if (error) {
@@ -194,7 +187,6 @@ class ReservationController {
                                                 }
                                                 else {
                                                     this.queued(facility.reservationType, reservations, nPeople, facility.capacity, (queued) => {
-                                                        console.log("Hola 8");
                                                         let newReservation = {
                                                             idUser: request.session.currentUser.id,
                                                             idFacility: facility.id,
@@ -217,7 +209,6 @@ class ReservationController {
                                                                     title: "Reserva realizada",
                                                                     message: msg
                                                                 }
-                                                                console.log(data);
                                                                 next({
                                                                     ajax: false,
                                                                     status: 200,
@@ -239,8 +230,6 @@ class ReservationController {
             }
         }
         else {
-            console.log("AQUI");
-            console.log(errors.array()[0]);
             errorHandler.manageError(parseInt(errors.array()[0].msg), data, "user_facilities", next);
         }
     }

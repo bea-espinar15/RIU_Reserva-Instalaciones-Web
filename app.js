@@ -80,9 +80,6 @@ const resController = new ReservationController(daoRes, daoUni, daoFac);
 const uniController = new UniversityController(daoUni);
 const useController = new UserController(daoUse, daoUni, daoFac, daoMes);
 
-// [!] BORRAR
-const testData = require("./delete"); 
-
 // --- VARIABLES GLOBALES ---
 const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /(?=.*[A-Za-z])(?=.*\d).{8,}/;

@@ -1,5 +1,7 @@
 "use strict"
 
+const { query } = require("express");
+
 class DAOUniversities {
     // Constructor
     constructor(pool) {
@@ -9,6 +11,7 @@ class DAOUniversities {
         this.readByMail = this.readByMail.bind(this);
         this.readPic = this.readPic.bind(this);
         this.readAllFaculties = this.readAllFaculties.bind(this);
+        this.changeSettings = this.changeSettings.bind(this);
     }
 
     // Métodos
@@ -139,6 +142,42 @@ class DAOUniversities {
                             });
                             
                             callback(null, faculties);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    // Cambiar parámetros universidad
+    changeSettings(newSettings, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                // Si no se ha modificado la foto, no se actualiza
+                let changePic = ", logo = ?";
+                let where = " WHERE id = ?"
+                let querySQL = "UPDATE RIU_UNI_Universidad SET nombre = ?, web = ?, dirección = ?";
+                let params = [newSettings.name, newSettings.web, newSettings.address, newSettings.idUniversity];
+                if (newSettings.pic) { 
+                    querySQL += changePic; 
+                    params.splice(3, 0, newSettings.pic);
+                }
+                querySQL += where;
+                // Ejecutar query
+                connection.query(querySQL, params, (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.affectedRows === 0) {
+                            callback(-1);
+                        }
+                        else {
+                            callback(null);
                         }
                     }
                 });

@@ -88,6 +88,16 @@ function generateError(cod) {
             title = "Reserva fallida";
             message = "Ya habías realizado una reserva de esta instalación en el día y la hora indicados. Si deseas modificar la que hiciste, deberás cancelarala y volver a realizarla, pero se te sacará de la cola.";
         } break;
+        case 13: {
+            code = 400;
+            title = "Dirección web no válida";
+            message = "La dirección web proporcionada no es una URL válida.";
+        } break;
+        case 14: {
+            code = 400;
+            title = "Imagen no válida";
+            message = "La imagen debe ser un fichero de tipo .png y no superar los 64KB.";
+        } break;
         default: {
             code = 500;
             title = "Error desconocido";
@@ -116,7 +126,6 @@ function manageError(error, data, redirect, next) {
     // Bad Request
     else {
         data.error = errorObj;
-        console.log(data);
         next({
             ajax: false,
             status: errorObj.code,

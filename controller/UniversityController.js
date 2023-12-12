@@ -12,6 +12,7 @@ class UniversityController {
         this.faculties = this.faculties.bind(this);
         this.universityPic = this.universityPic.bind(this);
         this.adminSettings = this.adminSettings.bind(this);
+        this.changeSettings = this.changeSettings.bind(this);
     }
 
     // Métodos
@@ -107,6 +108,87 @@ class UniversityController {
     }
 
     // --- POST ---
+    // Cambiar configuración
+    changeSettings(request, response, next) {
+        let data = {
+            generalInfo: {
+                idUniversity: request.session.university.id,
+                name: request.session.university.name,
+                web: request.session.university.web,
+                address: request.session.university.address,
+                hasLogo: request.session.university.hasLogo,
+                idUser: request.session.currentUser.id,
+                isAdmin: request.session.currentUser.rol,
+                hasProfilePic: request.session.currentUser.hasProfilePic,
+                messagesUnread: request.unreadMessages
+            },
+            university: request.session.university
+        }
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            let pic = request.file;
+            // Comprobar formato foto, si hay
+            if (pic && (pic.mimetype !== "image/png" || pic.size > 64 * 1024)) {
+                errorHandler.manageError(14, data, "admin_settings", next);
+            }
+            else {
+                let newSettings = {
+                    idUniversity: request.session.university.id,
+                    name: request.body.settingsName,
+                    address: request.body.settingsAddress,
+                    web: request.body.settingsWeb,                    
+                    pic: pic ? pic.buffer : null
+                }
+                // Actualizar
+                this.daoUni.changeSettings(newSettings, (error) => {
+                    if (error) {
+                        errorHandler.manageError(error, {}, "error", next);
+                    }
+                    else {
+                        // Actualizar variables de sesión
+                        let newUniversity = {
+                            id: request.session.university.id,
+                            name: newSettings.name,
+                            address: newSettings.address,
+                            web: newSettings.web,
+                            mail: request.session.university.mail,
+                            hasLogo: newSettings.pic ? true : request.session.university.hasLogo
+                        }
+                        request.session.university = newUniversity;
+                        // Reconstruimos data para redirigir a inicio
+                        let data = {
+                            error: {
+                                code: 200,
+                                title: "Configuración actualizada",
+                                message: "Los datos de la universidad se han modificado con éxito"
+                            },
+                            generalInfo: {
+                                idUniversity: newUniversity.id,
+                                name: newUniversity.name,
+                                web: newUniversity.web,
+                                address: newUniversity.address,
+                                hasLogo: newUniversity.hasLogo,
+                                idUser: request.session.currentUser.id,
+                                isAdmin: request.session.currentUser.rol,
+                                hasProfilePic: request.session.currentUser.hasProfilePic,
+                                messagesUnread: request.unreadMessages
+                            },
+                            adminName: request.session.currentUser.name
+                        } 
+                        next({
+                            ajax: false,
+                            status: 200,
+                            redirect: "admin_index",
+                            data: data
+                        });
+                    }
+                });
+            }
+        }
+        else {
+            errorHandler.manageError(parseInt(errors.array()[0].msg), data, "admin_settings", next);
+        }
+    }
 }
 
 module.exports = UniversityController;

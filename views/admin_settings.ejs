@@ -17,7 +17,7 @@
     <%- include("nav", { generalInfo: generalInfo }) %>
 
     <div id="div-settings" class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2 d-flex flex-column align-items-center">
-        <form method="POST" action="/admin/cambiarConfiguracion" class="d-flex flex-column w-100">
+        <form method="POST" action="/admin/cambiarConfiguracion" enctype="multipart/form-data" class="d-flex flex-column w-100">
             <h1>Configuración</h1>
             <div id="div-settings-form" class="d-flex">
                 <!-- Info universidad -->
@@ -38,7 +38,7 @@
                     <% } else { %>
                         <img src="/img/default/university.png" alt="Logo universidad por defecto" width="270">
                     <% } %>
-                    <input id="input-settings-logo" type="file">
+                    <input id="input-settings-logo" name="settingsPic" type="file">
                 </div>
             </div>
             <input id="input-sb-settings" type="submit" value="Guardar" class="button-riu bg-riu-primary">
