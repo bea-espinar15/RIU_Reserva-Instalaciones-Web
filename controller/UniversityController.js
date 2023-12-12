@@ -20,7 +20,6 @@ class UniversityController {
     // --- GET ---
     // Obtener correos de las universidades registradas
     universityMails(request, response, next) {
-        console.log("ESTOY AQUÍ 1");
         this.daoUni.readAll((error, universities) => {
             if (error) {                
                 errorHandler.manageAJAXError(error, next);

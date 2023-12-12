@@ -25,6 +25,7 @@ class UserController {
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
         this.signUp = this.signUp.bind(this);
+        this.validate = this.validate.bind(this);
     }
 
     // Métodos
@@ -389,6 +390,50 @@ class UserController {
         else {
             errorHandler.manageAJAXError(parseInt(errors.array()[0].msg), next);
         }        
+    }
+
+    // Validar usuario
+    validate(request, response, next) {
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            let idUser = request.body.idUser;
+            this.daoUse.read(idUser, (error, user) => {
+                if (error) {
+                    errorHandler.manageAJAXError(error, next);
+                }
+                else {
+                    if(!user.enabled){
+                        errorHandler.manageAJAXError(18, next);
+                    }
+                    else if (user.validated) {
+                        errorHandler.manageAJAXError(19, next);
+                    }
+                    else {
+                        this.daoUse.validate(idUser, (error) => {
+                            if (error) {
+                                errorHandler.manageAJAXError(error, next);
+                            }
+                            else {
+                                next({
+                                    ajax: true,
+                                    error: false,
+                                    img: false,
+                                    data: {
+                                        code: 200,
+                                        title: "Usuario validado",
+                                        message: "El usuario ha sido validado con éxito!"
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+            });
+
+        }
+        else {
+            errorHandler.manageAJAXError(parseInt(errors.array()[0].msg), next);
+        }
     }
 }
 

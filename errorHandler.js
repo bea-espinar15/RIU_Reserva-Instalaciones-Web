@@ -25,18 +25,23 @@ function generateError(cod) {
         case -4: {
             code = 403;
             title = "Instalación no válida";
-            message = "No tienes permiso para reservar esta instalación (o no existe)";
+            message = "No tienes permiso para reservar esta instalación (o no existe).";
+        } break;
+        case -5: {
+            code = 403;
+            title = "Usuario no existe";
+            message = "El usuario que quieres validar no existe.";
         } break;
         // Bad Request
         case 1: {
             code = 400;
             title = "Campos vacíos";
-            message = "Asegúrate de rellenar todos los campos";
+            message = "Asegúrate de rellenar todos los campos.";
         } break;
         case 2: {
             code = 400;
             title = "Correo no válido";
-            message = "Tu correo no pertenece a una universidad";
+            message = "Tu correo no pertenece a una universidad.";
         } break;
         case 3: {
             code = 400;
@@ -51,12 +56,12 @@ function generateError(cod) {
         case 5: {
             code = 400;
             title = "Contraseña no válida";
-            message = "La contraseña introducida no es correcta";
+            message = "La contraseña introducida no es correcta.";
         } break;
         case 6: {
             code = 403;
             title = "Acceso no permitido";
-            message = "Has sido baneado de la aplicación por un administrados. Si crees que ha sido un problema, contacta con un superior de tu universidad.";
+            message = "Has sido expulsado de la aplicación por un administrados. Si crees que ha sido un problema, contacta con un superior de tu universidad.";
         } break;
         case 7: {
             code = 400;
@@ -112,6 +117,16 @@ function generateError(cod) {
             code = 400;
             title = "Usuario ya registrado";
             message = "Este correo ya está registrado en la universidad.";
+        } break;
+        case 18: {
+            code = 400;
+            title = "Usuario expulsado";
+            message = "No se puede validar un usuario expulsado.";
+        } break;
+        case 19: {
+            code = 400;
+            title = "Usuario ya validado";
+            message = "Este usuario ya está validado.";
         } break;
         default: {
             code = 500;

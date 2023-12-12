@@ -1,5 +1,10 @@
 "use strict"
 
+// [TODO]
+function validateParams(params) {
+    return true;
+}
+
 $(() => {
 
     const users = $(".div-card-user");
@@ -10,7 +15,7 @@ $(() => {
 
     if (users.length === 0) {
         noUserMessage.show();
-    } 
+    }
     else {
         noUserMessage.hide();
     }
@@ -22,7 +27,7 @@ $(() => {
         if (checkboxPending.prop("checked")) {
             isSearching = true;
             checkboxPending.click();
-        }        
+        }
         event.preventDefault();
         let anyUser = false;
         let usersArray = users.toArray();
@@ -35,14 +40,14 @@ $(() => {
             }
             else {
                 divUser.hide();
-            }            
+            }
         });
         if (!anyUser) {
             noUserMessage.show();
-        } 
+        }
         else {
             noUserMessage.hide();
-        }        
+        }
     });
 
     // Filtrar pendientes de validar
@@ -65,12 +70,12 @@ $(() => {
                     }
                     else {
                         divUser.hide();
-                    }   
-                }                     
+                    }
+                }
             });
             if (!anyUser) {
                 noUserMessage.show();
-            } 
+            }
             else {
                 noUserMessage.hide();
             }
@@ -78,5 +83,65 @@ $(() => {
         else {
             isSearching = false;
         }
+    });
+
+
+    // POST Validar (AJAX)
+    const buttonsValidate = $(".button-sb-validate");
+
+    // Botón del modal respuesta/error
+    const buttonModalError = $("#button-modal-error");
+    const modalErrorHeader = $("#div-modal-error-header");
+    const imgModalError = $("#img-modal-error");
+    const modalErrorTitle = $("#h1-modal-error");
+    const modalErrorMessage = $("#p-modal-error");
+    const buttonErrorOk = $("#button-modal-error-ok");
+
+    buttonsValidate.each(function (i, button) {
+        let buttonVal = $(this);
+        buttonVal.on("click", (event) => {
+            event.preventDefault();
+            let idUser = buttonVal.data("iduser");
+            // Validación en cliente
+            if (validateParams(idUser)) {
+                // Petición POST
+                $.ajax({
+                    method: "POST",
+                    url: "/admin/validar",
+                    data: { idUser: idUser },
+                    success: (data, statusText, jqXHR) => {
+                        // Cambiar icono
+                        $(`#img-icon-${idUser}`).attr("src", "/img/icons/accepted.png");
+
+                        // Cambiar botones
+                        let divButtons = $(`#div-buttons-${idUser}`);
+                        divButtons.empty();
+                        divButtons.append($(`<button type="button" class="button-users bg-riu-red" data-bs-toggle="modal" data-bs-target="#div-modal-ban" data-idUser="${idUser}">Banear</button>`));
+                        divButtons.append($(`<button type="button" class="button-users bg-riu-primary-light button-make-admin" data-bs-toggle="modal" data-bs-target="#div-modal-make-admin" data-idUser="${idUser}">Hacer Admin</button>`));
+
+                        // Crear modal
+                        modalErrorTitle.text(data.title);
+                        modalErrorMessage.text(data.message);
+                        modalErrorHeader.addClass("bg-riu-light-green");
+                        imgModalError.attr("src", "/img/icons/success.png");
+                        imgModalError.attr("alt", "Icono de éxito");
+                        buttonErrorOk.addClass("bg-riu-green");
+                        // Mostrarlo
+                        buttonModalError.click();
+                    },
+                    error: (jqXHR, statusText, errorThrown) => {
+                        let error = jqXHR.responseJSON;
+                        modalErrorTitle.text(error.title);
+                        modalErrorMessage.text(error.message);
+                        modalErrorHeader.addClass("bg-riu-light-gray");
+                        imgModalError.attr("src", "/img/icons/error.png");
+                        imgModalError.attr("alt", "Icono de error");
+                        buttonErrorOk.addClass("bg-riu-red");
+                        // Mostrarlo
+                        buttonModalError.click();
+                    }
+                });
+            }
+        });
     });
 });

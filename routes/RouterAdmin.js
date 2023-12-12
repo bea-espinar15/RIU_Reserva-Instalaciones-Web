@@ -52,6 +52,17 @@ function routerConfig(facController, mesController, resController, uniController
     // Filtrar reservas
     RouterAdmin.post("/filtrarReservas", mesController.unreadMessages, resController.filter);
 
+    // Validar usuario
+    RouterAdmin.post(
+      "/validar",
+      // Ninguno de los campos vacíos 
+      check("idUser", "1").notEmpty(),
+      // Campos son números
+      check("idUser", "-5").isNumeric(),
+      mesController.unreadMessages, 
+      useController.validate
+    );
+
     // [TODO]
 
 }

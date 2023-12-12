@@ -57,11 +57,11 @@
                                             <%= user.lastname1 %> 
                                             <%= user.lastname2 %> 
                                             <% if (!user.enabled) { %>
-                                                <img src="/img/icons/banned.png" alt="Usuario baneado" width="25" height="25">
+                                                <img id="img-icon-<%= user.id %>" src="/img/icons/banned.png" alt="Usuario baneado" width="25" height="25">
                                             <% } else if (user.validated) { %>
-                                                <img src="/img/icons/accepted.png" alt="Usuario normal" width="25" height="25">
+                                                <img id="img-icon-<%= user.id %>" src="/img/icons/accepted.png" alt="Usuario normal" width="25" height="25">
                                             <% } else { %>
-                                                <img src="/img/icons/pending.png" alt="Usuario pendiente de validar" width="25" height="25">
+                                                <img id="img-icon-<%= user.id %>" src="/img/icons/pending.png" alt="Usuario pendiente de validar" width="25" height="25">
                                             <% } %>
                                         </h2>
                                         <p><%= user.mail %>@<%= universityMail %></p>
@@ -70,12 +70,12 @@
                                 </div>
                                 <!-- Botones -->
                                 <% if (user.enabled) { %>
-                                    <div class="div-buttons d-flex flex-column">
+                                    <div id="div-buttons-<%= user.id %>" class="div-buttons d-flex flex-column">
                                             <% if (user.validated) { %>
                                                 <button type="button" class="button-users bg-riu-red" data-bs-toggle="modal" data-bs-target="#div-modal-ban" data-idUser="<%= user.id %>">Banear</button>
                                                 <button type="button" class="button-users bg-riu-primary-light button-make-admin" data-bs-toggle="modal" data-bs-target="#div-modal-make-admin" data-idUser="<%= user.id %>">Hacer Admin</button>
                                             <% } else { %>
-                                                <button type="button" class="button-users bg-riu-green" data-idUser="<%= user.id %>">Validar</button>
+                                                <button type="button" class="button-sb-validate button-users bg-riu-green" data-idUser="<%= user.id %>">Validar</button>
                                             <% } %>                   
                                     </div>
                                 <% } %>
