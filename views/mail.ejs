@@ -69,7 +69,12 @@
                         <div id="div-mail-admin" class="d-flex align-items-center">
                             <div>
                                 <label id="label-faculty" for="input-faculty" title="Enviar a todos los usuarios de una facultad">Facultad:</label>
-                                <select id="input-faculty"></select>
+                                <select id="input-faculty">
+                                    <option value="">Selecciona una opción</option>
+                                    <% faculties.forEach((fac) => { %>
+                                        <option value="<%= fac.name %>"><%= fac.name %></option>
+                                    <% }); %>
+                                </select>
                             </div>                                
                             <label id="label-university" title="Enviar a toda la universidad" class="d-flex align-items-center">
                                 <input id="input-university" type="checkbox" class="checkbox-riu">

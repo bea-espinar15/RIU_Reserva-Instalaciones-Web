@@ -26,6 +26,18 @@ function routerConfig(facController, mesController, resController, uniController
     RouterPersonal.get("/perfil", mesController.unreadMessages, useController.profile);
 
     // --- Peticiones POST ---
+    // Enviar mensaje
+    RouterPersonal.post(
+        "/enviarMensaje",
+        // Mensaje no vacío
+        check("message", "1").notEmpty(),
+        // No hay @
+        check("mail", "22").custom((mail) => {
+            return !mail.includes("@");
+        }),
+        mesController.sendMessage
+    );
+
     // [TODO]
 
 }

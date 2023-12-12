@@ -11,6 +11,7 @@ class DAOUsers {
         this.readAll = this.readAll.bind(this);
         this.readByUniversity = this.readByUniversity.bind(this);
         this.readUserByMail = this.readUserByMail.bind(this);
+        this.readAllByFaculty = this.readAllByFaculty.bind(this);
         this.readPic = this.readPic.bind(this);
     }
     
@@ -164,7 +165,7 @@ class DAOUsers {
                             callback(-1);
                         }
                         else if (rows.length === 0) {
-                            callback(3);
+                            callback(null, null);
                         }
                         else {
                             // Construir objeto
@@ -213,6 +214,43 @@ class DAOUsers {
                         else {
                             callback(null);
                         }
+                    }
+                });
+            }
+        });
+    }
+
+    // Leer usuarios de una facultad
+    readAllByFaculty(nameFaculty, idUniversity, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "SELECT USU.* FROM RIU_USU_Usuario AS USU JOIN RIU_FAC_Facultad AS FAC ON USU.id_facultad = FAC.id WHERE USU.activo = 1 AND FAC.nombre = ? AND FAC.id_universidad = ?"
+                connection.query(querySQL, [nameFaculty, idUniversity], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        let users = new Array();
+                        rows.forEach(row => {
+                            let user = {
+                                id: row.id,
+                                enabled: row.activo,
+                                validated: row.validado,
+                                name: row.nombre,
+                                lastname1: row.apellido1,
+                                lastname2: row.apellido2,
+                                mail: row.correo,
+                                hasProfilePic: row.foto ? true : false,
+                                rol: row.rol,
+                                idFaculty: row.id_facultad
+                            };
+                            users.push(user);
+                        });
+                        callback(null, users);
                     }
                 });
             }

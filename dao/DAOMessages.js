@@ -7,11 +7,37 @@ class DAOMessages {
     constructor(pool){
         this.pool = pool;
 
+        this.create = this.create.bind(this);
         this.readAll = this.readAll.bind(this);
         this.messagesUnread = this.messagesUnread.bind(this);
     }
 
     // Métodos
+    // Crear
+    create(newMessage, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "INSERT INTO RIU_MEN_Mensaje (id_usuario_origen, id_usuario_destino, mensaje, asunto) VALUES (?, ?, ?, ?)";
+                connection.query(querySQL, [newMessage.idSender, newMessage.idReceiver, newMessage.message, newMessage.subject], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.affectedRows != 1) {
+                            callback(-1);
+                        }
+                        else {
+                            callback(null);
+                        }
+                    }
+                });
+            }
+        });
+    }
 
     // Leer todos
     readAll(idUser, callback) {

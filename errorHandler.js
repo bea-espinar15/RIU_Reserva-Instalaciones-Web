@@ -143,6 +143,21 @@ function generateError(cod) {
             title = "Reserva pasada";
             message = "No puedes cancelar una reserva que ya ha pasado.";
         } break;
+        case 22: {
+            code = 400;
+            title = "Usuario no válido";
+            message = "Recuerda introducir correctamente el correo del usuario al que quieres escribir sólo con la parte que va antes del @.";
+        } break;
+        case 23: {
+            code = 400;
+            title = "Usuario no válido";
+            message = "El usuario al que deseas mandar el mensaje no existe en tu organización o no está validado todavía.";
+        } break;
+        case 24: {
+            code = 400;
+            title = "Destino no válido";
+            message = "Sólo puedes enviar un mensaje a una de estas tres opciones: un usuario particular, todos los usuarios de una facultad o todos los usuarios de la universidad.";
+        } break;
         default: {
             code = 500;
             title = "Error desconocido";

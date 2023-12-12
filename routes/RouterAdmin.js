@@ -59,7 +59,6 @@ function routerConfig(facController, mesController, resController, uniController
       check("idUser", "1").notEmpty(),
       // ID es un número
       check("idUser", "-5").isNumeric(),
-      mesController.unreadMessages, 
       useController.validate
     );
 

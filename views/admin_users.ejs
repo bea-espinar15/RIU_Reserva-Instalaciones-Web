@@ -72,7 +72,7 @@
                                 <% if (user.enabled) { %>
                                     <div id="div-buttons-<%= user.id %>" class="div-buttons d-flex flex-column">
                                             <% if (user.validated) { %>
-                                                <button type="button" class="button-users bg-riu-red" data-bs-toggle="modal" data-bs-target="#div-modal-ban" data-idUser="<%= user.id %>">Banear</button>
+                                                <button type="button" class="button-users bg-riu-red" data-bs-toggle="modal" data-bs-target="#div-modal-ban" data-idUser="<%= user.id %>">Expulsar</button>
                                                 <button type="button" class="button-users bg-riu-primary-light button-make-admin" data-bs-toggle="modal" data-bs-target="#div-modal-make-admin" data-idUser="<%= user.id %>">Hacer Admin</button>
                                             <% } else { %>
                                                 <button type="button" class="button-sb-validate button-users bg-riu-green" data-idUser="<%= user.id %>">Validar</button>

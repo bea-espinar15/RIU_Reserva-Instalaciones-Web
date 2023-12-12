@@ -107,14 +107,14 @@ INSERT INTO RIU_UNI_Universidad (nombre, web, dirección, correo) VALUES
 
 -- FACULTAD
 INSERT INTO RIU_FAC_Facultad (nombre, id_universidad) VALUES
-('Facultad de Informática', 1),
-('Facultad de Derecho', 1),
-('Facultad de Medicina', 1),
-('Facultad de Bellas Artes', 1),
+('Informática', 1),
+('Derecho', 1),
+('Medicina', 1),
+('Bellas Artes', 1),
 
-('Facultad de Ciencias', 2),
-('Facultad de Filosofía y Letras', 2),
-('Facultad de Psicología', 2);
+('Ciencias', 2),
+('Filosofía y Letras', 2),
+('Psicología', 2);
 
 
 -- USUARIOS
