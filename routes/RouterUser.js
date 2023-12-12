@@ -62,6 +62,17 @@ function routerConfig(facController, mesController, resController, uniController
         resController.reserve
     );
     
+    // Cancelar reserva
+    RouterUser.post(
+      "/cancelar",
+      // ID no vacío 
+      check("idReservation", "1").notEmpty(),
+      // ID es un número
+      check("idReservation", "-6").isNumeric(),
+      mesController.unreadMessages, 
+      resController.cancel  
+    );
+
     // [TODO]
 
 }

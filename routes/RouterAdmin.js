@@ -55,9 +55,9 @@ function routerConfig(facController, mesController, resController, uniController
     // Validar usuario
     RouterAdmin.post(
       "/validar",
-      // Ninguno de los campos vacíos 
+      // ID no vacío 
       check("idUser", "1").notEmpty(),
-      // Campos son números
+      // ID es un número
       check("idUser", "-5").isNumeric(),
       mesController.unreadMessages, 
       useController.validate

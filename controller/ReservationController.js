@@ -16,6 +16,7 @@ class ReservationController {
         this.userReservations = this.userReservations.bind(this);
         this.reserve = this.reserve.bind(this);
         this.filter = this.filter.bind(this);
+        this.cancel = this.cancel.bind(this);
         this.queued = this.queued.bind(this);
     }
 
@@ -156,7 +157,7 @@ class ReservationController {
             }
             else {
                 // Comprobar que la instalación es válida
-                this.daoFac.read(idFacility, request.session.university.id, (error, facility) => {
+                this.daoFac.readByUniversity(idFacility, request.session.university.id, (error, facility) => {
                     if (error) {
                         errorHandler.manageError(error, data, "user_facilities", next);
                     }
@@ -293,6 +294,158 @@ class ReservationController {
                 });
             }
         });
+    }
+
+    // Cancelar reserva
+    cancel(request, response, next) {
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            // Comprobar que la reserva existe
+            this.daoRes.read(request.body.idReservation, (error, reservation) => {
+                if (error) {
+                    errorHandler.manageAJAXError(error, next);
+                }
+                else {
+                    // Comprobar que no estaba ya cancelada
+                    if (!reservation.enabled) {
+                        errorHandler.manageAJAXError(20, next);
+                    }
+                    else {
+                        let currentDate = moment(); // Momento actual
+                        // Juntar fecha y hora en un "moment"
+                        let dateAndHour = `${reservation.date} ${reservation.hour}`;
+                        let momentRes = moment(dateAndHour, 'DD/MM/AAAA HH:mm');
+                        // Comprobar que el día y la hora son posteriores a hoy
+                        if (momentRes.isBefore(currentDate)) {
+                            errorHandler.manageAJAXError(21, next);
+                        }
+                        else {
+                            // Cancelar
+                            this.daoRes.delete(reservation.id, (error) => {
+                                if (error) {
+                                    errorHandler.manageAJAXError(error, next);
+                                }
+                                else {
+                                    // Reformatear fecha
+                                    let dateParts = reservation.date.split('/');
+                                    reservation.date = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+                                    // Ver si había reservas en la cola y sacar a la primera si es posible
+                                    this.daoRes.readQueuedReservations(reservation.idFacility, reservation.date, reservation.hour, (error, reservations) => {
+                                        if (error) {
+                                            errorHandler.manageAJAXError(error, next);
+                                        }
+                                        else {
+                                            if (reservations.length > 0) {
+                                                // Coger la primera
+                                                let firstReservation = reservations[0];
+                                                // Reformatear fecha
+                                                dateParts = firstReservation.date.split('/');
+                                                firstReservation.date = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+                                                // Obtener instalación: si es individual directamente entra
+                                                this.daoFac.read(reservation.idFacility, (error, facility) => {
+                                                    if (error) {
+                                                        errorHandler.manageAJAXError(error, next);
+                                                    }
+                                                    else {
+                                                        if (facility.reservationType === "Individual") {
+                                                            this.daoRes.unqueue(firstReservation.id, (error) => {
+                                                                if (error) {
+                                                                    errorHandler.manageAJAXError(error, next);
+                                                                }
+                                                                else {
+                                                                    // Terminar
+                                                                    next({
+                                                                        ajax: true,
+                                                                        error: false,
+                                                                        img: false,
+                                                                        data: {
+                                                                            code: 200,
+                                                                            title: "Reserva cancelada",
+                                                                            message: "Tu reserva ha sido cancelada con éxito."
+                                                                        }
+                                                                    });
+                                                                }
+                                                            });
+                                                        }
+                                                        else {
+                                                            // Comprobar si cabe
+                                                            this.daoRes.readByDateAndHour(firstReservation.date, firstReservation.hour, firstReservation.idFacility, (error, reservations) => {
+                                                                if (error) {
+                                                                    errorHandler.manageAJAXError(error, next);
+                                                                }
+                                                                else {
+                                                                    let currentPeople = 0;
+                                                                    // Calcular espacios ocupados al quitar la reserva que se quiere cancelar
+                                                                    reservations.forEach((res) => {
+                                                                        if (!res.queued) {
+                                                                            currentPeople += res.nPeople;
+                                                                        }
+                                                                    });
+                                                                    // Si supera el aforo al meter la nueva reserva terminamos
+                                                                    if (currentPeople + firstReservation.nPeople > facility.capacity) {
+                                                                        next({
+                                                                            ajax: true,
+                                                                            error: false,
+                                                                            img: false,
+                                                                            data: {
+                                                                                code: 200,
+                                                                                title: "Reserva cancelada",
+                                                                                message: "Tu reserva ha sido cancelada con éxito."
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                    else {
+                                                                        // Si entra, la metemos en la cola
+                                                                        this.daoRes.unqueue(firstReservation.id, (error) => {
+                                                                            if (error) {
+                                                                                errorHandler.manageAJAXError(error, next);
+                                                                            }
+                                                                            else {
+                                                                                // Terminar
+                                                                                next({
+                                                                                    ajax: true,
+                                                                                    error: false,
+                                                                                    img: false,
+                                                                                    data: {
+                                                                                        code: 200,
+                                                                                        title: "Reserva cancelada",
+                                                                                        message: "Tu reserva ha sido cancelada con éxito."
+                                                                                    }
+                                                                                });
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                            // No había reservas en la cola
+                                            else {
+                                                next({
+                                                    ajax: true,
+                                                    error: false,
+                                                    img: false,
+                                                    data: {
+                                                        code: 200,
+                                                        title: "Reserva cancelada",
+                                                        message: "Tu reserva ha sido cancelada con éxito."
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        }
+        else {
+            errorHandler.manageAJAXError(parseInt(errors.array()[0].msg), next);
+        }
     }
 
     // Comprobar si la reserva debe ponerse en cola

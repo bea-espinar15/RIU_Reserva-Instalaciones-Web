@@ -20,7 +20,7 @@ class DAOMessages {
                 callback(-1);
             }
             else {
-                let querySQL = "SELECT MEN.*, USU.nombre AS nombreUsuarioOrigen FROM RIU_MEN_Mensaje AS MEN JOIN RIU_USU_Usuario AS USU ON MEN.id_usuario_origen = USU.id WHERE id_usuario_destino = ?";
+                let querySQL = "SELECT MEN.*, USU.correo AS correoUsuarioOrigen FROM RIU_MEN_Mensaje AS MEN JOIN RIU_USU_Usuario AS USU ON MEN.id_usuario_origen = USU.id WHERE id_usuario_destino = ?";
                 connection.query(querySQL, [idUser], (error, rows) => {
                     connection.release();
                     if (error) {
@@ -32,7 +32,7 @@ class DAOMessages {
                         rows.forEach(row => {
                             let message = {
                                 id: row.id,
-                                senderUsername: row.nombreUsuarioOrigen,
+                                senderUsername: row.correoUsuarioOrigen,
                                 message: row.mensaje,
                                 subject: row.asunto,
                                 sendDate: utils.formatDate(row.fecha_envío),

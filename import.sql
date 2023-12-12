@@ -119,18 +119,18 @@ INSERT INTO RIU_FAC_Facultad (nombre, id_universidad) VALUES
 
 -- USUARIOS
 INSERT INTO RIU_USU_Usuario (activo, validado, nombre, apellido1, apellido2, correo, contraseña, rol, id_facultad) VALUES
-(1, 1, 'Beatriz', 'Espinar', 'Aragón', 'beaesp01', '1234', 0, 1),
-(1, 1, 'Lucas', 'Bravo', 'Fairen', 'lucbravo', '1234', 0, 1),
-(1, 1, 'Santiago', 'Moral', 'Santorio', 'sanmosan', '1234', 0, 1),
-(1, 0, 'Nicolas', 'Espinosa', 'Mooser', 'nicespmo', '1234', 0, 1),
-(1, 0, 'Axel', 'He', 'Expósito', 'axelheex', '1234', 0, 1),
-(0, 1, 'Andrés', 'Cardenal', 'Antón', 'ancardan', '1234', 0, 1),
+(1, 1, 'Beatriz', 'Espinar', 'Aragón', 'beaesp01', '$2b$10$0HR20Vb0gg7DpWQLEVMGhu0.rUxneq2MEjMGuRziTohrvKPB7IANe', 0, 1),
+(1, 1, 'Lucas', 'Bravo', 'Fairen', 'lucbravo', '$2b$10$0HR20Vb0gg7DpWQLEVMGhu0.rUxneq2MEjMGuRziTohrvKPB7IANe', 0, 1),
+(1, 1, 'Santiago', 'Moral', 'Santorio', 'sanmosan', '$2b$10$0HR20Vb0gg7DpWQLEVMGhu0.rUxneq2MEjMGuRziTohrvKPB7IANe', 0, 1),
+(1, 0, 'Nicolas', 'Espinosa', 'Mooser', 'nicespmo', '$2b$10$0HR20Vb0gg7DpWQLEVMGhu0.rUxneq2MEjMGuRziTohrvKPB7IANe', 0, 1),
+(1, 0, 'Axel', 'He', 'Expósito', 'axelheex', '$2b$10$0HR20Vb0gg7DpWQLEVMGhu0.rUxneq2MEjMGuRziTohrvKPB7IANe', 0, 1),
+(0, 1, 'Andrés', 'Cardenal', 'Antón', 'ancardan', '$2b$10$0HR20Vb0gg7DpWQLEVMGhu0.rUxneq2MEjMGuRziTohrvKPB7IANe', 0, 1),
 
-(1, 1, 'Jesús', 'Cáceres', 'Tello', 'jescacer', '1234', 1, 1),
-(1, 1, 'Antonio', 'Navarro', 'Martín', 'anavarro', '1234', 1, 1),
-(1, 1, 'Carlos', 'González', 'Calvo', 'cargonca', '1234', 1, 1),
+(1, 1, 'Jesús', 'Cáceres', 'Tello', 'jescacer', '$2b$10$0HR20Vb0gg7DpWQLEVMGhu0.rUxneq2MEjMGuRziTohrvKPB7IANe', 1, 1),
+(1, 1, 'Antonio', 'Navarro', 'Martín', 'anavarro', '$2b$10$0HR20Vb0gg7DpWQLEVMGhu0.rUxneq2MEjMGuRziTohrvKPB7IANe', 1, 1),
+(1, 1, 'Carlos', 'González', 'Calvo', 'cargonca', '$2b$10$0HR20Vb0gg7DpWQLEVMGhu0.rUxneq2MEjMGuRziTohrvKPB7IANe', 1, 1),
 
-(1, 1, 'Julia', 'Chacón', 'Labella', 'julia.chacon', '1234', 1, 5);
+(1, 1, 'Julia', 'Chacón', 'Labella', 'julia.chacon', '$2b$10$0HR20Vb0gg7DpWQLEVMGhu0.rUxneq2MEjMGuRziTohrvKPB7IANe', 1, 5);
 
 
 -- TIPO INSTALACIÓN
@@ -169,62 +169,58 @@ INSERT INTO RIU_INS_Instalación (nombre, hora_ini, hora_fin, completo, tipo_res
 ('Salas de reunión 1 - Medicina', '09:00', '18:00', 0, 1, 5, 4),
 ('Salas de reunión 1 - Bellas Artes', '09:00', '18:00', 0, 1, 5, 4),
 
-('Sala de estudio 1 - Informática', '09:00', '18:00', 0, 0, 1, 5),
-('Sala de estudio 2 - Informática', '09:00', '18:00', 0, 0, 1, 5),
-('Sala de estudio 1 - Medicina', '09:00', '18:00', 0, 0, 1, 5),
-('Sala de estudio 1 - Bellas Artes', '09:00', '18:00', 0, 0, 1, 5),
-('Sala de estudio 2 - Bellas Artes', '09:00', '18:00', 0, 0, 1, 5);
-
+('Sala de estudio 1 - Informática', '09:00', '18:00', 0, 0, 10, 5),
+('Sala de estudio 2 - Informática', '09:00', '18:00', 0, 0, 10, 5),
+('Sala de estudio 1 - Medicina', '09:00', '18:00', 0, 0, 10, 5),
+('Sala de estudio 1 - Bellas Artes', '09:00', '18:00', 0, 0, 5, 5),
+('Sala de estudio 2 - Bellas Artes', '09:00', '18:00', 0, 0, 5, 5);
 
 -- RESERVA
 INSERT INTO RIU_RES_Reserva (activo, id_usuario, id_instalación, n_personas, fecha, hora, cola, fecha_reserva) VALUES
-(1, 1, 18, 1, '2023-12-15', '09:00:00', 0, '2023-11-26 18:06:23'),
-(1, 1, 1, 15, '2023-12-20', '09:00:00', 0, '2023-11-26 18:06:24'),
-(1, 1, 5, 87, '2023-12-13', '09:00:00', 0, '2023-11-26 18:06:25'),
+(1, 1, 18, 3, '2024-12-15', '09:00:00', 0, '2023-11-26 18:06:23'),
+(1, 1, 1, 15, '2024-12-20', '09:00:00', 0, '2023-11-26 18:07:24'),
+(1, 1, 5, 87, '2024-12-13', '09:00:00', 0, '2023-11-26 18:08:25'),
+(1, 1, 19, 5, '2024-12-15', '10:00:00', 0, '2023-11-26 18:09:26'),
 
-(1, 2, 18, 1, '2023-12-15', '09:00:00', 1, '2023-11-26 18:06:26'),
-(1, 2, 11, 220, '2023-12-15', '09:00:00', 0, '2023-11-26 18:06:27'),
-(1, 2, 5, 1, '2023-12-14', '09:00:00', 0, '2023-11-26 18:06:28');
+(1, 2, 18, 1, '2024-12-15', '09:00:00', 1, '2023-11-26 18:10:27'),
+(1, 2, 11, 220, '2024-12-15', '09:00:00', 0, '2023-11-26 18:11:28'),
+(1, 2, 5, 53, '2024-12-14', '09:00:00', 0, '2023-11-26 18:12:29'),
 
+(1, 3, 19, 2, '2024-12-15', '10:00:00', 1, '2023-11-26 18:13:30'),
+(1, 3, 11, 220, '2024-12-15', '09:00:00', 1, '2023-11-26 18:14:31'),
+(1, 3, 5, 32, '2024-12-14', '09:00:00', 0, '2023-11-26 18:15:32');
 
 -- CORREO
--- 1 Beatriz
--- 2 Lucas
--- 3 Santiago
--- 4 Nicolas
--- 5 Axel
--- 6 Andrés
--- 7 Jesús*
--- 8 Antonio*
--- 9 Carlos*
-
 INSERT INTO RIU_MEN_Mensaje (id_usuario_origen, id_usuario_destino, mensaje, asunto, fecha_envío, fecha_leído) VALUES
-(7, 1, 'Hola Beatriz, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
+(7, 1, 'Hola Beatriz, tu cuenta ya has sido validada', 'Validación completada', '2023-09-10 09:00:53', '2023-09-10 09:23:52'),
+(7, 1, 'Hola Beatriz, perfecto, lo vemos en la próxima', 'Duda PO AW', '2023-11-26 18:06:23', '2023-11-26 18:17:44'),
+(2, 1, 'Hola Beatriz, me encanta trabajar contigo', 'Proyecto AW', '2023-12-01 18:06:23', null),
+(7, 1, 'Hola Beatriz, ¿ha dicho algo Jesús en clase?', 'Clase AW', '2023-12-11 15:34:57', '2023-12-11 18:06:23'),
 
-(7, 2, 'Hola Lucas, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
+(7, 3, 'Hola Santiago, tu cuenta ya has sido validada', 'Validación completada', '2023-09-10 09:05:25', '2023-09-15 10:16:31'),
+(1, 3, 'Hola Santiago, Jesús ha dicho que te va a mandar un correo explicándotelo mañana', 'Clase AW', '2023-12-11 18:07:51', '2023-12-11 19:24:12'),
+(7, 3, 'Hola Santiago, si hubieses venido te habrías enterado', 'Validación completada', '2023-12-11 23:32:47', null),
 
-(7, 3, 'Hola Santiago, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
+(7, 6, 'Hola Andrés, tu cuenta ya has sido validada', 'Validación completada', '2023-09-10 09:15:46', '2023-09-10 09:20:36'),
+(7, 6, 'Hola Andrés, ahora mismo cumplo tu petición', 'Expulsión', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
 
-(7, 6, 'Hola Andrés, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
-(7, 6, 'Hola Andrés, ahora mismo cumplo tu petición', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
+(8, 7, 'Hola Jesús, tu cuenta ya has sido validada', 'Validación completada', '2023-09-03 09:00:03', '2023-09-04 14:21:30'),
+(8, 7, 'Hola Jesús, tu cuenta ahora es de administrador', 'Ahora eres admin', '2023-09-03 09:01:13', '2023-09-04 14:22:47'),
+(6, 7, 'Hola Jesús, exuplsame cuando tengas un momento por favor', 'Petición expulsión', '2023-11-25 09:06:23', '2023-11-25 18:03:23'),
+(8, 7, 'Perfecto, muchas gracias Jesús', 'Inicio competencias', '2023-09-05 09:17:56', '2023-09-05 09:28:08'),
+(1, 7, 'Hola Jesús, tengo una duda sobre la práctica obligatoria. Te la plantearé en la próxima clase', 'Duda PO AW', '2023-11-25 11:38:23', '2023-11-26 17:59:11'),
+(2, 7, 'Hola Jesús, no tengo correo de que mi cuenta ha sido validada', 'No tengo correos', '2023-09-10 11:36:43', null),
+(3, 7, 'Hola Jesús, ¿cómo te va la vida?', 'Me aburro', '2023-11-25 23:02:07', null),
 
-(8, 7, 'Hola Jesús, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
-(8, 7, 'Hola Jesús, tu cuenta ahora es de administrador', 'Ahora eres admin', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
-(6, 7, 'Hola Jesús, exuplsame cuando tengas un momento por favor', 'Petición expulsión', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
+(7, 8, 'Hola Antonio, gracias por hacerme administrador. Ahora mismo empiezo con mi cometido', 'Nuevo administrador', '2023-09-04 14:22:47', '2023-09-05 09:17:08'),
+(9, 8, 'Hola Antonio, en cuanto pueda empezaré a cumplir con mis obligaciones, pero voy a tener que estar ausente unos días', 'Nuevo administrador', '2023-09-03 18:28:19', '2023-09-05 09:23:17'),
+(2, 8, 'Hola Antonio, no me acurdo de nada de MS, ¿cuándo tendrías hueco para una tutoría?', 'Dudas MS', '2023-09-10 11:37:28', null),
 
-(8, 9, 'Hola Carlos, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
-(8, 9, 'Hola Carlos, tu cuenta ahora es de administrador', 'Ahora eres admin', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
-
-(1, 2, 'Hola Lucas', 'Saludo', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
-(1, 3, 'Hola Jesús', 'Primer mensaje', '2023-11-25 10:10:10', '2023-11-26 10:10:10'),
-
-(2, 1, 'Adiós Lucas', 'Primera respuesta', '2023-11-26 23:18:06', '2023-11-27 23:18:06'),
-(2, 3, 'Hola Jesús', 'Primer mensaje', '2023-11-26 10:10:10', '2023-11-26 10:11:11'),
-
-(3, 1, 'Adiós Lucas', 'Primera respuesta', '2023-11-26 10:10:30', '2023-11-27 10:10:10'),
-(3, 2, 'Adiós Beatriz', 'Segunda respuesta', '2023-11-26 10:11:31', '2023-11-27 10:10:10'),
-(3, 1, 'Hola a todos', 'Primer mensaje', '2023-11-28 09:00:00', null),
-(3, 2, 'Hola a todos', 'Segundo mensaje', '2023-11-28 09:00:00', null);
+(8, 9, 'Hola Carlos, tu cuenta ya has sido validada', 'Validación completada', '2023-09-03 09:05:40', '2023-09-03 18:26:23'),
+(8, 9, 'Hola Carlos, tu cuenta ahora es de administrador', 'Ahora eres admin', '2023-09-03 09:06:53', '2023-09-03 18:28:19'),
+(8, 9, 'No te preocupes Carlos. Cuando puedas', 'Inicio competencias', '2023-09-05 09:25:02', null),
+(1, 9, 'Hola Carlos, quería darte las gracias por haber impartido tan bien tu asignatura', 'Agradecimineto EC', '2023-09-11 18:06:23', null),
+(2, 9, 'Hola Carlos, no me acurdo de nada de EC, ¿cuándo tendrías hueco para una tutoría?', 'Dudas EC', '2023-09-10 11:39:03', null);
 
 -- Añadir fotos
 

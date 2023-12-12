@@ -9,10 +9,14 @@ class DAOReservations {
         this.pool = pool;
         
         this.create = this.create.bind(this);
+        this.read = this.read.bind(this);
         this.readAll = this.readAll.bind(this);
         this.readAllByUser = this.readAllByUser.bind(this);
         this.readByUnique = this.readByUnique.bind(this);
         this.readByDateAndHour = this.readByDateAndHour.bind(this);
+        this.readQueuedReservations = this.readQueuedReservations.bind(this);
+        this.delete = this.delete.bind(this);
+        this.unqueue = this.unqueue.bind(this);
         this.filter = this.filter.bind(this);
         this.buildQuery = this.buildQuery.bind(this);
     }
@@ -33,6 +37,44 @@ class DAOReservations {
                     }
                     else {
                         callback(null);
+                    }
+                });
+            }
+        });
+    }
+
+    // Leer
+    read(idReservation, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "SELECT * FROM RIU_RES_Reserva AS RES WHERE id = ?";
+                connection.query(querySQL, [idReservation], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.length != 1) {
+                            callback(-6);
+                        }
+                        else {
+                            // Construir objeto
+                            let reservation = {
+                                id: rows[0].id,
+                                enabled: rows[0].activo,
+                                idUser: rows[0].id_usuario,
+                                idFacility: rows[0].id_instalación,
+                                nPeople: rows[0].n_personas,
+                                date: utils.formatDate(rows[0].fecha),
+                                hour: utils.formatHour(rows[0].hora),
+                                queued: rows[0].cola ? true : false,
+                                reservationDate: utils.formatDate(rows[0].fecha_reserva)
+                            }
+                            callback(null, reservation);
+                        }
                     }
                 });
             }
@@ -90,7 +132,7 @@ class DAOReservations {
             else {
                 let querySQL = "SELECT RES.*, INS.nombre AS nombreInstalación, INS.foto AS fotoInstalación, TIN.id AS idTipoInstalación, TIN.foto AS fotoTipoInstalación"
                 + " FROM (RIU_RES_Reserva AS RES JOIN RIU_INS_Instalación AS INS ON RES.id_instalación = INS.id) JOIN RIU_TIN_Tipo_Instalación AS TIN ON INS.id_tipo = TIN.id"
-                + " WHERE RES.id_usuario = ? ORDER BY RES.fecha ASC, RES.hora ASC, USU.id ASC";
+                + " WHERE RES.activo = 1 AND RES.id_usuario = ? ORDER BY RES.fecha ASC, RES.hora ASC";
                 connection.query(querySQL, [idUser], (error, rows) => {
                     connection.release();
                     if (error) {
@@ -172,7 +214,7 @@ class DAOReservations {
                 callback(-1);
             }
             else {
-                let querySQL = "SELECT * FROM RIU_RES_Reserva AS RES WHERE fecha = ? AND hora = ? AND id_instalación = ?";
+                let querySQL = "SELECT * FROM RIU_RES_Reserva AS RES WHERE fecha = ? AND hora = ? AND id_instalación = ? AND activo = 1";
                 connection.query(querySQL, [date, hour, idFacility], (error, rows) => {
                     connection.release();
                     if (error) {
@@ -196,6 +238,95 @@ class DAOReservations {
                             reservations.push(reservation);
                         });
                         callback(null, reservations);
+                    }
+                });
+            }
+        });
+    }
+
+    // Leer cola de un día+hora en una instalación
+    readQueuedReservations(idFacility, date, hour, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "SELECT * FROM RIU_RES_Reserva AS RES WHERE fecha = ? AND hora = ? AND id_instalación = ? AND cola = 1 AND activo = 1";
+                connection.query(querySQL, [date, hour, idFacility], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        // Construir objeto
+                        let reservations = new Array();
+                        rows.forEach(row => {
+                            let reservation = {
+                                id: row.id,
+                                enabled: row.activo,
+                                idUser: row.id_usuario,
+                                idFacility: row.id_instalación,
+                                nPeople: row.n_personas,
+                                date: utils.formatDate(row.fecha),
+                                hour: utils.formatHour(row.hora),
+                                queued: row.cola ? true : false,
+                                reservationDate: utils.formatDate(row.fecha_reserva)
+                            }
+                            reservations.push(reservation);
+                        });
+                        callback(null, reservations);
+                    }
+                });
+            }
+        });
+    }
+
+    // Sacar reserva de la cola
+    unqueue(idReservation, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "UPDATE RIU_RES_Reserva SET cola = 0 WHERE id = ?";
+                connection.query(querySQL, idReservation, (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.affectedRows != 1) {
+                            callback(-1);
+                        }
+                        else {
+                            callback(null);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    // Dar de baja
+    delete(idReservation, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "UPDATE RIU_RES_Reserva SET activo = 0 WHERE id = ?";
+                connection.query(querySQL, idReservation, (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.affectedRows != 1) {
+                            callback(-1);
+                        }
+                        else {
+                            callback(null);
+                        }
                     }
                 });
             }

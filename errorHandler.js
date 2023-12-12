@@ -29,8 +29,13 @@ function generateError(cod) {
         } break;
         case -5: {
             code = 403;
-            title = "Usuario no existe";
-            message = "El usuario que quieres validar no existe.";
+            title = "Petición no válida";
+            message = "No sé a quién estabas intentando validar, pero no lo estás haciendo bien!";
+        } break;
+        case -6: {
+            code = 403;
+            title = "Petición no válida";
+            message = "No sé qué estabas intentando cancelar, pero no lo estás haciendo bien!";
         } break;
         // Bad Request
         case 1: {
@@ -127,6 +132,16 @@ function generateError(cod) {
             code = 400;
             title = "Usuario ya validado";
             message = "Este usuario ya está validado.";
+        } break;
+        case 20: {
+            code = 400;
+            title = "Reserva ya cancelada";
+            message = "Ya habías cancelado esta reserva!";
+        } break;
+        case 21: {
+            code = 400;
+            title = "Reserva pasada";
+            message = "No puedes cancelar una reserva que ya ha pasado.";
         } break;
         default: {
             code = 500;

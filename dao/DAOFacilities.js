@@ -8,6 +8,8 @@ class DAOFacilities {
     constructor(pool){
         this.pool = pool;
 
+        this.read = this.read.bind(this);
+        this.readByUniversity = this.readByUniversity.bind(this);
         this.readAll = this.readAll.bind(this);
         this.readAllTypes = this.readAllTypes.bind(this);
         this.readFacilitiesByType = this.readFacilitiesByType.bind(this);
@@ -16,8 +18,45 @@ class DAOFacilities {
     }
 
     // Métodos
+    // Leer
+    read(idFacility, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "SELECT * FROM RIU_INS_Instalación WHERE id = ?";
+                connection.query(querySQL, [idFacility], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.length !== 1) {
+                            callback(-1);
+                        }
+                        else {
+                            let facility = {
+                                id: rows[0].id,
+                                name: rows[0].nombre,
+                                startHour: utils.formatHour(rows[0].hora_ini),
+                                endHour: utils.formatHour(rows[0].hora_fin),
+                                complete: rows[0].completo,
+                                reservationType: rows[0].tipo_reserva === 0 ? "Individual" : "Colectiva",
+                                capacity: rows[0].aforo,
+                                hasPic: rows[0].foto ? true : false,
+                                idType: rows[0].id_tipo
+                            }
+                            callback(null, facility);
+                        }                        
+                    }
+                });
+            }
+        });
+    }
+
     // Leer una instalación de una universidad
-    read(idFacility, idUniversity, callback) {
+    readByUniversity(idFacility, idUniversity, callback) {
         this.pool.getConnection((error, connection) => {
             if (error) {
                 callback(-1);

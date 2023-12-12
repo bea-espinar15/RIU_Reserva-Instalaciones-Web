@@ -396,15 +396,18 @@ class UserController {
     validate(request, response, next) {
         const errors = validationResult(request);
         if (errors.isEmpty()) {
+            // Comprobar que el usuario existe
             let idUser = request.body.idUser;
             this.daoUse.read(idUser, (error, user) => {
                 if (error) {
                     errorHandler.manageAJAXError(error, next);
                 }
                 else {
-                    if(!user.enabled){
+                    // Comprobar que el usuario no estaba baneado
+                    if (!user.enabled){
                         errorHandler.manageAJAXError(18, next);
                     }
+                    // Comprobar que el usuario no estaba ya validado
                     else if (user.validated) {
                         errorHandler.manageAJAXError(19, next);
                     }
