@@ -212,6 +212,28 @@ app.post("/logout", useController.logout);
 // Registro
 app.post(
     "/registro",
+    // Ninguno de los campos vacíos
+    check("name", "1").notEmpty(),
+    check("lastname1", "1").notEmpty(),
+    check("lastname2", "1").notEmpty(),
+    check("mail", "1").notEmpty(),
+    check("password", "1").notEmpty(),
+    check("faculty", "1").notEmpty(),
+    // Correo es uno de los disponibles
+    check("mail", "2")
+        .custom((mail) => {
+            if (mailRegex.test(mail)) {
+                let mailAfterAt = mail.split("@")[1];
+                return app.locals.universityMails.includes(mailAfterAt);
+            }
+            else {
+                return false;
+            }
+        }),
+    // Contraseña válida
+    check("password", "15").custom((pass) => {
+        return passwordRegex.test(pass);
+    }),
     useController.signUp
 );
 

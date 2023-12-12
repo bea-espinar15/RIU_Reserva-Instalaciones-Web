@@ -17,7 +17,6 @@ $(() => {
         url: "/correosDisponibles",
         success: (data, statusText, jqXHR) => {
             universityMails = data.universityMails;
-            console.log(`HECHO: ${universityMails.length}`);
         }
     });
 
@@ -66,8 +65,11 @@ $(() => {
 
     // Botón del modal respuesta/error
     const buttonModalError = $("#button-modal-error");
+    const modalErrorHeader = $("#div-modal-error-header");
+    const imgModalError = $("#img-modal-error");
     const modalErrorTitle = $("#h1-modal-error");
-    const modalErrorMessage = $("#p-modal-error");
+    const modalErrorMessage = $("#p-modal-error");    
+    const buttonErrorOk = $("#button-modal-error-ok");
 
     buttonSignUp.on("click", (event) => {
         event.preventDefault();

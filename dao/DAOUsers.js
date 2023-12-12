@@ -5,13 +5,41 @@ class DAOUsers {
     constructor(pool) {
         this.pool = pool;
 
+        this.create = this.create.bind(this);
         this.read = this.read.bind(this);
         this.readAll = this.readAll.bind(this);
         this.readByUniversity = this.readByUniversity.bind(this);
+        this.readUserByMail = this.readUserByMail.bind(this);
         this.readPic = this.readPic.bind(this);
     }
     
     // Métodos
+    // Crear usuario
+    create(newUser, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "INSERT INTO RIU_USU_Usuario (nombre, apellido1, apellido2, correo, contraseña, id_facultad) VALUES (?, ?, ?, ?, ?, ?)";
+                connection.query(querySQL, [newUser.name, newUser.lastname1, newUser.lastname2, newUser.mail, newUser.password, newUser.idFaculty], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.affectedRows === 0) {
+                            callback(-1);
+                        }
+                        else {
+                            callback(null);
+                        }
+                    }
+                });
+            }
+        });
+    }
+    
     // Obtener usuario
     read(idUser, callback) {
         this.pool.getConnection((error, connection) => {
@@ -126,6 +154,36 @@ class DAOUsers {
                                 idFaculty: rows[0].id_facultad
                             }
                             callback(null, user);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    // Ver si un correo está repetido
+    readUserByMail(mailUser, mailUni, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "SELECT USU.* FROM (RIU_USU_Usuario AS USU JOIN RIU_FAC_Facultad AS FAC ON USU.id_facultad = FAC.id) JOIN RIU_UNI_Universidad AS UNI ON FAC.id_universidad = UNI.id"
+                + " WHERE USU.correo = ? AND UNI.correo = ?";
+                connection.query(querySQL, [mailUser, mailUni], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.length > 1) {
+                            callback(-1);
+                        }
+                        else if (rows.length === 1) {
+                            callback(17);
+                        }
+                        else {
+                            callback(null);
                         }
                     }
                 });

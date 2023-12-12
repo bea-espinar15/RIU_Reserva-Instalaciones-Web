@@ -1,7 +1,11 @@
 "use strict"
 
 const { validationResult } = require("express-validator");
+const bcrypt = require("bcrypt");
 const errorHandler = require("../errorHandler");
+
+// Cifrar contraseña
+const saltRounds = 10;
 
 class UserController {
     // Constructor
@@ -206,65 +210,72 @@ class UserController {
                             if (!user.validated) {
                                 errorHandler.manageError(4, {}, "login", next);
                             }
-                            // Comprobar contraseña
-                            else if (request.body.password != user.password) {
-                                errorHandler.manageError(5, {}, "login", next);
-                            }
+                            // Comprobar contraseña con bcrypt
                             else {
-                                // Obtener nº mensajes no leídos del usuario
-                                this.daoMes.messagesUnread(user.id, (error, nUnreadMessages) => {
+                                bcrypt.compare(request.body.password, user.password, (err, result) => {
                                     if (error) {
                                         errorHandler.manageError(error, {}, "login", next);
                                     }
+                                    else if (!result) {
+                                        errorHandler.manageError(5, {}, "login", next);
+                                    }
                                     else {
-                                        // Quitar contraseña, no se guarda en la sesión
-                                        delete (user.password);
-                                        // Iniciar sesión
-                                        request.session.currentUser = user;
-                                        request.session.university = university;
-                                        // Construir data
-                                        let data = {
-                                            error: undefined,
-                                            generalInfo: {
-                                                idUniversity: university.id,
-                                                name: university.name,
-                                                web: university.web,
-                                                address: university.address,
-                                                hasLogo: university.hasLogo,
-                                                idUser: user.id,
-                                                isAdmin: user.rol,
-                                                hasProfilePic: user.hasProfilePic,
-                                                messagesUnread: nUnreadMessages
+                                        // Obtener nº mensajes no leídos del usuario
+                                        this.daoMes.messagesUnread(user.id, (error, nUnreadMessages) => {
+                                            if (error) {
+                                                errorHandler.manageError(error, {}, "login", next);
                                             }
-                                        };
-                                        if (user.rol) { // Admin
-                                            data.adminName = user.name;
-                                            next({
-                                                ajax: false,
-                                                status: 200,
-                                                redirect: "admin_index",
-                                                data: data
-                                            });
-                                        }
-                                        else { // User
-                                            // Obtener tipos de instalaciones de la universidad
-                                            this.daoFac.readAllTypes(university.id, (error, types) => {
-                                                if (error) {
-                                                    errorHandler.manageError(error, {}, "login", next);
-                                                }
-                                                else {
-                                                    data.facilityTypes = types;
+                                            else {
+                                                // Quitar contraseña, no se guarda en la sesión
+                                                delete (user.password);
+                                                // Iniciar sesión
+                                                request.session.currentUser = user;
+                                                request.session.university = university;
+                                                // Construir data
+                                                let data = {
+                                                    error: undefined,
+                                                    generalInfo: {
+                                                        idUniversity: university.id,
+                                                        name: university.name,
+                                                        web: university.web,
+                                                        address: university.address,
+                                                        hasLogo: university.hasLogo,
+                                                        idUser: user.id,
+                                                        isAdmin: user.rol,
+                                                        hasProfilePic: user.hasProfilePic,
+                                                        messagesUnread: nUnreadMessages
+                                                    }
+                                                };
+                                                if (user.rol) { // Admin
+                                                    data.adminName = user.name;
                                                     next({
                                                         ajax: false,
                                                         status: 200,
-                                                        redirect: "user_index",
+                                                        redirect: "admin_index",
                                                         data: data
                                                     });
                                                 }
-                                            });
-                                        }
+                                                else { // User
+                                                    // Obtener tipos de instalaciones de la universidad
+                                                    this.daoFac.readAllTypes(university.id, (error, types) => {
+                                                        if (error) {
+                                                            errorHandler.manageError(error, {}, "login", next);
+                                                        }
+                                                        else {
+                                                            data.facilityTypes = types;
+                                                            next({
+                                                                ajax: false,
+                                                                status: 200,
+                                                                redirect: "user_index",
+                                                                data: data
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
                                     }
-                                });                                
+                                });
                             }
                         }
                     });
@@ -291,21 +302,93 @@ class UserController {
 
     // Registro
     signUp(request, response, next) {
-        console.log(request.body.name);
-        console.log(request.body.lastname1);
-        console.log(request.body.lastname2);
-        console.log(request.body.mail);
-        console.log(request.body.password);
-        console.log(request.body.faculty);
-        next({
-            ajax: true,
-            error: false,
-            img: false,
-            data: {
-                title: "BIEN",
-                message: "Ha ido bien"
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            // Obtener parámetros de entrada
+            let params =  {
+                name: request.body.name,
+                lastname1: request.body.lastname1,
+                lastname2: request.body.lastname2,
+                mailUser: (request.body.mail).split("@")[0],
+                mailUni: (request.body.mail).split("@")[1],
+                password: request.body.password,
+                faculty: request.body.faculty
             }
-        });
+            // Comprobar que la facultad es una válida de las que hay en esa universidad
+            this.daoUni.readAllFaculties(params.mailUni, (error, faculties) => {
+                if (error) {
+                    errorHandler.manageAJAXError(error, next);
+                }
+                else {
+                    // Obtener ID de la facultad y comprobar que existe
+                    let idFaculty;
+                    let facultyExists = faculties.find((fac) => {
+                        if (fac.name === params.faculty) {
+                            idFaculty = fac.id;
+                            return true;
+                        }
+                        return false;
+                    });
+                    if (!facultyExists) {
+                        errorHandler.manageAJAXError(16, next);
+                    }
+                    else {
+                        // Comprobar que el correo no estaba ya registrado en esa universidad
+                        this.daoUse.readUserByMail(params.mailUser, params.mailUni, (error) => {
+                            if (error) {
+                                errorHandler.manageAJAXError(error, next);
+                            }
+                            else {
+                                // Cifrar contraseña
+                                bcrypt.genSalt(saltRounds, (error, salt) => {
+                                    if (error) {
+                                        errorHandler.manageAJAXError(error, next);
+                                    }
+                                    else {
+                                        bcrypt.hash(params.password, salt, (error, hashedPassword) => {
+                                            if (error) {
+                                                errorHandler.manageAJAXError(error, next);
+                                            }
+                                            else {
+                                                // Crear usuario
+                                                let newUser = {
+                                                    name: params.name,
+                                                    lastname1: params.lastname1,
+                                                    lastname2: params.lastname2,
+                                                    mail: params.mailUser,
+                                                    password: hashedPassword,
+                                                    idFaculty: idFaculty,
+                                                }
+                                                this.daoUse.create(newUser, (error) => {
+                                                    if (error) {
+                                                        errorHandler.manageAJAXError(error, next);
+                                                    }
+                                                    else {
+                                                        next({
+                                                            ajax: true,
+                                                            error: false,
+                                                            img: false,
+                                                            data: {
+                                                                code: 200,
+                                                                title: "Registro completado",
+                                                                message: "Has sido registrado con éxito! Cuando un administrador te valide, podrás iniciar sesión. Este proceso no suele llevar más de 24 horas."
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }                                 
+                                });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else {
+            errorHandler.manageAJAXError(parseInt(errors.array()[0].msg), next);
+        }        
     }
 }
 

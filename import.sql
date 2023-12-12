@@ -206,10 +206,11 @@ INSERT INTO RIU_MEN_Mensaje (id_usuario_origen, id_usuario_destino, mensaje, asu
 (7, 3, 'Hola Santiago, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
 
 (7, 6, 'Hola Andrés, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
-(7, 6, 'Hola Andrés, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
+(7, 6, 'Hola Andrés, ahora mismo cumplo tu petición', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
 
 (8, 7, 'Hola Jesús, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
 (8, 7, 'Hola Jesús, tu cuenta ahora es de administrador', 'Ahora eres admin', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
+(6, 7, 'Hola Jesús, exuplsame cuando tengas un momento por favor', 'Petición expulsión', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
 
 (8, 9, 'Hola Carlos, tu cuenta ya has sido validada', 'Validación completada', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),
 (8, 9, 'Hola Carlos, tu cuenta ahora es de administrador', 'Ahora eres admin', '2023-11-25 18:06:23', '2023-11-26 18:06:23'),

@@ -98,6 +98,21 @@ function generateError(cod) {
             title = "Imagen no válida";
             message = "La imagen debe ser un fichero de tipo .png y no superar los 64KB.";
         } break;
+        case 15: {
+            code = 400;
+            title = "Contraseña no válida";
+            message = "La contraseña debe tener al menos 8 caracteres, de los cuales al menos 1 debe ser un número y 1 una letra.";
+        } break;
+        case 16: {
+            code = 400;
+            title = "Facultad no válida";
+            message = "Por favor, asegúrate de seleccionar una facultad de las disponibles.";
+        } break;
+        case 17: {
+            code = 400;
+            title = "Usuario ya registrado";
+            message = "Este correo ya está registrado en la universidad.";
+        } break;
         default: {
             code = 500;
             title = "Error desconocido";
