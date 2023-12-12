@@ -44,10 +44,14 @@ function routerConfig(facController, mesController, resController, uniController
       check("settingsAddress", "1").notEmpty(),
       check("settingsWeb", "1").notEmpty(),
       // Regex web correcto
-      check("settingsWeb", "13").isURL(),      
+      check("settingsWeb", "13").isURL(),
+      mesController.unreadMessages,  
       uniController.changeSettings  
     );
     
+    // Filtrar reservas
+    RouterAdmin.post("/filtrarReservas", mesController.unreadMessages, resController.filter);
+
     // [TODO]
 
 }

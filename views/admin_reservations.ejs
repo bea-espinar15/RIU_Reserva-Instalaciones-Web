@@ -22,17 +22,18 @@
         <form id="form-filter-reservations" method="POST" action="/admin/filtrarReservas" class="col-lg-3 d-flex flex-column">            
             <h2>Filtros</h2>
             <label for="input-filter-user">Usuario</label>
-            <input id="input-filter-user" type="text" placeholder="Nombre, apellido o correo">
+            <input id="input-filter-user" name="filterUser" type="text" placeholder="Nombre, apellido o correo">
             <label for="input-filter-date">Fecha</label>
-            <input id="input-filter-date" type="date">
+            <input id="input-filter-date" name="filterDate" type="date">
             <label for="input-filter-faculty">Facultad</label>
-            <select id="input-faculty">
+            <select id="input-faculty" name="filterFaculty">
+                <option value="">Selecciona una opción</option>
                 <% faculties.forEach((fac) => { %>
                     <option value="<%= fac.name %>"><%= fac.name %></option>
-                <% }); %>
+                <% }); %>                
             </select>
             <label for="input-filter-facility">Instalación</label>
-            <input id="input-filter-facility" type="text" placeholder="Escribe aquí...">
+            <input id="input-filter-facility" name="filterFacilityName" type="text" placeholder="Escribe aquí...">
             <input id="input-sb-filter" type="submit" value="Filtrar" class="button-riu bg-riu-primary">
         </form>
         <!-- Resultados -->

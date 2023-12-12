@@ -3,6 +3,7 @@
 const { validationResult } = require("express-validator");
 const moment = require('moment');
 const errorHandler = require("../errorHandler");
+const utils = require("../utils");
 
 class ReservationController {
     // Constructor
@@ -14,6 +15,7 @@ class ReservationController {
         this.reservations = this.reservations.bind(this);
         this.userReservations = this.userReservations.bind(this);
         this.reserve = this.reserve.bind(this);
+        this.filter = this.filter.bind(this);
         this.queued = this.queued.bind(this);
     }
 
@@ -34,6 +36,9 @@ class ReservationController {
                         errorHandler.manageError(error, {}, "error", next);
                     }
                     else {
+                        // Actualizar variables de sesión
+                        request.session.reservations = reservations;
+                        request.session.faculties = faculties;
                         next({
                             ajax: false,
                             status: 200,
@@ -232,6 +237,62 @@ class ReservationController {
         else {
             errorHandler.manageError(parseInt(errors.array()[0].msg), data, "user_facilities", next);
         }
+    }
+
+    // Filtrar reservas
+    filter(request, response, next) {
+        let data = {
+            error: undefined,
+            generalInfo: {
+                idUniversity: request.session.university.id,
+                name: request.session.university.name,
+                web: request.session.university.web,
+                address: request.session.university.address,
+                hasLogo: request.session.university.hasLogo,
+                idUser: request.session.currentUser.id,
+                isAdmin: request.session.currentUser.rol,
+                hasProfilePic: request.session.currentUser.hasProfilePic,
+                messagesUnread: request.unreadMessages
+            },
+            reservations: request.session.reservations,
+            filters: new Array(),
+            faculties: request.session.faculties
+        }
+        // Obtener parámetros de entrada
+        let filters = {
+            user: request.body.filterUser,
+            date: request.body.filterDate,
+            faculty: request.body.filterFaculty,
+            facilityName: request.body.filterFacilityName,
+        }
+        // Filtrar
+        this.daoRes.filter(filters, (error, reservations) => {
+            if (error) {
+                errorHandler.manageError(error, data, "admin_reservations", next);
+            }
+            else {
+                // Actualizamos reservas filtradas
+                data.reservations = reservations;
+                // Construir los filtros
+                if (filters.date != "") {
+                    filters.date = utils.formatDate(new Date(filters.date));
+                }
+                let filtersArray = new Array();
+                for (let filter in filters) {
+                    if (filters[filter]) {
+                        filtersArray.push(filters[filter]);
+                    }
+                }
+                data.filters = filtersArray;
+                // Redirigir
+                next({
+                    ajax: false,
+                    status: 200,
+                    redirect: "admin_reservations",
+                    data: data
+                });
+            }
+        });
     }
 
     // Comprobar si la reserva debe ponerse en cola
