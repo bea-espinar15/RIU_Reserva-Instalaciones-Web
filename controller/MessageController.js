@@ -15,7 +15,7 @@ class MessageController {
 
     // --- GET ---
     // Cargar mensajes
-    mails (request, response, next) {
+    mails(request, response, next) {
         this.daoMes.readAll(request.session.currentUser.id, (error, messages) => {
             if (error) {
                 errorHandler.manageError(error, {}, "error", next);

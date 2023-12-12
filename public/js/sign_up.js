@@ -2,6 +2,11 @@
 
 const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// [TODO]
+function validateParams(params) {
+    return true;
+}
+
 $(() => {
 
     let universityMails;
@@ -12,6 +17,7 @@ $(() => {
         url: "/correosDisponibles",
         success: (data, statusText, jqXHR) => {
             universityMails = data.universityMails;
+            console.log(`HECHO: ${universityMails.length}`);
         }
     });
 
@@ -48,6 +54,61 @@ $(() => {
             // Resetear combo
             inputFaculty.empty();
             inputFaculty.append("<option value=\"null\">Introduce tu correo</option>");
+        }
+    });
+
+    // POST Registro (AJAX)
+    const buttonSignUp = $("#input-sb-sign-up");
+    const inputName = $("#input-name");
+    const inputLastname1 = $("#input-lastname-1");
+    const inputLastname2 = $("#input-lastname-2");
+    const inputPassword = $("#input-password");
+
+    // Botón del modal respuesta/error
+    const buttonModalError = $("#button-modal-error");
+    const modalErrorTitle = $("#h1-modal-error");
+    const modalErrorMessage = $("#p-modal-error");
+
+    buttonSignUp.on("click", (event) => {
+        event.preventDefault();
+        let params = {
+            name: inputName.val(),
+            lastname1: inputLastname1.val(),
+            lastname2: inputLastname2.val(),
+            mail: inputMail.val(),
+            password: inputPassword.val(),
+            faculty: inputFaculty.val()
+        };
+        // Validación en cliente
+        if (validateParams(params)) {
+            // Petición POST
+            $.ajax({
+                method: "POST",
+                url: "/registro",
+                data: params,
+                success: (data, statusText, jqXHR) => {
+                    // Crear modal
+                    modalErrorTitle.text(data.title);
+                    modalErrorMessage.text(data.message);
+                    modalErrorHeader.addClass("bg-riu-light-green");
+                    imgModalError.attr("src", "/img/icons/success.png");
+                    imgModalError.attr("alt", "Icono de éxito");
+                    buttonErrorOk.addClass("bg-riu-green");
+                    // Mostrarlo
+                    buttonModalError.click();
+                },
+                error: (jqXHR, statusText, errorThrown) => {
+                    let error = jqXHR.responseJSON;
+                    modalErrorTitle.text(error.title);
+                    modalErrorMessage.text(error.message);
+                    modalErrorHeader.addClass("bg-riu-light-gray");
+                    imgModalError.attr("src", "/img/icons/error.png");
+                    imgModalError.attr("alt", "Icono de error");
+                    buttonErrorOk.addClass("bg-riu-red");
+                    // Mostrarlo
+                    buttonModalError.click();
+                }
+            });
         }
     });
     

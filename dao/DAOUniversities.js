@@ -18,7 +18,7 @@ class DAOUniversities {
     // Leer todo
     readAll(callback) {
         this.pool.getConnection((error, connection) => {
-            if (error) {
+            if (error) {                
                 callback(-1);
             }
             else {

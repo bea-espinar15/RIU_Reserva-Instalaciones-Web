@@ -20,6 +20,7 @@ class UserController {
         this.adminIndex = this.adminIndex.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
+        this.signUp = this.signUp.bind(this);
     }
 
     // Métodos
@@ -156,7 +157,7 @@ class UserController {
     }
 
     // Cargar inicio de admin
-    adminIndex (request, response, next) {
+    adminIndex(request, response, next) {
         next({
             ajax: false,
             status: 200,
@@ -284,6 +285,25 @@ class UserController {
             redirect: "login",
             data: {
                 error: undefined
+            }
+        });
+    }
+
+    // Registro
+    signUp(request, response, next) {
+        console.log(request.body.name);
+        console.log(request.body.lastname1);
+        console.log(request.body.lastname2);
+        console.log(request.body.mail);
+        console.log(request.body.password);
+        console.log(request.body.faculty);
+        next({
+            ajax: true,
+            error: false,
+            img: false,
+            data: {
+                title: "BIEN",
+                message: "Ha ido bien"
             }
         });
     }

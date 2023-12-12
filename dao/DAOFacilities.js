@@ -125,7 +125,7 @@ class DAOFacilities {
     }
 
     // Leer instalaciones de un tipo
-    readFacilitiesByType (idType, callback) {
+    readFacilitiesByType(idType, callback) {
         this.pool.getConnection((error, connection) => {
             if (error) {
                 callback(-1);

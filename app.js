@@ -209,6 +209,12 @@ app.post(
 // Logout
 app.post("/logout", useController.logout);
 
+// Registro
+app.post(
+    "/registro",
+    useController.signUp
+);
+
 // [TODO]
 
 // --- Middlewares de respuestas y errores ---
