@@ -74,9 +74,36 @@ function routerConfig(facController, mesController, resController, uniController
       useController.ban
     );
 
-    // [TODO] Crear instalación
+    // Crear instalación
     RouterAdmin.post(
       "/crearInstalacion",
+      multerFactory.single("facilityPic"),
+      // Campos no vacios
+      check("name","1").notEmpty(),
+      check("startHour","1").notEmpty(),
+      check("endHour","1").notEmpty(),
+      check("reservationType","1").notEmpty(),
+      check("capacity","1").notEmpty(),
+      check("facilityType","1").notEmpty(),
+      // Horas exactas
+      check("startHour", "27").custom((startHour) => {
+         let min = (startHour.split(":"))[1];
+         return min === "00";
+      }),
+      check("endHour", "27").custom((startHour) => {
+        let min = (startHour.split(":"))[1];
+        return min === "00";
+     }),
+     // Tipo de reserva válido
+     check("reservationType","1").custom((resType) => {
+        return (resType === "Individual" || resType === "Colectiva")
+     }),
+     // Aforo es un número
+     check("capacity", "28").isNumeric(),
+     // Aforo > 0
+     check("capacity", "28").custom((capacity) => {
+        return capacity > 0;
+     }),
       facController.newFacility
     );
 

@@ -56,7 +56,6 @@ CREATE TABLE RIU_INS_Instalación (
     nombre VARCHAR(255) NOT NULL,
     hora_ini TIME NOT NULL,
     hora_fin TIME NOT NULL,
-    completo INT NOT NULL,
     tipo_reserva INT NOT NULL,
     aforo INT NOT NULL,
     foto BLOB,
@@ -147,27 +146,27 @@ INSERT INTO RIU_TIN_Tipo_Instalación (nombre, id_universidad) VALUES
 
 
 -- INSTALACIÓN
-INSERT INTO RIU_INS_Instalación (nombre, hora_ini, hora_fin, completo, tipo_reserva, aforo, id_tipo) VALUES
-('Laboratorio 1 - Informática', '09:00', '18:00', 0, 1, 60, 1),
-('Laboratorio 2 - Informática', '09:00', '18:00', 0, 1, 60, 1),
-('Laboratorio 3 - Informática', '09:00', '18:00', 0, 1, 30, 1),
-('Laboratorio 4 - Informática', '09:00', '18:00', 0, 1, 30, 1),
+INSERT INTO RIU_INS_Instalación (nombre, hora_ini, hora_fin, tipo_reserva, aforo, id_tipo) VALUES
+('Laboratorio 1 - Informática', '09:00', '18:00', 1, 60, 1),
+('Laboratorio 2 - Informática', '09:00', '18:00', 1, 60, 1),
+('Laboratorio 3 - Informática', '09:00', '18:00', 1, 30, 1),
+('Laboratorio 4 - Informática', '09:00', '18:00', 1, 30, 1),
 
-('Salas de grados 1 - Informática', '09:00', '18:00', 0, 1, 120, 2),
-('Salas de grados 2 - Informática', '09:00', '18:00', 0, 1, 120, 2),
-('Salas de grados 3 - Informática', '09:00', '18:00', 0, 1, 90, 2),
-('Salas de grados 1 - Derecho', '09:00', '18:00', 0, 1, 90, 2),
-('Salas de grados 2 - Derecho', '09:00', '18:00', 0, 1, 80, 2),
-('Salas de grados 3 - Derecho', '09:00', '18:00', 0, 1, 80, 2),
+('Salas de grados 1 - Informática', '09:00', '18:00', 1, 120, 2),
+('Salas de grados 2 - Informática', '09:00', '18:00', 1, 120, 2),
+('Salas de grados 3 - Informática', '09:00', '18:00', 1, 90, 2),
+('Salas de grados 1 - Derecho', '09:00', '18:00', 1, 90, 2),
+('Salas de grados 2 - Derecho', '09:00', '18:00', 1, 80, 2),
+('Salas de grados 3 - Derecho', '09:00', '18:00', 1, 80, 2),
 
-('Salón de actos 1 - Informática', '09:00', '18:00', 1, 1, 250, 3),
-('Salón de actos 1 - Medicina', '09:00', '18:00', 1, 1, 250, 3),
+('Salón de actos 1 - Informática', '09:00', '18:00', 0, 250, 3),
+('Salón de actos 1 - Medicina', '09:00', '18:00', 0, 250, 3),
 
-('Salas de reunión 1 - Informática', '09:00', '18:00', 0, 1, 10, 4),
-('Salas de reunión 2 - Informática', '09:00', '18:00', 0, 1, 10, 4),
-('Salas de reunión 1 - Derecho', '09:00', '18:00', 0, 1, 8, 4),
-('Salas de reunión 1 - Medicina', '09:00', '18:00', 0, 1, 5, 4),
-('Salas de reunión 1 - Bellas Artes', '09:00', '18:00', 0, 1, 5, 4),
+('Salas de reunión 1 - Informática', '09:00', '18:00', 1, 10, 4),
+('Salas de reunión 2 - Informática', '09:00', '18:00', 1, 10, 4),
+('Salas de reunión 1 - Derecho', '09:00', '18:00', 1, 8, 4),
+('Salas de reunión 1 - Medicina', '09:00', '18:00', 1, 5, 4),
+('Salas de reunión 1 - Bellas Artes', '09:00', '18:00', 1, 5, 4),
 
 ('Sala de estudio 1 - Informática', '09:00', '18:00', 0, 0, 10, 5),
 ('Sala de estudio 2 - Informática', '09:00', '18:00', 0, 0, 10, 5),

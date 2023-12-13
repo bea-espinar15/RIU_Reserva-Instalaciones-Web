@@ -173,6 +173,26 @@ function generateError(cod) {
             title = "Mensaje ya leído";
             message = "Este mensaje ya lo habías leído.";
         } break;
+        case 27: {
+            code = 400;
+            title = "Hora no válida";
+            message = "Las horas de apertura y cierre deben ser horas en punto, y la hora de cierre debe ser posterior a la de apertura.";
+        } break;
+        case 28: {
+            code = 400;
+            title = "Aforo no válido";
+            message = "El aforo debe ser un número mayor que 0.";
+        } break;
+        case 29: {
+            code = 400;
+            title = "Tipo de instalación no válido";
+            message = "Por favor, asegúrate de seleccionar un tipo de los disponibles, o crea uno nuevo.";
+        } break;
+        case 30: {
+            code = 400;
+            title = "Instalación repetida";
+            message = "Ya existe una instalación de este tipo con el nombre introducido.";
+        } break;
         default: {
             code = 500;
             title = "Error desconocido";

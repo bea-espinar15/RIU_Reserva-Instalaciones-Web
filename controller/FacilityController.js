@@ -182,9 +182,108 @@ class FacilityController {
     }
 
     // --- POST ---
-    // [TODO] Crear nueva instalación
+    // Crear nueva instalación
     newFacility(request, response, next) {
-        errorHandler.manageAJAXError(25, next);
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            // Comprobar formato foto
+            let pic = request.file;
+            // Comprobar formato foto, si hay
+            if (pic && (pic.mimetype !== "image/png" || pic.size > 64 * 1024)) {
+                errorHandler.manageAJAXError(14, next);
+            }
+            else {
+                let params = {
+                    name: request.body.name,
+                    startHour: request.body.startHour,
+                    endHour: request.body.endHour,
+                    reservationType: request.body.reservationType,
+                    capacity: request.body.capacity,
+                    facilityType: request.body.facilityType,
+                    facilityPic: pic ? pic.buffer : null
+                }
+                // Comprobar hora_fin > hora_ini
+                if (new Date(`2000-01-01T${params.startHour}:00`) >= new Date(`2000-01-01T${params.endHour}:00`)) {
+                    errorHandler.manageAJAXError(27, next);
+                }
+                else {
+                    // Obtener tipos disponibles
+                    this.daoFac.readAllTypes(request.session.university.id, (error, types) => {
+                        if (error) {
+                            errorHandler.manageAJAXError(error, next);
+                        }
+                        else {
+                            let idFacilityType;
+                            let typeHasPic;
+                            let includesType = types.find((type) => { 
+                                if (type.name === params.facilityType) {
+                                    idFacilityType = type.id;
+                                    typeHasPic = type.hasPic;
+                                    return true;
+                                }
+                                else {
+                                    return false;
+                                }
+                            });
+                            // Comprobar si el tipo existe y es uno de los de la universidad
+                            if (!includesType) {
+                                errorHandler.manageAJAXError(29, next);
+                            }
+                            else {
+                                // Comprobar si esa instalación ya existía para ese tipo (nombre repetido)
+                                this.daoFac.readByType(params.name, idFacilityType, (error, facility) => {
+                                    if (error) {
+                                        errorHandler.manageAJAXError(error, next);
+                                    }
+                                    else {
+                                        if (facility) {
+                                            errorHandler.manageAJAXError(30, next);
+                                        }
+                                        else {
+                                            params.idFacilityType = idFacilityType;
+                                            // Crear la instalación
+                                            this.daoFac.create(params, (error, insertId) => {
+                                                if (error) {
+                                                    errorHandler.manageAJAXError(error, next);
+                                                }
+                                                else {
+                                                    let newFacility = {
+                                                        id: insertId,
+                                                        name: params.name,
+                                                        startHour: params.startHour,
+                                                        endHour: params.endHour,
+                                                        reservationType: params.reservationType,
+                                                        capacity: params.capacity,
+                                                        hasPic: params.pic ? true : false,
+                                                        idType: idFacilityType,
+                                                        typeName: params.facilityType,
+                                                        typeHasPic: typeHasPic
+                                                    }
+                                                    next({
+                                                        ajax: true,
+                                                        error: false,
+                                                        img: false,
+                                                        data: {
+                                                            code: 200,
+                                                            title: "Instalación creada",
+                                                            message: "Instalación creada con éxito",
+                                                            facility: newFacility
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        }
+        else {
+            errorHandler.manageAJAXError(parseInt(errors.array()[0].msg), next);
+        }
     }
 
     // [TODO] Crear nueva instalación

@@ -70,10 +70,6 @@
     color: var(--black);
 }
 
-#label-checkbox {
-    margin-top: 1rem !important;
-}
-
 .input-facility-pic {
     border: 0.1rem solid var(--primary);
     margin-top: 2rem;

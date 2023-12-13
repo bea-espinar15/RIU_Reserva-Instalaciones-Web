@@ -33,7 +33,7 @@
                 </div>                
             </div>
             <!-- Resultados -->
-            <div class="mt-4">
+            <div id="div-results" class="mt-4">
                 <!-- Mensaje Nº resultados -->
                 <p id="p-no-facilities"></p>
                 <!-- Lista -->
@@ -70,7 +70,7 @@
                             <% facilityTypes.forEach((type => { %>
                                 <option value="<%= type.name %>"><%= type.name %></option>
                             <% })); %>
-                            <option value="Nuevo tipo...">Nuevo tipo...</option>
+                            <option value="">Nuevo tipo...</option>
                         </select>
                         <button id="button-modal-new-type" type="button" hidden="true" data-bs-toggle="modal" data-bs-target="#div-modal-new-type">Nuevo</button>
                         <!-- Hora inicio -->
@@ -85,11 +85,6 @@
                             <option value="Individual" title="Sólo se puede hacer una reserva simultánea, aunque no se llene el aforo">Individual</option>
                             <option value="Colectiva" title="Se pueden hacer reservas hasta que se llene el aforo">Colectiva</option>
                         </select>
-                        <!-- ¿Completo? -->
-                        <label id="label-checkbox" class="d-flex align-items-center" title="¿La instalación se reserva el día completo o por horas?">
-                            <input id="input-facility-complete" type="checkbox" class="checkbox-riu">
-                            Completo
-                        </label>
                         <!-- Aforo -->
                         <label for="input-facility-capacity">Aforo</label>
                         <input id="input-facility-capacity" type="number" value="1" min="1" max="500">

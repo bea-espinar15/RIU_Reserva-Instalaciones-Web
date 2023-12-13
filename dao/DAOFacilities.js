@@ -8,8 +8,10 @@ class DAOFacilities {
     constructor(pool){
         this.pool = pool;
 
+        this.create = this.create.bind(this);
         this.read = this.read.bind(this);
         this.readByUniversity = this.readByUniversity.bind(this);
+        this.readByType = this.readByType.bind(this);
         this.readAll = this.readAll.bind(this);
         this.readAllTypes = this.readAllTypes.bind(this);
         this.readFacilitiesByType = this.readFacilitiesByType.bind(this);
@@ -18,6 +20,32 @@ class DAOFacilities {
     }
 
     // Métodos
+    // Crear
+    create(newFacility, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "INSERT INTO RIU_INS_Instalación (nombre, hora_ini, hora_fin, tipo_reserva, aforo, foto, id_tipo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                connection.query(querySQL, [newFacility.name, newFacility.startHour, newFacility.endHour, newFacility.reservationType, newFacility.capacity, newFacility.facilityPic, newFacility.idFacilityType], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.affectedRows != 1) {
+                            callback(-1);
+                        }
+                        else {
+                            callback(null, rows.insertId);
+                        }
+                    }
+                });
+            }
+        });
+    }
+    
     // Leer
     read(idFacility, callback) {
         this.pool.getConnection((error, connection) => {
@@ -41,7 +69,6 @@ class DAOFacilities {
                                 name: rows[0].nombre,
                                 startHour: utils.formatHour(rows[0].hora_ini),
                                 endHour: utils.formatHour(rows[0].hora_fin),
-                                complete: rows[0].completo,
                                 reservationType: rows[0].tipo_reserva === 0 ? "Individual" : "Colectiva",
                                 capacity: rows[0].aforo,
                                 hasPic: rows[0].foto ? true : false,
@@ -78,7 +105,46 @@ class DAOFacilities {
                                 name: rows[0].nombre,
                                 startHour: utils.formatHour(rows[0].hora_ini),
                                 endHour: utils.formatHour(rows[0].hora_fin),
-                                complete: rows[0].completo,
+                                reservationType: rows[0].tipo_reserva === 0 ? "Individual" : "Colectiva",
+                                capacity: rows[0].aforo,
+                                hasPic: rows[0].foto ? true : false,
+                                idType: rows[0].id_tipo
+                            }
+                            callback(null, facility);
+                        }                        
+                    }
+                });
+            }
+        });
+    }
+
+    // Leer una instalación por tipo
+    readByType(facilityName, idType, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "SELECT * FROM RIU_INS_Instalación WHERE nombre = ? AND id_tipo = ?";
+                connection.query(querySQL, [facilityName, idType], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.length > 1) {
+                            callback(-4);
+                        }
+                        else if (rows.length === 0) {
+                            callback(null, null);
+                        }
+                        else {
+                            // Construir objeto
+                            let facility = {
+                                id: rows[0].id,
+                                name: rows[0].nombre,
+                                startHour: utils.formatHour(rows[0].hora_ini),
+                                endHour: utils.formatHour(rows[0].hora_fin),
                                 reservationType: rows[0].tipo_reserva === 0 ? "Individual" : "Colectiva",
                                 capacity: rows[0].aforo,
                                 hasPic: rows[0].foto ? true : false,
@@ -115,7 +181,6 @@ class DAOFacilities {
                                 name: row.nombre,
                                 startHour: utils.formatHour(row.hora_ini),
                                 endHour: utils.formatHour(row.hora_fin),
-                                complete: row.completo,
                                 reservationType: row.tipo_reserva === 0 ? "Individual" : "Colectiva",
                                 capacity: row.aforo,
                                 hasPic: row.foto ? true : false,
@@ -185,7 +250,6 @@ class DAOFacilities {
                                 name: row.nombre,
                                 startHour: utils.formatHour(row.hora_ini),
                                 endHour: utils.formatHour(row.hora_fin),
-                                complete: row.completo,
                                 reservationType: row.tipo_reserva === 0 ? "Individual" : "Colectiva",
                                 capacity: row.aforo,
                                 hasPic: row.foto ? true : false,
