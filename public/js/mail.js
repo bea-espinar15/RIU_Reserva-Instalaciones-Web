@@ -32,6 +32,8 @@ $(() => {
         let divMessage = $(this);
         divMessage.on("click", () => {
             let message = divMessage.data("message");
+            // POST marcar como leido (AJAX)
+
             // Rellenar contenido del div
             titleMessage.text("Detalles del mensaje");
             userMessage.attr("value",   message.senderUsername);

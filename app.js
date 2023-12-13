@@ -76,7 +76,7 @@ const daoUse = new DAOUsers(pool);
 // Crear instancias de los Controllers
 const facController = new FacilityController(daoFac);
 const mesController = new MessageController(daoMes, daoUni, daoUse);
-const resController = new ReservationController(daoRes, daoUni, daoFac);
+const resController = new ReservationController(daoRes, daoUni, daoFac, daoMes);
 const uniController = new UniversityController(daoUni);
 const useController = new UserController(daoUse, daoUni, daoFac, daoMes);
 
@@ -236,8 +236,6 @@ app.post(
     }),
     useController.signUp
 );
-
-// [TODO]
 
 // --- Middlewares de respuestas y errores ---
 // Error 404

@@ -38,7 +38,17 @@ function routerConfig(facController, mesController, resController, uniController
         mesController.sendMessage
     );
 
-    // [TODO]
+    // [TODO] Editar foto de perfil
+    RouterPersonal.post(
+        "/editarFotoPerfil",
+        useController.editProfilePic
+    );
+
+    // [TODO] Cambiar contraseña
+    RouterPersonal.post(
+        "/cambiarContrasena",
+        useController.changePassword
+    );
 
 }
 

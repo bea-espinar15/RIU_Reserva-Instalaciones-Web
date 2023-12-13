@@ -7,10 +7,11 @@ const utils = require("../utils");
 
 class ReservationController {
     // Constructor
-    constructor(daoRes, daoUni, daoFac) {
+    constructor(daoRes, daoUni, daoFac, daoMes) {
         this.daoRes = daoRes;
         this.daoUni = daoUni;
         this.daoFac = daoFac;
+        this.daoMes = daoMes;
 
         this.reservations = this.reservations.bind(this);
         this.userReservations = this.userReservations.bind(this);
@@ -353,15 +354,28 @@ class ReservationController {
                                                                     errorHandler.manageAJAXError(error, next);
                                                                 }
                                                                 else {
-                                                                    // Terminar
-                                                                    next({
-                                                                        ajax: true,
-                                                                        error: false,
-                                                                        img: false,
-                                                                        data: {
-                                                                            code: 200,
-                                                                            title: "Reserva cancelada",
-                                                                            message: "Tu reserva ha sido cancelada con éxito."
+                                                                    let newMessage = {
+                                                                        idSender: request.session.currentUser.id,
+                                                                        idReceiver: firstReservation.idUser,
+                                                                        message: `Revisa tus reservas, un usuario antes que tú ha cancelado y ahora te toca a ti`,
+                                                                        subject: `Ya no tienes que esperar cola`
+                                                                    };
+                                                                    this.daoMes.create(newMessage, (error) => {
+                                                                        if (error) {
+                                                                            errorHandler.manageAJAXError(error, next);
+                                                                        }
+                                                                        else {
+                                                                            // Terminar
+                                                                            next({
+                                                                                ajax: true,
+                                                                                error: false,
+                                                                                img: false,
+                                                                                data: {
+                                                                                    code: 200,
+                                                                                    title: "Reserva cancelada",
+                                                                                    message: "Tu reserva ha sido cancelada con éxito."
+                                                                                }
+                                                                            });
                                                                         }
                                                                     });
                                                                 }
@@ -401,15 +415,28 @@ class ReservationController {
                                                                                 errorHandler.manageAJAXError(error, next);
                                                                             }
                                                                             else {
-                                                                                // Terminar
-                                                                                next({
-                                                                                    ajax: true,
-                                                                                    error: false,
-                                                                                    img: false,
-                                                                                    data: {
-                                                                                        code: 200,
-                                                                                        title: "Reserva cancelada",
-                                                                                        message: "Tu reserva ha sido cancelada con éxito."
+                                                                                let newMessage = {
+                                                                                    idSender: request.session.currentUser.id,
+                                                                                    idReceiver: firstReservation.idUser,
+                                                                                    message: `Revisa tus reservas, un usuario antes que tú ha cancelado y ahora te toca a ti`,
+                                                                                    subject: `Ya no tienes que esperar cola`
+                                                                                };
+                                                                                this.daoMes.create(newMessage, (error) => {
+                                                                                    if (error) {
+                                                                                        errorHandler.manageAJAXError(error, next);
+                                                                                    }
+                                                                                    else {
+                                                                                        // Terminar
+                                                                                        next({
+                                                                                            ajax: true,
+                                                                                            error: false,
+                                                                                            img: false,
+                                                                                            data: {
+                                                                                                code: 200,
+                                                                                                title: "Reserva cancelada",
+                                                                                                message: "Tu reserva ha sido cancelada con éxito."
+                                                                                            }
+                                                                                        });
                                                                                     }
                                                                                 });
                                                                             }

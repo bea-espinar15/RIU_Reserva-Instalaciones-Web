@@ -36,7 +36,7 @@ function generateError(cod) {
             code = 403;
             title = "Petición no válida";
             message = "No sé qué estabas intentando cancelar, pero no lo estás haciendo bien!";
-        } break;
+        } break;        
         // Bad Request
         case 1: {
             code = 400;
@@ -157,6 +157,11 @@ function generateError(cod) {
             code = 400;
             title = "Destino no válido";
             message = "Sólo puedes enviar un mensaje a una de estas tres opciones: un usuario particular, todos los usuarios de una facultad o todos los usuarios de la universidad.";
+        } break;
+        case 25: {
+            code = 501;
+            title = "Funcionalidad no implementada";
+            message = "Oops! Esta funcionalidad aún no está disponible :(";
         } break;
         default: {
             code = 500;

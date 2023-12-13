@@ -85,7 +85,6 @@ $(() => {
         }
     });
 
-
     // POST Validar (AJAX)
     const buttonsValidate = $(".button-sb-validate");
 
@@ -148,4 +147,85 @@ $(() => {
             }
         });
     });
+
+    // [TODO] POST Hacer admin (AJAX)
+    const buttonsMakeAdmin = $(".button-make-admin");
+    const buttonSubmitMakeAdmin = $("#button-sb-make-admin");
+
+    buttonsMakeAdmin.each(function (i, button) {
+        let buttonMake = $(this);
+        let idUser = buttonMake.data("iduser");
+        buttonMake.on("click", (event) => {
+            buttonSubmitMakeAdmin.data("idUser", idUser);
+        });
+    });
+
+    buttonSubmitMakeAdmin.on("click", (event) => {
+        event.preventDefault();
+        let idUser = buttonSubmitMakeAdmin.data("iduser");
+        // Validación en cliente
+        if (validateParams(idUser)) {
+            // Petición POST
+            $.ajax({
+                method: "POST",
+                url: "/admin/hacerAdmin",
+                data: {},
+                success: () => { },
+                error: (jqXHR, statusText, errorThrown) => {
+                    let error = jqXHR.responseJSON;
+                    modalErrorTitle.text(error.title);
+                    modalErrorMessage.text(error.message);
+                    modalErrorHeader.removeClass("bg-riu-light-green");
+                    modalErrorHeader.addClass("bg-riu-light-gray");
+                    imgModalError.attr("src", "/img/icons/error.png");
+                    imgModalError.attr("alt", "Icono de error");
+                    buttonErrorOk.removeClass("bg-riu-green");
+                    buttonErrorOk.addClass("bg-riu-red");
+                    // Mostrarlo
+                    buttonModalError.click();
+                }
+            });
+        }
+    });
+
+    // [TODO] POST Expulsar (AJAX)
+    const buttonsBan = $(".button-ban");
+    const buttonSubmitBan = $("#button-sb-ban");
+
+    buttonsBan.each(function (i, button) {
+        let buttonBane = $(this);
+        let idUser = buttonBane.data("iduser");
+        buttonBane.on("click", (event) => {
+            buttonSubmitBan.data("idUser", idUser);
+        });
+    });
+
+    buttonSubmitBan.on("click", (event) => {
+        event.preventDefault();
+        let idUser = buttonSubmitBan.data("iduser");
+        // Validación en cliente
+        if (validateParams(idUser)) {
+            // Petición POST
+            $.ajax({
+                method: "POST",
+                url: "/admin/expulsar",
+                data: {},
+                success: () => {},
+                error: (jqXHR, statusText, errorThrown) => {
+                    let error = jqXHR.responseJSON;
+                    modalErrorTitle.text(error.title);
+                    modalErrorMessage.text(error.message);
+                    modalErrorHeader.removeClass("bg-riu-light-green");
+                    modalErrorHeader.addClass("bg-riu-light-gray");
+                    imgModalError.attr("src", "/img/icons/error.png");
+                    imgModalError.attr("alt", "Icono de error");
+                    buttonErrorOk.removeClass("bg-riu-green");
+                    buttonErrorOk.addClass("bg-riu-red");
+                    // Mostrarlo
+                    buttonModalError.click();
+                }
+            });
+        }
+    });
+
 });

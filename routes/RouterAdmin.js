@@ -62,7 +62,35 @@ function routerConfig(facController, mesController, resController, uniController
       useController.validate
     );
 
-    // [TODO]
+    // [TODO] Hacer admin
+    RouterAdmin.post(
+      "/hacerAdmin",
+      useController.makeAdmin
+    );
+
+    // [TODO] Banear
+    RouterAdmin.post(
+      "/expulsar",
+      useController.ban
+    );
+
+    // [TODO] Crear instalación
+    RouterAdmin.post(
+      "/crearInstalacion",
+      facController.newFacility
+    );
+
+    // [TODO] Editar instalación
+    RouterAdmin.post(
+      "/editarInstalacion",
+      facController.editFacility
+    );
+
+    // [TODO] Crear tipo de instalación
+    RouterAdmin.post(
+      "/crearTipo",
+      facController.newType
+    );
 
 }
 

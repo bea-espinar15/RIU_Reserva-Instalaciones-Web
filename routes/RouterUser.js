@@ -72,8 +72,6 @@ function routerConfig(facController, mesController, resController, uniController
       resController.cancel  
     );
 
-    // [TODO]
-
 }
 
 module.exports = {

@@ -26,6 +26,10 @@ class UserController {
         this.logout = this.logout.bind(this);
         this.signUp = this.signUp.bind(this);
         this.validate = this.validate.bind(this);
+        this.editProfilePic = this.editProfilePic.bind(this);
+        this.changePassword = this.changePassword.bind(this);
+        this.makeAdmin = this.makeAdmin.bind(this);
+        this.ban = this.ban.bind(this);
     }
 
     // Métodos
@@ -422,14 +426,28 @@ class UserController {
                                 errorHandler.manageAJAXError(error, next);
                             }
                             else {
-                                next({
-                                    ajax: true,
-                                    error: false,
-                                    img: false,
-                                    data: {
-                                        code: 200,
-                                        title: "Usuario validado",
-                                        message: "El usuario ha sido validado con éxito!"
+                                let newMessage = {
+                                    idSender: request.session.currentUser.id,
+                                    idReceiver: user.id,
+                                    message: `Hola ${user.name}, tu cuenta ya ha sido validada`,
+                                    subject: "Validación completada"
+                                };
+                                this.daoMes.create(newMessage, (error) => {
+                                    if (error) {
+                                        errorHandler.manageAJAXError(error, next);
+                                    }
+                                    else {
+                                        // Terminar
+                                        next({
+                                            ajax: true,
+                                            error: false,
+                                            img: false,
+                                            data: {
+                                                code: 200,
+                                                title: "Usuario validado",
+                                                message: "El usuario ha sido validado con éxito!"
+                                            }
+                                        });
                                     }
                                 });
                             }
@@ -442,6 +460,26 @@ class UserController {
         else {
             errorHandler.manageAJAXError(parseInt(errors.array()[0].msg), next);
         }
+    }
+
+    // [TODO] Editar foto de perfil
+    editProfilePic(request, response, next) {
+        errorHandler.manageAJAXError(25, next);
+    }
+
+    // [TODO] Cambiar contraseña
+    changePassword(request, response, next) {
+        errorHandler.manageAJAXError(25, next);
+    }
+
+    // [TODO] Hacer administrador a un usuario
+    makeAdmin(request, response, next) {
+        errorHandler.manageAJAXError(25, next);
+    }
+
+    // [TODO] Expulsar a un usuario
+    ban(request, response, next) {
+        errorHandler.manageAJAXError(25, next);
     }
 }
 

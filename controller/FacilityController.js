@@ -13,6 +13,9 @@ class FacilityController {
         this.facilitiesByType = this.facilitiesByType.bind(this);
         this.facilityTypePic = this.facilityTypePic.bind(this);
         this.facilityPic = this.facilityPic.bind(this);
+        this.newFacility = this.newFacility.bind(this);
+        this.editFacility = this.editFacility.bind(this);
+        this.newType = this.newType.bind(this);
     }
 
     // Métodos
@@ -179,6 +182,20 @@ class FacilityController {
     }
 
     // --- POST ---
+    // [TODO] Crear nueva instalación
+    newFacility(request, response, next) {
+        errorHandler.manageAJAXError(25, next);
+    }
+
+    // [TODO] Crear nueva instalación
+    editFacility(request, response, next) {
+        errorHandler.manageAJAXError(25, next);
+    }
+
+    // [TODO] Crear nueva instalación
+    newType(request, response, next) {
+        errorHandler.manageAJAXError(25, next);
+    }
 }
 
 module.exports = FacilityController;

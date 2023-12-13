@@ -21,6 +21,7 @@ $(() => {
     const completeFacility= $("#input-facility-complete");
     const capacityFacility = $("#input-facility-capacity");
     const pictureFacility = $("#input-facility-picture");
+    const buttonSbFacility = $("#input-sb-facility");
 
     facilitiesContainer.show();
     showFacilityContainer.hide();
@@ -56,6 +57,7 @@ $(() => {
             if (facility.complete) { completeFacility.prop("checked", true); }
             else { completeFacility.prop("checked", false); }
             capacityFacility.attr("value", facility.capacity);
+            buttonSbFacility.data("new", false);
             // Desactivar inputs
             nameFacility.removeAttr("disabled");
             typeFacility.attr("disabled", "true");
@@ -83,6 +85,7 @@ $(() => {
         resTypeFacility.attr("value", "");
         completeFacility.prop("checked", false);
         capacityFacility.attr("value", "");
+        buttonSbFacility.data("new", true);
         // Desactivar inputs
         nameFacility.removeAttr("disabled");
         typeFacility.removeAttr("disabled");
@@ -139,6 +142,87 @@ $(() => {
         else {
             noFacilityMessage.text(`Ver ${anyFacility} resultados`);
         }   
+    });
+
+    // Botón del modal respuesta/error
+    const buttonModalError = $("#button-modal-error");
+    const modalErrorHeader = $("#div-modal-error-header");
+    const imgModalError = $("#img-modal-error");
+    const modalErrorTitle = $("#h1-modal-error");
+    const modalErrorMessage = $("#p-modal-error");
+    const buttonErrorOk = $("#button-modal-error-ok");
+
+    // [TODO] POST crear y editar instalación (AJAX)   
+    buttonSbFacility.on("click", (event) => {
+        event.preventDefault();
+        if (buttonSbFacility.data("new")) {
+            $.ajax({
+                method: "POST",
+                url: "/admin/crearInstalacion",
+                data: {},
+                success: () => {},
+                error: (jqXHR, statusText, errorThrown) => {
+                    let error = jqXHR.responseJSON;
+                    modalErrorTitle.text(error.title);
+                    modalErrorMessage.text(error.message);
+                    modalErrorHeader.removeClass("bg-riu-light-green");
+                    modalErrorHeader.addClass("bg-riu-light-gray");
+                    imgModalError.attr("src", "/img/icons/error.png");
+                    imgModalError.attr("alt", "Icono de error");
+                    buttonErrorOk.removeClass("bg-riu-green");
+                    buttonErrorOk.addClass("bg-riu-red");
+                    // Mostrarlo
+                    buttonModalError.click();
+                }
+            });
+        }
+        else {
+            $.ajax({
+                method: "POST",
+                url: "/admin/editarInstalacion",
+                data: {},
+                success: () => {},
+                error: (jqXHR, statusText, errorThrown) => {
+                    let error = jqXHR.responseJSON;
+                    modalErrorTitle.text(error.title);
+                    modalErrorMessage.text(error.message);
+                    modalErrorHeader.removeClass("bg-riu-light-green");
+                    modalErrorHeader.addClass("bg-riu-light-gray");
+                    imgModalError.attr("src", "/img/icons/error.png");
+                    imgModalError.attr("alt", "Icono de error");
+                    buttonErrorOk.removeClass("bg-riu-green");
+                    buttonErrorOk.addClass("bg-riu-red");
+                    // Mostrarlo
+                    buttonModalError.click();
+                }
+            });
+        }
+    });
+
+    // [TODO] POST crear nuevo tipo (AJAX)
+    const buttonSbNewType = $("#button-sb-new-type");
+
+    buttonSbNewType.on("click", (event) => {
+        event.preventDefault();
+        $.ajax({
+            method: "POST",
+            url: "/admin/crearTipo",
+            data: {},
+            success: () => {},
+            error: (jqXHR, statusText, errorThrown) => {
+                let error = jqXHR.responseJSON;
+                modalErrorTitle.text(error.title);
+                modalErrorMessage.text(error.message);
+                modalErrorHeader.removeClass("bg-riu-light-green");
+                modalErrorHeader.addClass("bg-riu-light-gray");
+                imgModalError.attr("src", "/img/icons/error.png");
+                imgModalError.attr("alt", "Icono de error");
+                buttonErrorOk.removeClass("bg-riu-green");
+                buttonErrorOk.addClass("bg-riu-red");
+                // Mostrarlo
+                buttonModalError.click();
+            }
+        });
     });
 
 });
