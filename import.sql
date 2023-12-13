@@ -168,11 +168,11 @@ INSERT INTO RIU_INS_Instalación (nombre, hora_ini, hora_fin, tipo_reserva, afor
 ('Salas de reunión 1 - Medicina', '09:00', '18:00', 1, 5, 4),
 ('Salas de reunión 1 - Bellas Artes', '09:00', '18:00', 1, 5, 4),
 
-('Sala de estudio 1 - Informática', '09:00', '18:00', 0, 0, 10, 5),
-('Sala de estudio 2 - Informática', '09:00', '18:00', 0, 0, 10, 5),
-('Sala de estudio 1 - Medicina', '09:00', '18:00', 0, 0, 10, 5),
-('Sala de estudio 1 - Bellas Artes', '09:00', '18:00', 0, 0, 5, 5),
-('Sala de estudio 2 - Bellas Artes', '09:00', '18:00', 0, 0, 5, 5);
+('Sala de estudio 1 - Informática', '09:00', '18:00', 0, 10, 5),
+('Sala de estudio 2 - Informática', '09:00', '18:00', 0, 10, 5),
+('Sala de estudio 1 - Medicina', '09:00', '18:00', 0, 10, 5),
+('Sala de estudio 1 - Bellas Artes', '09:00', '18:00', 0, 5, 5),
+('Sala de estudio 2 - Bellas Artes', '09:00', '18:00', 0, 5, 5);
 
 -- RESERVA
 INSERT INTO RIU_RES_Reserva (activo, id_usuario, id_instalación, n_personas, fecha, hora, cola, fecha_reserva) VALUES

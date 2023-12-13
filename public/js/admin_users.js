@@ -98,25 +98,38 @@ $(() => {
 
     buttonsValidate.each(function (i, button) {
         let buttonVal = $(this);
+        console.log(`V: ${buttonVal.data("user").id}`);
         buttonVal.on("click", (event) => {
             event.preventDefault();
-            let idUser = buttonVal.data("iduser");
+            let user = buttonVal.data("user");
+            console.log(`Vo: ${user.id}`);
             // Validación en cliente
-            if (validateParams(idUser)) {
+            if (validateParams(user)) {
                 // Petición POST
                 $.ajax({
                     method: "POST",
                     url: "/admin/validar",
-                    data: { idUser: idUser },
+                    data: { idUser: user.id },
                     success: (data, statusText, jqXHR) => {
                         // Cambiar icono
-                        $(`#img-icon-${idUser}`).attr("src", "/img/icons/accepted.png");
+                        console.log(`V-s: ${user.id}`);
+                        $(`#img-icon-${user.id}`).attr("src", "/img/icons/accepted.png");
 
                         // Cambiar botones
-                        let divButtons = $(`#div-buttons-${idUser}`);
+                        let divButtons = $(`#div-buttons-${user.id}`);
                         divButtons.empty();
-                        divButtons.append($(`<button type="button" class="button-users bg-riu-red" data-bs-toggle="modal" data-bs-target="#div-modal-ban" data-idUser="${idUser}">Banear</button>`));
-                        divButtons.append($(`<button type="button" class="button-users bg-riu-primary-light button-make-admin" data-bs-toggle="modal" data-bs-target="#div-modal-make-admin" data-idUser="${idUser}">Hacer Admin</button>`));
+                        divButtons.append($(`<button type="button" class="button-users bg-riu-red" data-bs-toggle="modal" data-bs-target="#div-modal-ban" data-idUser="${user.id}">Expulsar</button>`));
+                        divButtons.append($(`<button type="button" class="button-users bg-riu-primary-light button-make-admin" data-bs-toggle="modal" data-bs-target="#div-modal-make-admin">Hacer Admin</button>`));
+
+                        // Añadir funcionalidad al button hacer admin
+                        
+                        let buttonMake = divButtons.find('button').last();
+                        buttonMake.data("user", JSON.stringify(user));
+                        let user2 = JSON.parse(buttonMake.data("user"));
+                        buttonMake.on("click", (event) => {
+                            buttonSubmitMakeAdmin.data("user", user2);
+                            console.log(buttonSubmitMakeAdmin.data("user"));
+                        });
 
                         // Crear modal
                         modalErrorTitle.text(data.title);
@@ -154,23 +167,67 @@ $(() => {
 
     buttonsMakeAdmin.each(function (i, button) {
         let buttonMake = $(this);
-        let idUser = buttonMake.data("iduser");
+        let user = buttonMake.data("user");
+        console.log(`MA: ${user.id}`);
         buttonMake.on("click", (event) => {
-            buttonSubmitMakeAdmin.data("idUser", idUser);
+            buttonSubmitMakeAdmin.data("user", user);
+            console.log(`U-BSMA: ${buttonSubmitMakeAdmin.data("user")}`);
         });
     });
 
     buttonSubmitMakeAdmin.on("click", (event) => {
         event.preventDefault();
-        let idUser = buttonSubmitMakeAdmin.data("iduser");
+        let user = buttonSubmitMakeAdmin.data("user");
+        console.log(`MAo: ${user.id}`);
         // Validación en cliente
-        if (validateParams(idUser)) {
+        if (validateParams(user)) {
             // Petición POST
             $.ajax({
                 method: "POST",
                 url: "/admin/hacerAdmin",
-                data: {},
-                success: () => { },
+                data: { idUser: user.id },
+                success: (data, statusText, jqXHR) => {
+                    // Eliminar lista de usuarios
+                    $(`#div-info-user-${user.id}`).hide();
+                    
+                    // Añadir lista administradores
+                    let imgNewAdmin = $(`#img-user-${user.id}`);
+                    let imgSrc = imgNewAdmin.attr("src");
+                    let universityMail = imgNewAdmin.data("unimail");
+
+                    let divAdmins = $(`#div-admins`);
+                    divAdmins.append($(`<div class="div-card-general div-card-admin d-flex d-flex align-items-center">
+                                            <div class="div-card-info d-flex">
+                                                <!-- Foto de perfil -->
+                                                <img src="${imgSrc}" alt="Foto de perfil" width="70" height="70" class="img-profile-pic">
+                                                <!-- Info del admin -->
+                                                <div class="div-admin-info d-flex align-items-center justify-content-between w-100">
+                                                    <div class="d-flex flex-column">
+                                                        <h2>
+                                                            ${user.name} 
+                                                            ${user.lastname1} 
+                                                            ${user.lastname2}
+                                                        </h2>
+                                                        <p>${user.mail}@${universityMail}</p>
+                                                    </div>
+                                                    <!-- Facultad -->
+                                                    <p class="p-admin-faculty">${user.facultyName}</p>
+                                                </div>
+                                            </div>
+                                        </div>`));
+                    
+                    // Crear modal
+                    modalErrorTitle.text(data.title);
+                    modalErrorMessage.text(data.message);
+                    modalErrorHeader.removeClass("bg-riu-light-gray");
+                    modalErrorHeader.addClass("bg-riu-light-green");
+                    imgModalError.attr("src", "/img/icons/success.png");
+                    imgModalError.attr("alt", "Icono de éxito");
+                    buttonErrorOk.removeClass("bg-riu-red");
+                    buttonErrorOk.addClass("bg-riu-green");
+                    // Mostrarlo
+                    buttonModalError.click();
+                },
                 error: (jqXHR, statusText, errorThrown) => {
                     let error = jqXHR.responseJSON;
                     modalErrorTitle.text(error.title);

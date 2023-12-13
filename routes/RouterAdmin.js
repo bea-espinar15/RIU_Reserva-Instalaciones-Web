@@ -65,6 +65,10 @@ function routerConfig(facController, mesController, resController, uniController
     // [TODO] Hacer admin
     RouterAdmin.post(
       "/hacerAdmin",
+      // ID no vacío 
+      check("idUser", "1").notEmpty(),
+      // ID es un número
+      check("idUser", "-5").isNumeric(),
       useController.makeAdmin
     );
 

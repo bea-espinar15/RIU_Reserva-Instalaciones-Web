@@ -474,7 +474,63 @@ class UserController {
 
     // [TODO] Hacer administrador a un usuario
     makeAdmin(request, response, next) {
-        errorHandler.manageAJAXError(25, next);
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            // Comprobar que el usuario existe
+            let idUser = request.body.idUser;
+            this.daoUse.read(idUser, (error, user) => {
+                if (error) {
+                    errorHandler.manageAJAXError(error, next);
+                }
+                else {
+                    // Comprobar que el usuario no estaba baneado
+                    if (!user.enabled){
+                        errorHandler.manageAJAXError(18, next);
+                    }
+                    // Comprobar que el usuario no era ya administrador
+                    else if (user.rol) {
+                        errorHandler.manageAJAXError(31, next);
+                    }
+                    else {
+                        this.daoUse.makeAdmin(idUser, (error) => {
+                            if (error) {
+                                errorHandler.manageAJAXError(error, next);
+                            }
+                            else {
+                                let newMessage = {
+                                    idSender: request.session.currentUser.id,
+                                    idReceiver: user.id,
+                                    message: `Hola ${user.name}, tu cuenta ahora es de administrador`,
+                                    subject: "Ahora eres admin"
+                                };
+                                this.daoMes.create(newMessage, (error) => {
+                                    if (error) {
+                                        errorHandler.manageAJAXError(error, next);
+                                    }
+                                    else {
+                                        // Terminar
+                                        next({
+                                            ajax: true,
+                                            error: false,
+                                            img: false,
+                                            data: {
+                                                code: 200,
+                                                title: "Nuevo administrador",
+                                                message: "El nuevo administrador ha sido dado de alta con éxito!"
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+            });
+
+        }
+        else {
+            errorHandler.manageAJAXError(parseInt(errors.array()[0].msg), next);
+        }
     }
 
     // [TODO] Expulsar a un usuario

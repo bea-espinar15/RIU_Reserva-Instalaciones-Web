@@ -193,6 +193,11 @@ function generateError(cod) {
             title = "Instalación repetida";
             message = "Ya existe una instalación de este tipo con el nombre introducido.";
         } break;
+        case 31: {
+            code = 400;
+            title = "Usuario ya es administrador";
+            message = "El usuario al que intentas hacer administrador ya lo es.";
+        } break;
         default: {
             code = 500;
             title = "Error desconocido";

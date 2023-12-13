@@ -7,6 +7,7 @@ class DAOUsers {
 
         this.create = this.create.bind(this);
         this.validate = this.validate.bind(this);
+        this.makeAdmin = this.makeAdmin.bind(this);
         this.read = this.read.bind(this);
         this.readAll = this.readAll.bind(this);
         this.readByUniversity = this.readByUniversity.bind(this);
@@ -50,6 +51,32 @@ class DAOUsers {
             }
             else {
                 let querySQL = "UPDATE RIU_USU_Usuario SET validado = 1 WHERE id = ?";
+                connection.query(querySQL, [idUser], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.affectedRows === 0) {
+                            callback(-1);
+                        }
+                        else {
+                            callback(null);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    // Hacer administrador a un usuario
+    makeAdmin(idUser, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "UPDATE RIU_USU_Usuario SET rol = 1 WHERE id = ?";
                 connection.query(querySQL, [idUser], (error, rows) => {
                     connection.release();
                     if (error) {

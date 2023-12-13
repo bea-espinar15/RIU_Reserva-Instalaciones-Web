@@ -42,13 +42,13 @@
                         <p id="p-no-users" class="mt-2">No hay ningún resultado que coincida.</p>
                         <% users.forEach((user, i) => { %>
                             <!-- Card usuario -->
-                            <div class="div-card-general div-card-user align-items-center <% if (!user.enabled) { %> bg-riu-res-gray <% } %>" data-user="<%= JSON.stringify(user) %>">
+                            <div id="div-info-user-<%= user.id %>" class="div-card-general div-card-user align-items-center <% if (!user.enabled) { %> bg-riu-res-gray <% } %>" data-user="<%= JSON.stringify(user) %>">
                                 <div class="div-card-info d-flex">
                                     <!-- Foto de perfil -->
                                     <% if (user.hasProfilePic) { %>
-                                        <img src="/fotoPerfil/<%= user.id %>" alt="Foto de perfil" width="70" height="70" class="img-profile-pic">
+                                        <img id="img-user-<%= user.id %>" src="/fotoPerfil/<%= user.id %>" alt="Foto de perfil" width="70" height="70" class="img-profile-pic" data-unimail="<%= universityMail %>">
                                     <% } else { %>
-                                        <img src="/img/default/profile.png" alt="Foto de perfil" width="70" height="70" class="img-profile-pic">
+                                        <img id="img-user-<%= user.id %>" src="/img/default/profile.png" alt="Foto de perfil" width="70" height="70" class="img-profile-pic" data-unimail="<%= universityMail %>">
                                     <% } %>
                                     <!-- Info del usuario -->
                                     <div class="div-user-info d-flex flex-column">
@@ -73,9 +73,9 @@
                                     <div id="div-buttons-<%= user.id %>" class="div-buttons d-flex flex-column">
                                             <% if (user.validated) { %>
                                                 <button type="button" class="button-ban button-users bg-riu-red" data-bs-toggle="modal" data-bs-target="#div-modal-ban" data-idUser="<%= user.id %>">Expulsar</button>
-                                                <button type="button" class="button-make-admin button-users bg-riu-primary-light button-make-admin" data-bs-toggle="modal" data-bs-target="#div-modal-make-admin" data-idUser="<%= user.id %>">Hacer Admin</button>
+                                                <button type="button" class="button-make-admin button-users bg-riu-primary-light button-make-admin" data-bs-toggle="modal" data-bs-target="#div-modal-make-admin" data-user="<%= JSON.stringify(user) %>">Hacer Admin</button>
                                             <% } else { %>
-                                                <button type="button" class="button-sb-validate button-users bg-riu-green" data-idUser="<%= user.id %>">Validar</button>
+                                                <button type="button" class="button-sb-validate button-users bg-riu-green" data-user="<%= JSON.stringify(user) %>">Validar</button>
                                             <% } %>                   
                                     </div>
                                 <% } %>
@@ -108,7 +108,7 @@
                                 </form>                                                        
                             </div>
                         </div>
-                    </div>
+                    </div>div-admins-container
                 </div>
 
                 <!-- MODAL HACER ADMIN -->
