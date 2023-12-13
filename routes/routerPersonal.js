@@ -38,6 +38,15 @@ function routerConfig(facController, mesController, resController, uniController
         mesController.sendMessage
     );
 
+    RouterPersonal.post(
+        "/marcarLeido",
+        // ID no vacío 
+        check("idMessage", "1").notEmpty(),
+        // ID es un número
+        check("idMessage", "-7").isNumeric(),
+        mesController.markAsRead
+    );
+
     // [TODO] Editar foto de perfil
     RouterPersonal.post(
         "/editarFotoPerfil",

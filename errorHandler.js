@@ -36,7 +36,12 @@ function generateError(cod) {
             code = 403;
             title = "Petición no válida";
             message = "No sé qué estabas intentando cancelar, pero no lo estás haciendo bien!";
-        } break;        
+        } break;    
+        case -7: {
+            code = 403;
+            title = "Petición no válida";
+            message = "No sé qué estabas intentando leer, pero no lo estás haciendo bien!";
+        } break;
         // Bad Request
         case 1: {
             code = 400;
@@ -162,6 +167,11 @@ function generateError(cod) {
             code = 501;
             title = "Funcionalidad no implementada";
             message = "Oops! Esta funcionalidad aún no está disponible :(";
+        } break;
+        case 26: {
+            code = 400;
+            title = "Mensaje ya leído";
+            message = "Este mensaje ya lo habías leído.";
         } break;
         default: {
             code = 500;

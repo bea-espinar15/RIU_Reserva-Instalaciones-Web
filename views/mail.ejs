@@ -32,13 +32,13 @@
                     <div class="div-message d-flex justify-content-between" data-message="<%= JSON.stringify(msg) %>">
                         <!-- Usuario origen y asunto -->
                         <div>
-                            <h2 <% if (!msg.readDate) { %> class="font-bold" <% } %>><%= msg.senderUsername %>@<%= universityMail %></h2>
-                            <p <% if (!msg.readDate) { %> class="font-bold" <% } %>><%= msg.subject %></p>
+                            <h2 id="h2-sender-<%= msg.id %>" <% if (!msg.readDate) { %> class="font-bold" <% } %>><%= msg.senderUsername %>@<%= universityMail %></h2>
+                            <p id="p-subject-<%= msg.id %>"<% if (!msg.readDate) { %> class="font-bold" <% } %>><%= msg.subject %></p>
                         </div>
                         <!-- No leído y fecha -->
                         <div class="div-date d-flex flex-column">
                             <% if (!msg.readDate) { %> 
-                                <img src="/img/unread.png" alt="No leído" width="15">
+                                <img id="img-unread-dot-<%= msg.id %>" src="/img/unread.png" alt="No leído" width="15">
                             <% } %>
                             <p><%= msg.sendDate %></p>
                         </div>

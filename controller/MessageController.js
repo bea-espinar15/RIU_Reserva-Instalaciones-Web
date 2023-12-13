@@ -13,6 +13,7 @@ class MessageController {
         this.mails = this.mails.bind(this);
         this.unreadMessages = this.unreadMessages.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
+        this.markAsRead = this.markAsRead.bind(this);
     }
 
     // Métodos
@@ -282,6 +283,47 @@ class MessageController {
                     }
                 }
             }
+        }
+        else {
+            errorHandler.manageAJAXError(parseInt(errors.array()[0].msg), next);
+        }
+    }
+
+    // Marcar como leído
+    markAsRead(request, response, next) {
+        
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            // Obtener mensaje
+            let idMessage = parseInt(request.body.idMessage);
+            this.daoMes.read(idMessage, request.session.currentUser.id, (error, message) => {
+                if (error) {
+                    errorHandler.manageAJAXError(error, next);
+                }
+                else {
+                    // Comprobar que no estaba ya leído
+                    if (message.readDate) {
+                        errorHandler.manageAJAXError(26, next);
+                    }
+                    else {
+                        // Poner fecha_leído = hoy
+                        this.daoMes.markAsRead(idMessage, (error) => {
+                            if (error) {
+                                errorHandler.manageAJAXError(error, next);
+                            }
+                            else {
+                                // Terminamos
+                                next({
+                                    ajax: true,
+                                    error: false,
+                                    img: false,
+                                    data: {}
+                                });
+                            }
+                        });
+                    }
+                }
+            });
         }
         else {
             errorHandler.manageAJAXError(parseInt(errors.array()[0].msg), next);
