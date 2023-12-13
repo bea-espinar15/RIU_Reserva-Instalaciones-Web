@@ -43,7 +43,6 @@ class DAOMessages {
 
     // Leer todos
     read(idMessage, idUser, callback) {
-        console.log(idMessage, idUser);
         this.pool.getConnection((error, connection) => {
             if (error) {
                 callback(-1);

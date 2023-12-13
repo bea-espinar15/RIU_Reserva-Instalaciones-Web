@@ -43,8 +43,6 @@ $(() => {
         let facility = divFacility.data("facility");
         let typeHasPic = divFacility.data("typehaspic");
         // Rellenar contenido del div
-        console.log("hola");
-        console.log(facility);
         if (facility.hasPic) { facilityPic.attr("src", `/fotoInstalacion/${facility.id}`); }
         else if (typeHasPic) { facilityPic.attr("src", `/fotoTipoInstalacion/${facility.idType}`); }
         else { facilityPic.attr("src", "/img/default/facility.png"); }
@@ -164,18 +162,32 @@ $(() => {
                 url: "/admin/crearInstalacion",
                 data: params,
                 success: (data, statusText, jqXHR) => {
-                    const facilityData = JSON.stringify(data.facility);
-                    const typeHasPicData = JSON.stringify(data.facility.typeHasPic);
-
                     // Añadir instalación a la lista
-                    const divNewFacility = $(`<div class="div-facility justify-content-between" data-facility="${facilityData}">
+                    const divNewFacility = $(`<div class="div-facility justify-content-between">
                                                 <div class="d-flex flex-column">
                                                     <h2>${data.facility.name}</h2>
                                                     <p>${data.facility.typeName}</p>
                                                 </div>
-                                                <button type="button" class="button-see-more bg-riu-primary-dark align-items-end" data-facility="${facilityData}" data-typehaspic="${typeHasPicData}">Ver más</button>
+                                                <button type="button" class="button-see-more bg-riu-primary-dark align-items-end" data-typehaspic="${data.facility.typeHasPic}">Ver más</button>
                                             </div>`);
                     facilitiesTable.append(divNewFacility);
+
+                    // Añadir data facility
+                    let lastAddedFacility = facilitiesTable.find('.div-facility:last');
+                    lastAddedFacility.data("facility", data.facility);
+
+                    let buttonSeeMore = facilitiesTable.find('button').last();
+                    buttonSeeMore.data("facility", data.facility);
+
+                    //  [TODO] Actualizar ver resultados
+                    let facs = facilities.length;
+                    if (facs === 0) {
+                        noFacilityMessage.text(`Ver ${facs+1} resultado`);
+                    }
+                    else {
+                        noFacilityMessage.text(`Ver ${facs+1} resultados`);
+                    }
+
                     // Ocultar el formulario
                     showFacilityContainer.hide();
                     // Crear modal

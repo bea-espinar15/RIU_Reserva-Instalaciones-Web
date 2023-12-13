@@ -256,7 +256,7 @@ class FacilityController {
                                                         capacity: params.capacity,
                                                         hasPic: params.pic ? true : false,
                                                         idType: idFacilityType,
-                                                        typeName: params.facilityType,
+                                                        facilityTypeName: params.facilityType,
                                                         typeHasPic: typeHasPic
                                                     }
                                                     next({

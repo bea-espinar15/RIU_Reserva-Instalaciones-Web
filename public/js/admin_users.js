@@ -98,11 +98,9 @@ $(() => {
 
     buttonsValidate.each(function (i, button) {
         let buttonVal = $(this);
-        console.log(`V: ${buttonVal.data("user").id}`);
         buttonVal.on("click", (event) => {
             event.preventDefault();
             let user = buttonVal.data("user");
-            console.log(`Vo: ${user.id}`);
             // Validación en cliente
             if (validateParams(user)) {
                 // Petición POST
@@ -112,7 +110,6 @@ $(() => {
                     data: { idUser: user.id },
                     success: (data, statusText, jqXHR) => {
                         // Cambiar icono
-                        console.log(`V-s: ${user.id}`);
                         $(`#img-icon-${user.id}`).attr("src", "/img/icons/accepted.png");
 
                         // Cambiar botones
@@ -121,14 +118,14 @@ $(() => {
                         divButtons.append($(`<button type="button" class="button-users bg-riu-red" data-bs-toggle="modal" data-bs-target="#div-modal-ban" data-idUser="${user.id}">Expulsar</button>`));
                         divButtons.append($(`<button type="button" class="button-users bg-riu-primary-light button-make-admin" data-bs-toggle="modal" data-bs-target="#div-modal-make-admin">Hacer Admin</button>`));
 
-                        // Añadir funcionalidad al button hacer admin
-                        
+                        // Añadir data user
                         let buttonMake = divButtons.find('button').last();
                         buttonMake.data("user", JSON.stringify(user));
+
+                        // Añadir funcionalidad al button hacer admin
                         let user2 = JSON.parse(buttonMake.data("user"));
                         buttonMake.on("click", (event) => {
                             buttonSubmitMakeAdmin.data("user", user2);
-                            console.log(buttonSubmitMakeAdmin.data("user"));
                         });
 
                         // Crear modal
@@ -168,17 +165,14 @@ $(() => {
     buttonsMakeAdmin.each(function (i, button) {
         let buttonMake = $(this);
         let user = buttonMake.data("user");
-        console.log(`MA: ${user.id}`);
         buttonMake.on("click", (event) => {
             buttonSubmitMakeAdmin.data("user", user);
-            console.log(`U-BSMA: ${buttonSubmitMakeAdmin.data("user")}`);
         });
     });
 
     buttonSubmitMakeAdmin.on("click", (event) => {
         event.preventDefault();
         let user = buttonSubmitMakeAdmin.data("user");
-        console.log(`MAo: ${user.id}`);
         // Validación en cliente
         if (validateParams(user)) {
             // Petición POST
