@@ -9,7 +9,7 @@
 Para generar la estructura del proyecto se ha hecho uso del módulo express-generator.
 
 #### VIEWS
-En esta carpeta se encuentran los ficheros EJS para las vistas dinámicas. En este caso, todas las vistas lo son, pues como mínimo importan el <head> y el modal de respuesta/error de manera dinámica (y la gran mayoría el <nav>)
+En esta carpeta se encuentran los ficheros EJS para las vistas dinámicas. En este caso, todas las vistas lo son, pues como mínimo importan el head y el modal de respuesta/error de manera dinámica (y la gran mayoría el nav)
 
 #### PUBLIC
 En esta carpeta se encuentran las vistas y los recursos estáticos. Incluye los siguientes elementos:
