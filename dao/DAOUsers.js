@@ -8,6 +8,7 @@ class DAOUsers {
         this.create = this.create.bind(this);
         this.validate = this.validate.bind(this);
         this.makeAdmin = this.makeAdmin.bind(this);
+        this.banUser = this.banUser.bind(this);
         this.read = this.read.bind(this);
         this.readAll = this.readAll.bind(this);
         this.readByUniversity = this.readByUniversity.bind(this);
@@ -95,6 +96,31 @@ class DAOUsers {
         });
     }
     
+    // Expulsar a un usuario
+    banUser(idUser, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "UPDATE RIU_USU_Usuario SET activo = 0 WHERE id = ?";
+                connection.query(querySQL, [idUser], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.affectedRows === 0) {
+                            callback(-1);
+                        }
+                        else {
+                            callback(null);
+                        }
+                    }
+                });
+            }
+        });
+    }
     
     // Obtener usuario
     read(idUser, callback) {

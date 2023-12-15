@@ -75,6 +75,10 @@ function routerConfig(facController, mesController, resController, uniController
     // [TODO] Banear
     RouterAdmin.post(
       "/expulsar",
+      // ID no vacío 
+      check("idUser", "1").notEmpty(),
+      // ID es un número
+      check("idUser", "-5").isNumeric(),
       useController.ban
     );
 

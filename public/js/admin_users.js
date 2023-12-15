@@ -133,7 +133,7 @@ $(() => {
                         divButtons.append($(`<button type="button" class="button-users bg-riu-red" data-bs-toggle="modal" data-bs-target="#div-modal-ban" data-idUser="${user.id}">Expulsar</button>`));
                         divButtons.append($(`<button type="button" class="button-users bg-riu-primary-light button-make-admin" data-bs-toggle="modal" data-bs-target="#div-modal-make-admin">Hacer Admin</button>`));
 
-                        // Añadir data user
+                        // Añadir data user botón hacer administrador
                         let buttonMake = divButtons.find('button').last();
                         buttonMake.data("user", JSON.stringify(user));
 
@@ -141,6 +141,12 @@ $(() => {
                         let us = JSON.parse(buttonMake.data("user"));
                         buttonMake.on("click", (event) => {
                             buttonSubmitMakeAdmin.data("user", us);
+                        });
+
+                        // Añadir funcionalidad al button expulsar
+                        let buttonBan = divButtons.find('button').eq(divButtons.find('button').length - 2);
+                        buttonBan.on("click", (event) => {
+                            buttonSubmitBan.data("iduser", user.id);
                         });
 
                         //Cambiar info user en el div-info-user para el check de pendientes de validar y ocultar si está activado
@@ -151,7 +157,6 @@ $(() => {
                         if (checkboxPending.prop("checked")) {
                             divInfo.hide();
                         }
-
 
                         // Crear modal
                         modalErrorTitle.text(data.title);
@@ -195,7 +200,7 @@ $(() => {
         });
     });
 
-    // [TODO] POST Hacer admin (AJAX)
+    // POST Hacer admin (AJAX)
     const buttonsMakeAdmin = $(".button-make-admin");
     const buttonSubmitMakeAdmin = $("#button-sb-make-admin");
 
@@ -296,7 +301,7 @@ $(() => {
         let buttonBane = $(this);
         let idUser = buttonBane.data("iduser");
         buttonBane.on("click", (event) => {
-            buttonSubmitBan.data("idUser", idUser);
+            buttonSubmitBan.data("iduser", idUser);
         });
     });
 
@@ -309,8 +314,27 @@ $(() => {
             $.ajax({
                 method: "POST",
                 url: "/admin/expulsar",
-                data: {},
-                success: () => {},
+                data: { idUser: idUser },
+                success: (data, statusText, jqXHR) => {
+                    // Ocultar botones
+                    $(`#div-buttons-${idUser}`).empty();
+
+                    // Cambiar icono y fondo
+                    $(`#img-icon-${idUser}`).attr("src", "/img/icons/banned.png");
+                    $(`#div-info-user-${idUser}`).addClass("bg-riu-res-gray");
+
+                    // Crear modal
+                    modalErrorTitle.text(data.title);
+                    modalErrorMessage.text(data.message);
+                    modalErrorHeader.removeClass("bg-riu-light-gray");
+                    modalErrorHeader.addClass("bg-riu-light-green");
+                    imgModalError.attr("src", "/img/icons/success.png");
+                    imgModalError.attr("alt", "Icono de éxito");
+                    buttonErrorOk.removeClass("bg-riu-red");
+                    buttonErrorOk.addClass("bg-riu-green");
+                    // Mostrarlo
+                    buttonModalError.click();
+                },
                 error: (jqXHR, statusText, errorThrown) => {
                     let error = jqXHR.responseJSON;
                     modalErrorTitle.text(error.title);

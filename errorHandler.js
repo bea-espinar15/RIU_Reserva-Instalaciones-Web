@@ -203,6 +203,11 @@ function generateError(cod) {
             title = "Tipo de reserva no válido";
             message = "El tipo de reserva tiene que ser Individual o Colectiva.";
         } break;
+        case 33: {
+            code = 400;
+            title = "Usuario expulsado";
+            message = "No se puede volver a expulsar un usuario ya expulsado.";
+        } break;
         default: {
             code = 500;
             title = "Error desconocido";

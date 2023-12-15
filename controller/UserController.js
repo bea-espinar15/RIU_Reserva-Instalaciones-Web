@@ -534,9 +534,47 @@ class UserController {
         }
     }
 
-    // [TODO] Expulsar a un usuario
+    // Expulsar a un usuario
     ban(request, response, next) {
-        errorHandler.manageAJAXError(25, next);
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            // Comprobar que el usuario existe
+            let idUser = request.body.idUser;
+            this.daoUse.read(idUser, (error, user) => {
+                if (error) {
+                    errorHandler.manageAJAXError(error, next);
+                }
+                else {
+                    // Comprobar que el usuario no estaba baneado
+                    if (!user.enabled){
+                        errorHandler.manageAJAXError(33, next);
+                    }
+                    else {
+                        this.daoUse.banUser(idUser, (error) => {
+                            if (error) {
+                                errorHandler.manageAJAXError(error, next);
+                            }
+                            else {
+                                next({
+                                    ajax: true,
+                                    error: false,
+                                    img: false,
+                                    data: {
+                                        code: 200,
+                                        title: "Usuario expulsado",
+                                        message: "El usuario ha sido expulsado con éxito!"
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+            });
+
+        }
+        else {
+            errorHandler.manageAJAXError(parseInt(errors.array()[0].msg), next);
+        }
     }
 }
 
