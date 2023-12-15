@@ -1,10 +1,31 @@
 "use strict"
 
 const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const passwordRegex = /(?=.*[A-Za-z])(?=.*\d).{8,}/;
+const error = {};
 
-// [TODO]
-function validateParams(params) {
-    return true;
+function validateParams(params, universityMails) {
+    // Campos no vacíos
+    if(params.name === "" || params.lastname1 === "" || params.lastname2 === "" || params.mail === "" || params.password === "" || params.faculty === ""){
+        error.title = "Campos vacíos";
+        error.message = "Asegúrate de rellenar todos los campos.";
+        return false;
+    }
+    // Correo es uno de los disponibles
+    else if (!mailRegex.test(params.mail) || !universityMails.includes(params.mail.split("@")[1])){
+        error.title = "Correo no válido";
+        error.message = "Tu correo no pertenece a una universidad.";
+        return false;
+    }
+    // Contraseña válida
+    else if (!passwordRegex.test(params.password)) {
+        error.title = "Contraseña no válida";
+        error.message = "La contraseña debe tener al menos 8 caracteres, de los cuales al menos 1 debe ser un número y 1 una letra.";
+        return false;
+    }
+    else {
+        return true;
+    }
 }
 
 $(() => {
@@ -82,7 +103,7 @@ $(() => {
             faculty: inputFaculty.val()
         };
         // Validación en cliente
-        if (validateParams(params)) {
+        if (validateParams(params, universityMails)) {
             // Petición POST
             $.ajax({
                 method: "POST",
@@ -115,6 +136,18 @@ $(() => {
                     buttonModalError.click();
                 }
             });
+        }
+        else {
+            modalErrorTitle.text(error.title);
+            modalErrorMessage.text(error.message);
+            modalErrorHeader.removeClass("bg-riu-light-green");
+            modalErrorHeader.addClass("bg-riu-light-gray");
+            imgModalError.attr("src", "/img/icons/error.png");
+            imgModalError.attr("alt", "Icono de error");
+            buttonErrorOk.removeClass("bg-riu-green");
+            buttonErrorOk.addClass("bg-riu-red");
+            // Mostrarlo
+            buttonModalError.click();
         }
     });
     

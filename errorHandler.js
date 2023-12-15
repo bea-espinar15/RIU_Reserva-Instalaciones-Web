@@ -198,10 +198,15 @@ function generateError(cod) {
             title = "Usuario ya es administrador";
             message = "El usuario al que intentas hacer administrador ya lo es.";
         } break;
+        case 32: {
+            code = 400;
+            title = "Tipo de reserva no válido";
+            message = "El tipo de reserva tiene que ser Individual o Colectiva.";
+        } break;
         default: {
             code = 500;
             title = "Error desconocido";
-            message = "Lo sentimos, se ha producido un error desconocido";
+            message = "Lo sentimos, se ha producido un error desconocido.";
         }
     }
 

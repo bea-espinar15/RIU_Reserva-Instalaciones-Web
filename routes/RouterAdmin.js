@@ -62,7 +62,7 @@ function routerConfig(facController, mesController, resController, uniController
       useController.validate
     );
 
-    // [TODO] Hacer admin
+    // Hacer admin
     RouterAdmin.post(
       "/hacerAdmin",
       // ID no vacío 
@@ -99,7 +99,7 @@ function routerConfig(facController, mesController, resController, uniController
         return min === "00";
      }),
      // Tipo de reserva válido
-     check("reservationType","1").custom((resType) => {
+     check("reservationType","32").custom((resType) => {
         return (resType === "Individual" || resType === "Colectiva")
      }),
      // Aforo es un número

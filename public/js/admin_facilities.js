@@ -1,5 +1,37 @@
 "use strict"
 
+const error = {};
+
+function validateNewFacility(params) {
+    // Campos no vacíos
+    if(params.name === "" || params.startHour === "" || params.endHour === "" || params.reservationType === "" || params.capacity === "" || params.facilityType === ""){
+        error.title = "LALA Campos vacíos";
+        error.message = "Asegúrate de rellenar todos los campos.";
+        return false;
+    }
+    // Horas exactas
+    else if (params.startHour.split(":")[1] !== "00" || params.endHour.split(":")[1] !== "00") {
+        error.title = "LALA Hora no válida";
+        error.message = "Las horas de apertura y cierre deben ser horas en punto, y la hora de cierre debe ser posterior a la de apertura.";
+        return false;
+    }
+    // Tipo de reserva válido
+    else if (params.reservationType !== "Individual" && params.reservationType !== "Colectiva") {
+        error.title = "LALA Tipo de reserva no válido";
+        error.message = "El tipo de reserva tiene que ser Individual o Colectiva.";
+        return false;
+    }
+    // El aforo no es un número o no es mayor a 0
+    else if (typeof(params.capacity) !== 'number' || params.capacity <= 0) {
+        error.title = "LALA Aforo no válido";
+        error.message = "El aforo debe ser un número mayor que 0.";
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
 $(() => {
     const facilitiesContainer = $("#div-facilities-container");
     const showFacilityContainer = $("#div-show-facility");
@@ -153,69 +185,83 @@ $(() => {
                 startHour: startHourFacility.val(),
                 endHour: endHourFacility.val(),
                 reservationType: resTypeFacility.val(),
-                capacity: capacityFacility.val(),
+                capacity: parseInt(capacityFacility.val()),
                 facilityType: typeFacility.val(),
                 facilityPic: pictureFacility.val()
             }
-            $.ajax({
-                method: "POST",
-                url: "/admin/crearInstalacion",
-                data: params,
-                success: (data, statusText, jqXHR) => {
-                    // Añadir instalación a la lista
-                    const divNewFacility = $(`<div class="div-facility justify-content-between">
-                                                <div class="d-flex flex-column">
-                                                    <h2>${data.facility.name}</h2>
-                                                    <p>${data.facility.typeName}</p>
-                                                </div>
-                                                <button type="button" class="button-see-more bg-riu-primary-dark align-items-end" data-typehaspic="${data.facility.typeHasPic}">Ver más</button>
-                                            </div>`);
-                    facilitiesTable.append(divNewFacility);
-
-                    // Añadir data facility
-                    let lastAddedFacility = facilitiesTable.find('.div-facility:last');
-                    lastAddedFacility.data("facility", data.facility);
-
-                    let buttonSeeMore = facilitiesTable.find('button').last();
-                    buttonSeeMore.data("facility", data.facility);
-
-                    //  [TODO] Actualizar ver resultados
-                    let facs = facilities.length;
-                    if (facs === 0) {
-                        noFacilityMessage.text(`Ver ${facs+1} resultado`);
+            if (validateNewFacility(params)) {
+                $.ajax({
+                    method: "POST",
+                    url: "/admin/crearInstalacion",
+                    data: params,
+                    success: (data, statusText, jqXHR) => {
+                        // Añadir instalación a la lista
+                        const divNewFacility = $(`<div class="div-facility justify-content-between">
+                                                    <div class="d-flex flex-column">
+                                                        <h2>${data.facility.name}</h2>
+                                                        <p>${data.facility.typeName}</p>
+                                                    </div>
+                                                    <button type="button" class="button-see-more bg-riu-primary-dark align-items-end" data-typehaspic="${data.facility.typeHasPic}">Ver más</button>
+                                                </div>`);
+                        facilitiesTable.append(divNewFacility);
+    
+                        // Añadir data facility
+                        let lastAddedFacility = facilitiesTable.find('.div-facility:last');
+                        lastAddedFacility.data("facility", data.facility);
+    
+                        let buttonSeeMore = facilitiesTable.find('button').last();
+                        buttonSeeMore.data("facility", data.facility);
+    
+                        //  [TODO] Actualizar ver resultados
+                        let facs = facilities.length;
+                        if (facs === 0) {
+                            noFacilityMessage.text(`Ver ${facs+1} resultado`);
+                        }
+                        else {
+                            noFacilityMessage.text(`Ver ${facs+1} resultados`);
+                        }
+    
+                        // Ocultar el formulario
+                        showFacilityContainer.hide();
+                        // Crear modal
+                        modalErrorTitle.text(data.title);
+                        modalErrorMessage.text(data.message);
+                        modalErrorHeader.removeClass("bg-riu-light-gray");
+                        modalErrorHeader.addClass("bg-riu-light-green");
+                        imgModalError.attr("src", "/img/icons/success.png");
+                        imgModalError.attr("alt", "Icono de éxito");
+                        buttonErrorOk.removeClass("bg-riu-red");
+                        buttonErrorOk.addClass("bg-riu-green");
+                        // Mostrarlo
+                        buttonModalError.click();
+                    },
+                    error: (jqXHR, statusText, errorThrown) => {
+                        let error = jqXHR.responseJSON;
+                        modalErrorTitle.text(error.title);
+                        modalErrorMessage.text(error.message);
+                        modalErrorHeader.removeClass("bg-riu-light-green");
+                        modalErrorHeader.addClass("bg-riu-light-gray");
+                        imgModalError.attr("src", "/img/icons/error.png");
+                        imgModalError.attr("alt", "Icono de error");
+                        buttonErrorOk.removeClass("bg-riu-green");
+                        buttonErrorOk.addClass("bg-riu-red");
+                        // Mostrarlo
+                        buttonModalError.click();
                     }
-                    else {
-                        noFacilityMessage.text(`Ver ${facs+1} resultados`);
-                    }
-
-                    // Ocultar el formulario
-                    showFacilityContainer.hide();
-                    // Crear modal
-                    modalErrorTitle.text(data.title);
-                    modalErrorMessage.text(data.message);
-                    modalErrorHeader.removeClass("bg-riu-light-gray");
-                    modalErrorHeader.addClass("bg-riu-light-green");
-                    imgModalError.attr("src", "/img/icons/success.png");
-                    imgModalError.attr("alt", "Icono de éxito");
-                    buttonErrorOk.removeClass("bg-riu-red");
-                    buttonErrorOk.addClass("bg-riu-green");
-                    // Mostrarlo
-                    buttonModalError.click();
-                },
-                error: (jqXHR, statusText, errorThrown) => {
-                    let error = jqXHR.responseJSON;
-                    modalErrorTitle.text(error.title);
-                    modalErrorMessage.text(error.message);
-                    modalErrorHeader.removeClass("bg-riu-light-green");
-                    modalErrorHeader.addClass("bg-riu-light-gray");
-                    imgModalError.attr("src", "/img/icons/error.png");
-                    imgModalError.attr("alt", "Icono de error");
-                    buttonErrorOk.removeClass("bg-riu-green");
-                    buttonErrorOk.addClass("bg-riu-red");
-                    // Mostrarlo
-                    buttonModalError.click();
-                }
-            });
+                });
+            }
+            else {
+                modalErrorTitle.text(error.title);
+                modalErrorMessage.text(error.message);
+                modalErrorHeader.removeClass("bg-riu-light-green");
+                modalErrorHeader.addClass("bg-riu-light-gray");
+                imgModalError.attr("src", "/img/icons/error.png");
+                imgModalError.attr("alt", "Icono de error");
+                buttonErrorOk.removeClass("bg-riu-green");
+                buttonErrorOk.addClass("bg-riu-red");
+                // Mostrarlo
+                buttonModalError.click();
+            }
         }
         // [TODO] POST editar instalación (AJAX)
         else {

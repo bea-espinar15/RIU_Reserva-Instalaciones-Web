@@ -226,7 +226,7 @@ class UserController {
                                             errorHandler.manageError(error, {}, "login", next);
                                         }
                                         else if (!result) {
-                                            errorHandler.manageError(5, {}, "login", next);
+                                            errorHandler.manageError(5, { mail: request.body.mail }, "login", next);
                                         }
                                         else {
                                             // Obtener nº mensajes no leídos del usuario
@@ -305,6 +305,7 @@ class UserController {
             status: 200,
             redirect: "login",
             data: {
+                mail: "",
                 error: undefined
             }
         });

@@ -1,8 +1,23 @@
 "use strict"
 
-// [TODO]
-function validateParams(params) {
-    return true;
+const error = {};
+
+function validateParams(idUser) {
+   // Campos vacíos
+    if(idUser === ""){
+        error.title = "Campos vacíos";
+        error.message = "Asegúrate de rellenar todos los campos.";
+        return false;
+    }
+    // Petición no válida
+    else if (typeof(idUser) !== 'number') {
+        error.title = "Petición no válida";
+        error.message = "No sé qué estabas intentando leer, pero no lo estás haciendo bien!";
+        return false;
+    }
+    else {
+        return true;
+    }
 }
 
 $(() => {
@@ -102,7 +117,7 @@ $(() => {
             event.preventDefault();
             let user = buttonVal.data("user");
             // Validación en cliente
-            if (validateParams(user)) {
+            if (validateParams(user.id)) {
                 // Petición POST
                 $.ajax({
                     method: "POST",
@@ -123,10 +138,20 @@ $(() => {
                         buttonMake.data("user", JSON.stringify(user));
 
                         // Añadir funcionalidad al button hacer admin
-                        let user2 = JSON.parse(buttonMake.data("user"));
+                        let us = JSON.parse(buttonMake.data("user"));
                         buttonMake.on("click", (event) => {
-                            buttonSubmitMakeAdmin.data("user", user2);
+                            buttonSubmitMakeAdmin.data("user", us);
                         });
+
+                        //Cambiar info user en el div-info-user para el check de pendientes de validar y ocultar si está activado
+                        let divInfo = $(`#div-info-user-${user.id}`);
+                        let use = divInfo.data("user");
+                        use.validated = 1;
+                        divInfo.data("user", use);
+                        if (checkboxPending.prop("checked")) {
+                            divInfo.hide();
+                        }
+
 
                         // Crear modal
                         modalErrorTitle.text(data.title);
@@ -155,6 +180,18 @@ $(() => {
                     }
                 });
             }
+            else {
+                modalErrorTitle.text(error.title);
+                modalErrorMessage.text(error.message);
+                modalErrorHeader.removeClass("bg-riu-light-green");
+                modalErrorHeader.addClass("bg-riu-light-gray");
+                imgModalError.attr("src", "/img/icons/error.png");
+                imgModalError.attr("alt", "Icono de error");
+                buttonErrorOk.removeClass("bg-riu-green");
+                buttonErrorOk.addClass("bg-riu-red");
+                // Mostrarlo
+                buttonModalError.click();
+            }
         });
     });
 
@@ -174,7 +211,7 @@ $(() => {
         event.preventDefault();
         let user = buttonSubmitMakeAdmin.data("user");
         // Validación en cliente
-        if (validateParams(user)) {
+        if (validateParams(user.id)) {
             // Petición POST
             $.ajax({
                 method: "POST",
@@ -236,6 +273,18 @@ $(() => {
                     buttonModalError.click();
                 }
             });
+        }
+        else {
+            modalErrorTitle.text(error.title);
+            modalErrorMessage.text(error.message);
+            modalErrorHeader.removeClass("bg-riu-light-green");
+            modalErrorHeader.addClass("bg-riu-light-gray");
+            imgModalError.attr("src", "/img/icons/error.png");
+            imgModalError.attr("alt", "Icono de error");
+            buttonErrorOk.removeClass("bg-riu-green");
+            buttonErrorOk.addClass("bg-riu-red");
+            // Mostrarlo
+            buttonModalError.click();
         }
     });
 

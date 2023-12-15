@@ -18,8 +18,8 @@
             <img src="/img/logo.png" alt="Logo RIU" width="225">
             <h1 id="h1-login" class="font-bold">Inicia sesión</h1>
             <!-- Formulario login -->
-            <form method="POST" action="/login" class="d-flex flex-column w-50">
-                <input id="input-mail" name="mail" type="email" placeholder="Correo">
+            <form id="form-login" method="POST" action="/login" class="d-flex flex-column w-50">
+                <input id="input-mail" name="mail" value="<%= mail %>" type="email" placeholder="Correo">
                 <input id="input-password" name="password" type="password" placeholder="Contraseña">
                 <input id="input-sb-login" type="submit" value="Inicia sesión" class="bg-riu-primary button-riu button-auth align-self-center">
             </form>

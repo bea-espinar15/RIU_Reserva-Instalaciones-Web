@@ -107,7 +107,7 @@ app.get("/registro", (request, response, next) => {
 
 // Login
 app.get("/login", (request, response, next) => {
-    response.render("login", { error: undefined });
+    response.render("login", { mail:"", error: undefined });
 });
 
 // Inicio

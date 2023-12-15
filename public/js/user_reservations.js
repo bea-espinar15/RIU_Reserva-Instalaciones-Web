@@ -1,7 +1,24 @@
 "use strict"
 
-function validateParams(params) {
-    return true;
+const error = {};
+
+function validateCancel(idReservation) {
+    console.log("Hola")
+    // Campos vacíos
+    if(idReservation === ""){
+        error.title = "Campos vacíos";
+        error.message = "Asegúrate de rellenar todos los campos.";
+        return false;
+    }
+    // Petición no válida
+    else if (typeof(idReservation) !== 'number') {
+        error.title = "Petición no válida";
+        error.message = "No sé qué estabas intentando cancelar, pero no lo estás haciendo bien!";
+        return false;
+    }
+    else {
+        return true;
+    }
 }
 
 $(() => {
@@ -24,7 +41,7 @@ $(() => {
             event.preventDefault();
             let idReservation = button.data("idreservation");
             // Validación en cliente
-            if (validateParams(idReservation)) {
+            if (validateCancel(idReservation)) {
                 // Petición POST
                 $.ajax({
                     method: "POST",
@@ -59,6 +76,18 @@ $(() => {
                         buttonModalError.click();
                     }
                 });
+            }
+            else {
+                modalErrorTitle.text(error.title);
+                modalErrorMessage.text(error.message);
+                modalErrorHeader.removeClass("bg-riu-light-green");
+                modalErrorHeader.addClass("bg-riu-light-gray");
+                imgModalError.attr("src", "/img/icons/error.png");
+                imgModalError.attr("alt", "Icono de error");
+                buttonErrorOk.removeClass("bg-riu-green");
+                buttonErrorOk.addClass("bg-riu-red");
+                // Mostrarlo
+                buttonModalError.click();
             }
         });
     });
