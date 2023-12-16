@@ -1,38 +1,49 @@
 "use strict"
 
-const error = {};
-
+// Validación Cliente
 function validateNewFacility(params) {
+    let error;
     // Campos no vacíos
-    if(params.name === "" || params.startHour === "" || params.endHour === "" || params.reservationType === "" || params.capacity === "" || params.facilityType === ""){
+    if (params.name === "" || params.startHour === "" || params.endHour === "" || params.reservationType === "" || params.capacity === "" || params.facilityType === ""){
+        error.code = 400;
         error.title = "Campos vacíos";
         error.message = "Asegúrate de rellenar todos los campos.";
-        return false;
+        return error;
+    }
+    // Comprobar que la hora_fin > hora_ini
+    else if (new Date(`2000-01-01T${params.startHour}:00`) >= new Date(`2000-01-01T${params.endHour}:00`)) {
+        error.code = 400;
+        error.title = "Hora no válida";
+        error.message = "Las horas de apertura y cierre deben ser horas en punto, y la hora de cierre debe ser posterior a la de apertura.";
+        return error;
     }
     // Horas exactas
     else if (params.startHour.split(":")[1] !== "00" || params.endHour.split(":")[1] !== "00") {
+        error.code = 400;
         error.title = "Hora no válida";
         error.message = "Las horas de apertura y cierre deben ser horas en punto, y la hora de cierre debe ser posterior a la de apertura.";
-        return false;
+        return error;
     }
     // El aforo no es un número o no es mayor a 0
     else if (params.capacity <= 0) {
+        error.code = 400;
         error.title = "Aforo no válido";
         error.message = "El aforo debe ser un número mayor que 0.";
-        return false;
+        return error;
     }
     else {
-        return true;
+        return null;
     }
 }
 
 $(() => {
+
+    // Obtener elementos
     const facilitiesContainer = $("#div-facilities-container");
     const showFacilityContainer = $("#div-show-facility");
     const buttonNewFacility = $("#button-new-facility");
     const facilitiesTable = $("#div-results");
     const facilities = $(".div-facility");
-    const buttonsSeeMore = $(".button-see-more");
     const buttonBack = $("#button-facility-back");
     const inputSearch = $("#input-search-facility");
     const buttonSearch = $("#button-search");
@@ -139,6 +150,7 @@ $(() => {
         event.preventDefault();
         let anyFacility = 0;
         let facilitiesArray = facilities.toArray();
+        // Filtrar array
         facilitiesArray.filter((divFac) => {
             let divFacility = $(divFac);
             let facility = divFacility.data("facility");
@@ -151,6 +163,7 @@ $(() => {
             }            
         });
         
+        // Actualizar mensaje de resultados
         if (anyFacility === 0) {
             noFacilityMessage.text("No hay ningún resultado que coincida.");
         }
@@ -161,14 +174,6 @@ $(() => {
             noFacilityMessage.text(`Ver ${anyFacility} resultados`);
         }   
     });
-
-    // Botón del modal respuesta/error
-    const buttonModalError = $("#button-modal-error");
-    const modalErrorHeader = $("#div-modal-error-header");
-    const imgModalError = $("#img-modal-error");
-    const modalErrorTitle = $("#h1-modal-error");
-    const modalErrorMessage = $("#p-modal-error");
-    const buttonErrorOk = $("#button-modal-error-ok");
 
     // POST crear instalación (AJAX)   
     buttonSbFacility.on("click", (event) => {
@@ -183,7 +188,9 @@ $(() => {
                 facilityType: typeFacility.val(),
                 facilityPic: pictureFacility.val()
             }
-            if (validateNewFacility(params)) {
+            // Validar input
+            let error = validateNewFacility(params);
+            if (!error) {
                 $.ajax({
                     method: "POST",
                     url: "/admin/crearInstalacion",
@@ -199,6 +206,7 @@ $(() => {
                                                 </div>`);
                         facilitiesTable.append(divNewFacility);
     
+                        // Añadir info al botón para poder mostrarla
                         let buttonSeeMore = facilitiesTable.find('button').last();
                         buttonSeeMore.data("facility", data.facility);
     
@@ -213,44 +221,16 @@ $(() => {
     
                         // Ocultar el formulario
                         showFacilityContainer.hide();
-                        // Crear modal
-                        modalErrorTitle.text(data.title);
-                        modalErrorMessage.text(data.message);
-                        modalErrorHeader.removeClass("bg-riu-light-gray");
-                        modalErrorHeader.addClass("bg-riu-light-green");
-                        imgModalError.attr("src", "/img/icons/success.png");
-                        imgModalError.attr("alt", "Icono de éxito");
-                        buttonErrorOk.removeClass("bg-riu-red");
-                        buttonErrorOk.addClass("bg-riu-green");
-                        // Mostrarlo
-                        buttonModalError.click();
+                        // Mostrar modal
+                        showModal(data, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
                     },
                     error: (jqXHR, statusText, errorThrown) => {
-                        let error = jqXHR.responseJSON;
-                        modalErrorTitle.text(error.title);
-                        modalErrorMessage.text(error.message);
-                        modalErrorHeader.removeClass("bg-riu-light-green");
-                        modalErrorHeader.addClass("bg-riu-light-gray");
-                        imgModalError.attr("src", "/img/icons/error.png");
-                        imgModalError.attr("alt", "Icono de error");
-                        buttonErrorOk.removeClass("bg-riu-green");
-                        buttonErrorOk.addClass("bg-riu-red");
-                        // Mostrarlo
-                        buttonModalError.click();
+                        showModal(jqXHR.responseJSON, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
                     }
                 });
             }
             else {
-                modalErrorTitle.text(error.title);
-                modalErrorMessage.text(error.message);
-                modalErrorHeader.removeClass("bg-riu-light-green");
-                modalErrorHeader.addClass("bg-riu-light-gray");
-                imgModalError.attr("src", "/img/icons/error.png");
-                imgModalError.attr("alt", "Icono de error");
-                buttonErrorOk.removeClass("bg-riu-green");
-                buttonErrorOk.addClass("bg-riu-red");
-                // Mostrarlo
-                buttonModalError.click();
+                showModal(error, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
             }
         }
         // [TODO] POST editar instalación (AJAX)
@@ -261,17 +241,7 @@ $(() => {
                 data: {},
                 success: () => {},
                 error: (jqXHR, statusText, errorThrown) => {
-                    let error = jqXHR.responseJSON;
-                    modalErrorTitle.text(error.title);
-                    modalErrorMessage.text(error.message);
-                    modalErrorHeader.removeClass("bg-riu-light-green");
-                    modalErrorHeader.addClass("bg-riu-light-gray");
-                    imgModalError.attr("src", "/img/icons/error.png");
-                    imgModalError.attr("alt", "Icono de error");
-                    buttonErrorOk.removeClass("bg-riu-green");
-                    buttonErrorOk.addClass("bg-riu-red");
-                    // Mostrarlo
-                    buttonModalError.click();
+                    showModal(jqXHR.responseJSON, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
                 }
             });
         }
@@ -288,17 +258,7 @@ $(() => {
             data: {},
             success: () => {},
             error: (jqXHR, statusText, errorThrown) => {
-                let error = jqXHR.responseJSON;
-                modalErrorTitle.text(error.title);
-                modalErrorMessage.text(error.message);
-                modalErrorHeader.removeClass("bg-riu-light-green");
-                modalErrorHeader.addClass("bg-riu-light-gray");
-                imgModalError.attr("src", "/img/icons/error.png");
-                imgModalError.attr("alt", "Icono de error");
-                buttonErrorOk.removeClass("bg-riu-green");
-                buttonErrorOk.addClass("bg-riu-red");
-                // Mostrarlo
-                buttonModalError.click();
+                showModal(jqXHR.responseJSON, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
             }
         });
     });

@@ -1,7 +1,9 @@
 "use strict"
 
+// Cuando cargue el DOM
 $(() => {
 
+    // Obtener elementos
     const users = $(".div-card-user");
     const noUserMessage = $("#p-no-users");
     const inputSearch = $("#input-search-user");
@@ -9,8 +11,8 @@ $(() => {
     const checkboxPending = $("#input-validation-pending")
     const divAdmins = $(`#div-admins`);
 
+    // Mensaje nº resultados
     let usersNumber = users.length;
-
     if (usersNumber === 0) {
         noUserMessage.show();
     }
@@ -29,6 +31,7 @@ $(() => {
         event.preventDefault();
         let anyUser = false;
         let usersArray = users.toArray();
+        // Filtrar array
         usersArray.filter((divUse) => {
             let divUser = $(divUse);
             let user = divUser.data("user");
@@ -54,6 +57,7 @@ $(() => {
             inputSearch.val("");
             let anyUser = false;
             let usersArray = users.toArray();
+            // Filtrar array
             usersArray.filter((divUse) => {
                 let divUser = $(divUse);
                 let user = divUser.data("user");
@@ -71,6 +75,7 @@ $(() => {
                     }
                 }
             });
+            // Mensaje nº resultados
             if (!anyUser) {
                 noUserMessage.show();
             }
@@ -85,14 +90,6 @@ $(() => {
 
     // POST Validar (AJAX)
     const buttonsValidate = $(".button-sb-validate");
-
-    // Botón del modal respuesta/error
-    const buttonModalError = $("#button-modal-error");
-    const modalErrorHeader = $("#div-modal-error-header");
-    const imgModalError = $("#img-modal-error");
-    const modalErrorTitle = $("#h1-modal-error");
-    const modalErrorMessage = $("#p-modal-error");
-    const buttonErrorOk = $("#button-modal-error-ok");
 
     buttonsValidate.each(function (i, button) {
         let buttonVal = $(this);
@@ -127,7 +124,7 @@ $(() => {
                         buttonSubmitMakeAdmin.data("iduser", idUser);
                     });
 
-                    //Cambiar info user en el div-info-user para el check de pendientes de validar y ocultar si está activado
+                    // Cambiar info user en el div-info-user para el check de pendientes de validar y ocultar si está activado
                     let divInfo = $(`#div-info-user-${idUser}`);
                     let use = divInfo.data("user");
                     use.validated = 1;
@@ -136,30 +133,11 @@ $(() => {
                         divInfo.hide();
                     }
 
-                    // Crear modal
-                    modalErrorTitle.text(data.title);
-                    modalErrorMessage.text(data.message);
-                    modalErrorHeader.removeClass("bg-riu-light-gray");
-                    modalErrorHeader.addClass("bg-riu-light-green");
-                    imgModalError.attr("src", "/img/icons/success.png");
-                    imgModalError.attr("alt", "Icono de éxito");
-                    buttonErrorOk.removeClass("bg-riu-red");
-                    buttonErrorOk.addClass("bg-riu-green");
-                    // Mostrarlo
-                    buttonModalError.click();
+                    // Mostrar modal
+                    showModal(data, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
                 },
                 error: (jqXHR, statusText, errorThrown) => {
-                    let error = jqXHR.responseJSON;
-                    modalErrorTitle.text(error.title);
-                    modalErrorMessage.text(error.message);
-                    modalErrorHeader.removeClass("bg-riu-light-green");
-                    modalErrorHeader.addClass("bg-riu-light-gray");
-                    imgModalError.attr("src", "/img/icons/error.png");
-                    imgModalError.attr("alt", "Icono de error");
-                    buttonErrorOk.removeClass("bg-riu-green");
-                    buttonErrorOk.addClass("bg-riu-red");
-                    // Mostrarlo
-                    buttonModalError.click();
+                    showModal(jqXHR.responseJSON, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
                 }
             });
         });
@@ -169,6 +147,7 @@ $(() => {
     const buttonsMakeAdmin = $(".button-make-admin");
     const buttonSubmitMakeAdmin = $("#button-sb-make-admin");
 
+    // Enviar info del botón para abrir el modal al botón de submit
     buttonsMakeAdmin.each(function (i, button) {
         let buttonMake = $(this);
         let idUser = buttonMake.data("iduser");
@@ -177,6 +156,7 @@ $(() => {
         });
     });
 
+    // POST
     buttonSubmitMakeAdmin.on("click", (event) => {
         event.preventDefault();
         let idUser = buttonSubmitMakeAdmin.data("iduser");
@@ -214,36 +194,17 @@ $(() => {
                 // Eliminar lista de usuarios
                 $(`#div-info-user-${data.user.id}`).remove();
 
-
+                // Mensaje nº resultados
                 usersNumber--;
                 if (usersNumber === 0) {
                     noUserMessage.show();
                 }
 
-                // Crear modal
-                modalErrorTitle.text(data.title);
-                modalErrorMessage.text(data.message);
-                modalErrorHeader.removeClass("bg-riu-light-gray");
-                modalErrorHeader.addClass("bg-riu-light-green");
-                imgModalError.attr("src", "/img/icons/success.png");
-                imgModalError.attr("alt", "Icono de éxito");
-                buttonErrorOk.removeClass("bg-riu-red");
-                buttonErrorOk.addClass("bg-riu-green");
-                // Mostrarlo
-                buttonModalError.click();
+                // Mostrar modal
+                showModal(data, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
             },
             error: (jqXHR, statusText, errorThrown) => {
-                let error = jqXHR.responseJSON;
-                modalErrorTitle.text(error.title);
-                modalErrorMessage.text(error.message);
-                modalErrorHeader.removeClass("bg-riu-light-green");
-                modalErrorHeader.addClass("bg-riu-light-gray");
-                imgModalError.attr("src", "/img/icons/error.png");
-                imgModalError.attr("alt", "Icono de error");
-                buttonErrorOk.removeClass("bg-riu-green");
-                buttonErrorOk.addClass("bg-riu-red");
-                // Mostrarlo
-                buttonModalError.click();
+                showModal(jqXHR.responseJSON, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
             }
         });
     });
@@ -252,6 +213,7 @@ $(() => {
     const buttonsBan = $(".button-ban");
     const buttonSubmitBan = $("#button-sb-ban");
 
+    // Enviar info del botón para abrir el modal al botón de submit
     buttonsBan.each(function (i, button) {
         let buttonBane = $(this);
         let idUser = buttonBane.data("iduser");
@@ -260,6 +222,7 @@ $(() => {
         });
     });
 
+    // POST
     buttonSubmitBan.on("click", (event) => {
         event.preventDefault();
         let idUser = buttonSubmitBan.data("iduser");
@@ -277,30 +240,11 @@ $(() => {
                 $(`#img-icon-${idUser}`).attr("src", "/img/icons/banned.png");
                 $(`#div-info-user-${idUser}`).addClass("bg-riu-res-gray");
 
-                // Crear modal
-                modalErrorTitle.text(data.title);
-                modalErrorMessage.text(data.message);
-                modalErrorHeader.removeClass("bg-riu-light-gray");
-                modalErrorHeader.addClass("bg-riu-light-green");
-                imgModalError.attr("src", "/img/icons/success.png");
-                imgModalError.attr("alt", "Icono de éxito");
-                buttonErrorOk.removeClass("bg-riu-red");
-                buttonErrorOk.addClass("bg-riu-green");
-                // Mostrarlo
-                buttonModalError.click();
+                // Mostrar modal
+                showModal(data, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
             },
             error: (jqXHR, statusText, errorThrown) => {
-                let error = jqXHR.responseJSON;
-                modalErrorTitle.text(error.title);
-                modalErrorMessage.text(error.message);
-                modalErrorHeader.removeClass("bg-riu-light-green");
-                modalErrorHeader.addClass("bg-riu-light-gray");
-                imgModalError.attr("src", "/img/icons/error.png");
-                imgModalError.attr("alt", "Icono de error");
-                buttonErrorOk.removeClass("bg-riu-green");
-                buttonErrorOk.addClass("bg-riu-red");
-                // Mostrarlo
-                buttonModalError.click();
+                showModal(jqXHR.responseJSON, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
             }
         });
     });

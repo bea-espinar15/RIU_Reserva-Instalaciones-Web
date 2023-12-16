@@ -2,40 +2,37 @@
 
 const webRegex = /^(ftp|http|https):\/\/[^ "]+$/;
 
-const error = {};
-
+// Validación Cliente
 function validateParams(params) {
+    let error;
     // Campos no vacíos
-    if(params.name === "" || params.address === "" || params.web === ""){
+    if (params.name === "" || params.address === "" || params.web === ""){
+        error.code = 400;
         error.title = "Campos vacíos";
         error.message = "Asegúrate de rellenar todos los campos.";
-        return false;
+        return error;
     }
     // Correo es uno de los disponibles
-    else if (!webRegex.test(params.web)){
+    else if (!webRegex.test(params.web)) {
+        error.code = 400;
         error.title = "Dirección web no válida";
         error.message = "La dirección web proporcionada no es una URL válida.";
-        return false;
+        return error;
     }
     else {
-        return true;
+        return null;
     }
 }
 
+// Cuando cargue el DOM
 $(() => {
     
+    // Obtener elementos
     const formSettings = $("#form-settings");
     const inputName = $("#input-settings-name");
     const inputAddress = $("#input-settings-address");
     const inputWeb = $("#input-settings-web");
     const submitButton = $("#input-sb-settings");
-    // Botón del modal respuesta/error
-    const buttonModalError = $("#button-modal-error");
-    const modalErrorHeader = $("#div-modal-error-header");
-    const imgModalError = $("#img-modal-error");
-    const modalErrorTitle = $("#h1-modal-error");
-    const modalErrorMessage = $("#p-modal-error");    
-    const buttonErrorOk = $("#button-modal-error-ok");
 
     submitButton.on("click", (event) => {
         event.preventDefault();
@@ -44,20 +41,13 @@ $(() => {
             address: inputAddress.val(),
             web: inputWeb.val()
         };
-        if(validateParams(params)){
+        // Validar input
+        let error = validateParams(params);
+        if (!error){
             formSettings.submit();
         }
         else {
-            modalErrorTitle.text(error.title);
-            modalErrorMessage.text(error.message);
-            modalErrorHeader.removeClass("bg-riu-light-green");
-            modalErrorHeader.addClass("bg-riu-light-gray");
-            imgModalError.attr("src", "/img/icons/error.png");
-            imgModalError.attr("alt", "Icono de error");
-            buttonErrorOk.removeClass("bg-riu-green");
-            buttonErrorOk.addClass("bg-riu-red");
-            // Mostrarlo
-            buttonModalError.click();
+            showModal(error, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
         }
     });
 

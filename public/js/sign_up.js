@@ -1,33 +1,39 @@
 "use strict"
 
+// Validación Cliente
 const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /(?=.*[A-Za-z])(?=.*\d).{8,}/;
-const error = {};
 
 function validateParams(params, universityMails) {
+    let error;
     // Campos no vacíos
-    if(params.name === "" || params.lastname1 === "" || params.lastname2 === "" || params.mail === "" || params.password === "" || params.faculty === ""){
+    if (params.name === "" || params.lastname1 === "" || params.lastname2 === "" || params.mail === "" || params.password === "" || params.faculty === ""){
+        error.code = 400;
         error.title = "Campos vacíos";
         error.message = "Asegúrate de rellenar todos los campos.";
-        return false;
+        return error;
     }
     // Correo es uno de los disponibles
     else if (!mailRegex.test(params.mail) || !universityMails.includes(params.mail.split("@")[1])){
+        error.code = 400;
         error.title = "Correo no válido";
         error.message = "Tu correo no pertenece a una universidad.";
-        return false;
+        return error;
     }
     // Contraseña válida
     else if (!passwordRegex.test(params.password)) {
+        error.code = 400;
         error.title = "Contraseña no válida";
         error.message = "La contraseña debe tener al menos 8 caracteres, de los cuales al menos 1 debe ser un número y 1 una letra.";
-        return false;
+        return error;
     }
     else {
-        return true;
+        return null;
     }
 }
 
+
+// Cuando cargue el DOM
 $(() => {
 
     let universityMails;
@@ -84,14 +90,6 @@ $(() => {
     const inputLastname2 = $("#input-lastname-2");
     const inputPassword = $("#input-password");
 
-    // Botón del modal respuesta/error
-    const buttonModalError = $("#button-modal-error");
-    const modalErrorHeader = $("#div-modal-error-header");
-    const imgModalError = $("#img-modal-error");
-    const modalErrorTitle = $("#h1-modal-error");
-    const modalErrorMessage = $("#p-modal-error");    
-    const buttonErrorOk = $("#button-modal-error-ok");
-
     buttonSignUp.on("click", (event) => {
         event.preventDefault();
         let params = {
@@ -103,51 +101,23 @@ $(() => {
             faculty: inputFaculty.val()
         };
         // Validación en cliente
-        if (validateParams(params, universityMails)) {
+        let error = validateParams(params, universityMails);
+        if (!error) {
             // Petición POST
             $.ajax({
                 method: "POST",
                 url: "/registro",
                 data: params,
                 success: (data, statusText, jqXHR) => {
-                    // Crear modal
-                    modalErrorTitle.text(data.title);
-                    modalErrorMessage.text(data.message);
-                    modalErrorHeader.removeClass("bg-riu-light-gray");
-                    modalErrorHeader.addClass("bg-riu-light-green");
-                    imgModalError.attr("src", "/img/icons/success.png");
-                    imgModalError.attr("alt", "Icono de éxito");
-                    buttonErrorOk.removeClass("bg-riu-red");
-                    buttonErrorOk.addClass("bg-riu-green");
-                    // Mostrarlo
-                    buttonModalError.click();
+                    showModal(data, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
                 },
                 error: (jqXHR, statusText, errorThrown) => {
-                    let error = jqXHR.responseJSON;
-                    modalErrorTitle.text(error.title);
-                    modalErrorMessage.text(error.message);
-                    modalErrorHeader.removeClass("bg-riu-light-green");
-                    modalErrorHeader.addClass("bg-riu-light-gray");
-                    imgModalError.attr("src", "/img/icons/error.png");
-                    imgModalError.attr("alt", "Icono de error");
-                    buttonErrorOk.removeClass("bg-riu-green");
-                    buttonErrorOk.addClass("bg-riu-red");
-                    // Mostrarlo
-                    buttonModalError.click();
+                    showModal(jqXHR.responseJSON, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
                 }
             });
         }
         else {
-            modalErrorTitle.text(error.title);
-            modalErrorMessage.text(error.message);
-            modalErrorHeader.removeClass("bg-riu-light-green");
-            modalErrorHeader.addClass("bg-riu-light-gray");
-            imgModalError.attr("src", "/img/icons/error.png");
-            imgModalError.attr("alt", "Icono de error");
-            buttonErrorOk.removeClass("bg-riu-green");
-            buttonErrorOk.addClass("bg-riu-red");
-            // Mostrarlo
-            buttonModalError.click();
+            showModal(error, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
         }
     });
     

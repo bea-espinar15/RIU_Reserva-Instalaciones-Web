@@ -1,18 +1,11 @@
 "use strict"
 
+// Cuando cargue el DOM
 $(() => {
 
     // POST cancelar reserva (AJAX)
     const buttonsCancel = $(".button-sb-cancel");
     const reservationsTable = $("#div-current-reservations");
-
-    // Botón del modal respuesta/error
-    const buttonModalError = $("#button-modal-error");
-    const modalErrorHeader = $("#div-modal-error-header");
-    const imgModalError = $("#img-modal-error");
-    const modalErrorTitle = $("#h1-modal-error");
-    const modalErrorMessage = $("#p-modal-error");
-    const buttonErrorOk = $("#button-modal-error-ok");
 
     buttonsCancel.each(function (i, btn) {
         let button = $(this);
@@ -28,35 +21,17 @@ $(() => {
                 success: (data, statusText, jqXHR) => {
                     // Eliminar reserva de la lista
                     reservationsTable.find(`#div-reservation-${idReservation}`).remove();
-                    // Crear modal
-                    modalErrorTitle.text(data.title);
-                    modalErrorMessage.text(data.message);
-                    modalErrorHeader.removeClass("bg-riu-light-gray");
-                    modalErrorHeader.addClass("bg-riu-light-green");
-                    imgModalError.attr("src", "/img/icons/success.png");
-                    imgModalError.attr("alt", "Icono de éxito");
-                    buttonErrorOk.removeClass("bg-riu-red");
-                    buttonErrorOk.addClass("bg-riu-green");
-                    // Mostrarlo
-                    buttonModalError.click();
+                    // Mostrar modal
+                    showModal(data, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
                 },
                 error: (jqXHR, statusText, errorThrown) => {
-                    let error = jqXHR.responseJSON;
-                    modalErrorTitle.text(error.title);
-                    modalErrorMessage.text(error.message);
-                    modalErrorHeader.removeClass("bg-riu-light-green");
-                    modalErrorHeader.addClass("bg-riu-light-gray");
-                    imgModalError.attr("src", "/img/icons/error.png");
-                    imgModalError.attr("alt", "Icono de error");
-                    buttonErrorOk.removeClass("bg-riu-green");
-                    buttonErrorOk.addClass("bg-riu-red");
-                    // Mostrarlo
-                    buttonModalError.click();
+                    showModal(jqXHR.responseJSON, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
                 }
             });
         });
     });
 
+    // Al cerrar el modal, quitar el backdrop
     $('#modal-response').on('hidden.bs.modal', function () {
         $('.modal-backdrop').remove();
     });

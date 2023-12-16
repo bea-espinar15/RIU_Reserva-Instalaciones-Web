@@ -1,7 +1,6 @@
 "use strict"
 
-const error = {};
-
+// Generar horas entre startHour y endHour
 function generateHours(startHour, endHour) {
     // Convertir a Date 
     let dateStart = new Date(`2000-01-01T${startHour}`);
@@ -23,35 +22,50 @@ function generateHours(startHour, endHour) {
     return hours;
 }
 
+// Validación Cliente
 function validateParamsReserve(params) {
-    let dateObj = new Date(params.date);
+    let error;
+
+    let actualDate = new Date();
+    let dateObj = new Date(params.date + "T" + params.hour);
+    
     // Campos no vacíos
-    if(params.date === "" || params.hour === "" || params.idFacility === "" || params.idFacilityType === "" || params.nPeople === "" ){
+    if (params.date === "" || params.hour === "" || params.idFacility === "" || params.idFacilityType === "" || params.nPeople === "" ) {
+        error.code = 400;
         error.title = "Campos vacíos";
         error.message = "Asegúrate de rellenar todos los campos.";
-        return false;
+        return error;
     }
     // El número de personas no es un número o no es mayor a 0
     else if (params.nPeople <= 0 && params.nPeople > params.capacity) {
+        error.code = 400;
         error.title = "Nº personas no válido";
         error.message = "Recuerda introducir un número de personas válido y que sea menor o igual que el aforo de la instalación que deseas reservar.";
-        return false;
+        return error;
+    }
+    // Comprobar que la fecha y hora no son anteriores a la actual
+    else if (dateObj < actualDate){
+        error.code = 400;
+        error.title = "Fecha y hora no válidas";
+        error.message = "La reserva debe realizarse en un día (y hora) posterior a este momento.";
+        return error;
     }
     // Comprobar que la fecha no cae en sábado o domingo
     else if (dateObj.getDay() === 0 || dateObj.getDay() === 6){
+        error.code = 400;
         error.title = "Fecha no válida";
         error.message = "Las instalaciones no están disponibles los fines de semana.";
-        return false;
+        return error;
     }
     else {
-        return true;
+        return null;
     }
 }
 
+// Cuando cargue el DOM
 $(() => {
 
-    // --- Mostrar y ocultar divs ---
-
+    // Obtener elementos
     const facilitiesContainer = $("#div-facilities-container");
     const showFacilityContainer = $("#div-show-facility");
     const facilities = $(".div-facility");
@@ -70,6 +84,7 @@ $(() => {
     const inputIdFacilityType = $("#input-id-facility-type");
     const nPeopleModal = $("#input-facility-n-people");
 
+    // Mostrar y ocultar divs
     facilitiesContainer.show();
     showFacilityContainer.hide();
 
@@ -90,12 +105,17 @@ $(() => {
             // Rellenar contenido del div
             inputIdFacility.attr("value", facility.id);
             inputIdFacilityType.attr("value", facility.idType);
+            // Ruta foto instalación
             if (facility.hasPic) { facilityPic.attr("src", `/fotoInstalacion/${facility.id}`); }
             else if (typeHasPic) { facilityPic.attr("src", `/fotoTipoInstalacion/${facility.idType}`); }
             else { facilityPic.attr("src", "/img/default/facility.png"); }
+            // Nombre instalación
             nameFacility.text(facility.name);
+            // Mensaje aviso colectiva
             if (facility.reservationType === "Colectiva") { warningResType.show(); }
             else { warningResType.hide(); }
+            // Máximo nPeople (modal) es el aforo
+            nPeopleModal.attr("max", facility.capacity);
             // Generar horas
             let hours = generateHours(facility.startHour, facility.endHour);
             hoursTable.empty();
@@ -132,6 +152,7 @@ $(() => {
     buttonFilter.on("click", (event) => {
         event.preventDefault();
         let anyFacility = false;
+        // Filtrar array
         facilities.each(function(i, fac) {
             let divFacility = $(this);
             let facility = divFacility.data("facility");
@@ -143,6 +164,7 @@ $(() => {
                 divFacility.hide();
             }
         });
+        // Mensaje nº resultados
         if (!anyFacility) {
             noFacilityMessage.show();
         } 
@@ -171,14 +193,6 @@ $(() => {
         pHour.text(`Hora: ${inputHour.val()}`);
     });
 
-     // Botón del modal respuesta/error
-     const buttonModalError = $("#button-modal-error");
-     const modalErrorHeader = $("#div-modal-error-header");
-     const imgModalError = $("#img-modal-error");
-     const modalErrorTitle = $("#h1-modal-error");
-     const modalErrorMessage = $("#p-modal-error");    
-     const buttonErrorOk = $("#button-modal-error-ok");
-
     // POST reservar
     buttonSbReserve.on("click", (event) => {
         event.preventDefault();
@@ -190,20 +204,13 @@ $(() => {
             nPeople: parseInt(nPeopleModal.val()),
             capacity: parseInt(nPeopleModal.attr("max"))
         };
-        if(validateParamsReserve(params)){
+        // Validar
+        let error = validateParamsReserve(params);
+        if (!error) {
             formReserve.submit();
         }
         else {
-            modalErrorTitle.text(error.title);
-            modalErrorMessage.text(error.message);
-            modalErrorHeader.removeClass("bg-riu-light-green");
-            modalErrorHeader.addClass("bg-riu-light-gray");
-            imgModalError.attr("src", "/img/icons/error.png");
-            imgModalError.attr("alt", "Icono de error");
-            buttonErrorOk.removeClass("bg-riu-green");
-            buttonErrorOk.addClass("bg-riu-red");
-            // Mostrarlo
-            buttonModalError.click();
+            showModal(error, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
         }
     });
 

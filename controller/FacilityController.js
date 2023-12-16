@@ -286,12 +286,12 @@ class FacilityController {
         }
     }
 
-    // [TODO] Crear nueva instalación
+    // [TODO] Editar nueva instalación
     editFacility(request, response, next) {
         errorHandler.manageAJAXError(25, next);
     }
 
-    // [TODO] Crear nueva instalación
+    // [TODO] Crear nuevo tipo instalación
     newType(request, response, next) {
         errorHandler.manageAJAXError(25, next);
     }

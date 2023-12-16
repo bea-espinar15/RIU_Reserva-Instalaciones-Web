@@ -1,43 +1,43 @@
 "use strict"
 
+// Mostrar el modal con respuesta/error
+function showModal(response, header, img, title, message, button, modal) {
+    // Título y mensaje
+    title.text(response.title);
+    message.text(response.message);
+    // Success
+    if (response.code === 200) {
+        // Crear modal
+        header.removeClass("bg-riu-light-gray");
+        header.addClass("bg-riu-light-green");
+        img.attr("src", "/img/icons/success.png");
+        img.attr("alt", "Icono de éxito");
+        button.removeClass("bg-riu-red");
+        button.addClass("bg-riu-green");
+    }
+    // Error
+    else {
+        title.text(response.title);
+        message.text(response.message);
+        header.removeClass("bg-riu-light-green");
+        header.addClass("bg-riu-light-gray");
+        img.attr("src", "/img/icons/error.png");
+        img.attr("alt", "Icono de error");
+        button.removeClass("bg-riu-green");
+        button.addClass("bg-riu-red");
+    }
+    // Abrir modal
+    modal.click();
+}
+
+// Cuando cargue el DOM
 $(() => {
+
+    // Comprobar al cargar la página si hay un mensaje que mostrar
     const error = $("body").data("error");
-    const buttonModalError = $("#button-modal-error");
-    // Parámetros del modal
-    const modalErrorHeader = $("#div-modal-error-header");
-    const imgModalError = $("#img-modal-error");
-    const modalErrorTitle = $("#h1-modal-error");
-    const modalErrorMessage = $("#p-modal-error");    
-    const buttonErrorOk = $("#button-modal-error-ok");
 
     if (error) {
-        modalErrorTitle.text(error.title);
-        modalErrorMessage.text(error.message);
-        // Success
-        if (error.code === 200) {
-            // Crear modal
-            modalErrorHeader.removeClass("bg-riu-light-gray");
-            modalErrorHeader.addClass("bg-riu-light-green");
-            imgModalError.attr("src", "/img/icons/success.png");
-            imgModalError.attr("alt", "Icono de éxito");
-            buttonErrorOk.removeClass("bg-riu-red");
-            buttonErrorOk.addClass("bg-riu-green");
-            // Mostrarlo
-            buttonModalError.click();
-        }
-        // Error
-        else {
-            modalErrorTitle.text(error.title);
-            modalErrorMessage.text(error.message);
-            modalErrorHeader.removeClass("bg-riu-light-green");
-            modalErrorHeader.addClass("bg-riu-light-gray");
-            imgModalError.attr("src", "/img/icons/error.png");
-            imgModalError.attr("alt", "Icono de error");
-            buttonErrorOk.removeClass("bg-riu-green");
-            buttonErrorOk.addClass("bg-riu-red");
-        }        
-        // Abrir modal
-        buttonModalError.click();
+        showModal(error, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
     }
 
     // Logout
@@ -46,6 +46,5 @@ $(() => {
     buttonLogout.on("click", () => {
         formLogout.submit();
     });
-
 
 });

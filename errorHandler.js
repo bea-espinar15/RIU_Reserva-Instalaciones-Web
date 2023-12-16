@@ -218,6 +218,16 @@ function generateError(cod) {
             title = "Usuario es administrador";
             message = "No puedes expulsar a un usuario que es administrador.";
         } break;
+        case 36: {
+            code = 400;
+            title = "Mensaje vacío";
+            message = "El mensaje que quieres mandar no puede estar vacío.";
+        } break;
+        case 37: {
+            code = 400;
+            title = "Correo vacío";
+            message = "Recuerda indicar a quién quieres mandar el correo, escribiendo sólo con la parte que va antes del @.";
+        } break;
         default: {
             code = 500;
             title = "Error desconocido";

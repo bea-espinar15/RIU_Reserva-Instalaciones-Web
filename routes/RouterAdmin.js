@@ -72,7 +72,7 @@ function routerConfig(facController, mesController, resController, uniController
       useController.makeAdmin
     );
 
-    // [TODO] Banear
+    // Banear
     RouterAdmin.post(
       "/expulsar",
       // ID no vacío 

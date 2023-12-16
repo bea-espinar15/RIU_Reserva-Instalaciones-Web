@@ -207,23 +207,23 @@ class UserController {
                     let idUniversity = university.id;
                     this.daoUse.readByUniversity(userMail, idUniversity, (error, user) => {
                         if (error) {
-                            errorHandler.manageError(error, {}, "login", next);
+                            errorHandler.manageError(error, { mail: request.body.mail }, "login", next);
                         }
                         else {
                             // Comprobar que existe en esa universidad
                             if (!user) {
-                                errorHandler.manageError(3, {}, "login", next);
+                                errorHandler.manageError(3, { mail: request.body.mail }, "login", next);
                             }
                             else {
                                 // Comprobar que el usuario está validado
                                 if (!user.validated) {
-                                    errorHandler.manageError(4, {}, "login", next);
+                                    errorHandler.manageError(4, { mail: request.body.mail }, "login", next);
                                 }
                                 // Comprobar contraseña con bcrypt
                                 else {
                                     bcrypt.compare(request.body.password, user.password, (err, result) => {
                                         if (error) {
-                                            errorHandler.manageError(error, {}, "login", next);
+                                            errorHandler.manageError(error, { mail: request.body.mail }, "login", next);
                                         }
                                         else if (!result) {
                                             errorHandler.manageError(5, { mail: request.body.mail }, "login", next);
@@ -232,7 +232,7 @@ class UserController {
                                             // Obtener nº mensajes no leídos del usuario
                                             this.daoMes.messagesUnread(user.id, (error, nUnreadMessages) => {
                                                 if (error) {
-                                                    errorHandler.manageError(error, {}, "login", next);
+                                                    errorHandler.manageError(error, { mail: request.body.mail }, "login", next);
                                                 }
                                                 else {
                                                     // Quitar contraseña, no se guarda en la sesión
@@ -268,7 +268,7 @@ class UserController {
                                                         // Obtener tipos de instalaciones de la universidad
                                                         this.daoFac.readAllTypes(university.id, (error, types) => {
                                                             if (error) {
-                                                                errorHandler.manageError(error, {}, "login", next);
+                                                                errorHandler.manageError(error, { mail: request.body.mail }, "login", next);
                                                             }
                                                             else {
                                                                 data.facilityTypes = types;
@@ -293,7 +293,7 @@ class UserController {
             });
         }
         else {
-            errorHandler.manageError(parseInt(errors.array()[0].msg), {}, "login", next);
+            errorHandler.manageError(parseInt(errors.array()[0].msg), { mail: request.body.mail }, "login", next);
         }
     }
 
@@ -473,7 +473,7 @@ class UserController {
         errorHandler.manageAJAXError(25, next);
     }
 
-    // [TODO] Hacer administrador a un usuario
+    // Hacer administrador a un usuario
     makeAdmin(request, response, next) {
         const errors = validationResult(request);
         if (errors.isEmpty()) {
@@ -513,6 +513,8 @@ class UserController {
                                         errorHandler.manageAJAXError(error, next);
                                     }
                                     else {
+                                        // Actualizar objeto para cliente
+                                        user.rol = 1;
                                         // Terminar
                                         next({
                                             ajax: true,

@@ -1,8 +1,11 @@
 "use strict"
 
+// Cuando cargue el DOM
 $(() => {
 
+    // Obtener elementos
     const inputProfilePic = $("#input-profile-pic");
+    const buttonSbChangePass = $("#input-sb-change-pass");
 
     // [TODO] POST editar foto perfil (AJAX)
     inputProfilePic.on("change", (event) => {
@@ -13,29 +16,10 @@ $(() => {
             data: {},
             success: () => {},
             error: (jqXHR, statusText, errorThrown) => {
-                let error = jqXHR.responseJSON;
-                modalErrorTitle.text(error.title);
-                modalErrorMessage.text(error.message);
-                modalErrorHeader.removeClass("bg-riu-light-green");
-                modalErrorHeader.addClass("bg-riu-light-gray");
-                imgModalError.attr("src", "/img/icons/error.png");
-                imgModalError.attr("alt", "Icono de error");
-                buttonErrorOk.removeClass("bg-riu-green");
-                buttonErrorOk.addClass("bg-riu-red");
-                // Mostrarlo
-                buttonModalError.click();
+                showModal(jqXHR.responseJSON, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
             }
         });
     });
-    
-    const buttonSbChangePass = $("#input-sb-change-pass");
-    // Botón del modal respuesta/error
-    const buttonModalError = $("#button-modal-error");
-    const modalErrorHeader = $("#div-modal-error-header");
-    const imgModalError = $("#img-modal-error");
-    const modalErrorTitle = $("#h1-modal-error");
-    const modalErrorMessage = $("#p-modal-error");
-    const buttonErrorOk = $("#button-modal-error-ok");
 
     // [TODO] POST cambiar contraseña (AJAX)
     buttonSbChangePass.on("click", (event) => {
@@ -46,17 +30,7 @@ $(() => {
             data: {},
             success: () => {},
             error: (jqXHR, statusText, errorThrown) => {
-                let error = jqXHR.responseJSON;
-                modalErrorTitle.text(error.title);
-                modalErrorMessage.text(error.message);
-                modalErrorHeader.removeClass("bg-riu-light-green");
-                modalErrorHeader.addClass("bg-riu-light-gray");
-                imgModalError.attr("src", "/img/icons/error.png");
-                imgModalError.attr("alt", "Icono de error");
-                buttonErrorOk.removeClass("bg-riu-green");
-                buttonErrorOk.addClass("bg-riu-red");
-                // Mostrarlo
-                buttonModalError.click();
+                showModal(jqXHR.responseJSON, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
             }
         });
     });
