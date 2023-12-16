@@ -132,7 +132,35 @@ class ReservationController {
                     errorHandler.manageAJAXError(error, next);
                 }
                 else {
-                    // 
+                    // Leer reservas de esa instalación en el día introducido
+                    this.daoRes.readAllByDate(request.query.date, request.query.idFacility, (error, reservations) => {
+                        if (error) {
+                            errorHandler.manageAJAXError(error, next);
+                        }
+                        else {
+                            // Quedarnos sólo con las horas
+                            let hoursFull = new Set();
+                            let hoursAlmost = new Set();
+                            reservations.forEach((res) => {
+                                if (facility.reservationType === "Individual" || res.nPeople === facility.capacity) {
+                                    hoursFull.add(res.hour);
+                                }
+                                else {
+                                    hoursAlmost.add(res.hour);
+                                }
+                            });
+                            // Terminar
+                            next({
+                                ajax: true,
+                                error: false,
+                                img: false,
+                                data: {
+                                    hoursFull: Array.from(hoursFull),
+                                    hoursAlmost: Array.from(hoursAlmost)
+                                }
+                            });
+                        }
+                    });
                 }
             });
         }

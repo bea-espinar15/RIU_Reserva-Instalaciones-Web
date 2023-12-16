@@ -132,6 +132,7 @@ $(() => {
     buttonsSeeMore.each(function(i, fac) {
         let divFacility = $(this);
         divFacility.on("click", () => {
+            showFacilityContainer.hide();
             let facility = divFacility.data("facility");
             let typeHasPic = divFacility.data("typehaspic");
             // Rellenar contenido del div
@@ -152,14 +153,18 @@ $(() => {
             let hours = generateHours(facility.startHour, facility.endHour);
             hoursTable.empty();
             hours.forEach((hour) => {
-                hoursTable.append(`<span class="badge bg-riu-gray">${hour}</span>`);
+                hoursTable.append(`<span class="badge bg-riu-gray" title="Hora disponible">${hour}</span>`);
             });
             hoursTable.on("click", ".badge", function() {
                 let hour = $(this);
-                hoursTable.find(".bg-riu-blue").addClass("bg-riu-gray");
+                // Dependiendo del color le cambiamos el title
+                hoursTable.find(".bg-riu-red.bg-riu-blue").attr("title", "Hora llena, entrarás en cola");
+                hoursTable.find(".bg-riu-yellow.bg-riu-blue").attr("title", "Hay reservas a esta hora, puede que no haya plazas suficientes");
+                hoursTable.find(".bg-riu-gray.bg-riu-blue").attr("title", "Hora disponible");
+                // Deja de ser azul
                 hoursTable.find(".bg-riu-blue").removeClass("bg-riu-blue");                
-                hour.removeClass("bg-riu-gray");
                 hour.addClass("bg-riu-blue");
+                hour.attr("title", "Hora seleccionada");
                 inputHour.attr("value", hour.text());
             });
             // Actualizar aforo máximo
@@ -168,8 +173,8 @@ $(() => {
             if ($(window).width() <= 768) {
                 facilitiesContainer.hide();
             } 
-            // Mostrar div
-            showFacilityContainer.show();
+            // Mostrar div            
+            showFacilityContainer.fadeIn(250);
         });
     });
 
@@ -254,13 +259,19 @@ $(() => {
                     idFacility: idFacility
                 },
                 success: (data, statusText, jqXHR) => {
-                    // Poner en rojo las horas ocupadas
-                    hoursTable.each(function(i, hour) {
+                    // Poner en rojo las horas ocupadas y en amarillo las que tienen pocas plazas
+                    hoursTable.children("span").each(function(i, hour) {
                         let hourSpan = $(this);
                         // Hora ocupada
-                        if ((data.hours).includes(hourSpan.text())) {
+                        if ((data.hoursFull).includes(hourSpan.text())) {
                             hourSpan.removeClass("bg-riu-gray");
                             hourSpan.addClass("bg-riu-red");
+                            hourSpan.attr("title", "Hora llena, entrarás en cola");
+                        }
+                        else if ((data.hoursAlmost).includes(hourSpan.text())) {
+                            hourSpan.removeClass("bg-riu-gray");
+                            hourSpan.addClass("bg-riu-yellow");
+                            hourSpan.attr("title", "Hay reservas a esta hora, puede que no haya plazas suficientes");
                         }
                     });
                 },

@@ -15,8 +15,9 @@ class DAOReservations {
         this.readByUnique = this.readByUnique.bind(this);
         this.readByDateAndHour = this.readByDateAndHour.bind(this);
         this.readQueuedReservations = this.readQueuedReservations.bind(this);
-        this.delete = this.delete.bind(this);
+        this.readAllByDate = this.readAllByDate.bind(this);
         this.unqueue = this.unqueue.bind(this);
+        this.delete = this.delete.bind(this);
         this.filter = this.filter.bind(this);
         this.buildQuery = this.buildQuery.bind(this);
     }
@@ -271,6 +272,36 @@ class DAOReservations {
                                 hour: utils.formatHour(row.hora),
                                 queued: row.cola ? true : false,
                                 reservationDate: utils.formatDate(row.fecha_reserva)
+                            }
+                            reservations.push(reservation);
+                        });
+                        callback(null, reservations);
+                    }
+                });
+            }
+        });
+    }
+
+    // Leer las reservas realizadas en una instalación un día
+    readAllByDate(date, idFacility, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "SELECT hora, SUM(n_personas) AS plazasOcupadas FROM RIU_RES_Reserva WHERE activo = 1 AND cola = 0 AND fecha = ? AND id_instalación = ? GROUP BY hora";
+                connection.query(querySQL, [date, idFacility], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        // Construir objeto
+                        let reservations = new Array();
+                        rows.forEach(row => {
+                            let reservation = {
+                                hour: utils.formatHour(row.hora),
+                                nPeople: row.plazasOcupadas
                             }
                             reservations.push(reservation);
                         });
