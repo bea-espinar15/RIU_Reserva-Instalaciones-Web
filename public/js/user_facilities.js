@@ -23,31 +23,15 @@ function generateHours(startHour, endHour) {
 }
 
 // Validación Cliente
-function validateParamsReserve(params) {
-    let error;
+function validateDate(date) {
+    let error = {};
+    let dateObj = new Date(date);
 
-    let actualDate = new Date();
-    let dateObj = new Date(params.date + "T" + params.hour);
-    
-    // Campos no vacíos
-    if (params.date === "" || params.hour === "" || params.idFacility === "" || params.idFacilityType === "" || params.nPeople === "" ) {
+    // Campo no vacío
+    if (date === "") {
         error.code = 400;
         error.title = "Campos vacíos";
         error.message = "Asegúrate de rellenar todos los campos.";
-        return error;
-    }
-    // El número de personas no es un número o no es mayor a 0
-    else if (params.nPeople <= 0 && params.nPeople > params.capacity) {
-        error.code = 400;
-        error.title = "Nº personas no válido";
-        error.message = "Recuerda introducir un número de personas válido y que sea menor o igual que el aforo de la instalación que deseas reservar.";
-        return error;
-    }
-    // Comprobar que la fecha y hora no son anteriores a la actual
-    else if (dateObj < actualDate){
-        error.code = 400;
-        error.title = "Fecha y hora no válidas";
-        error.message = "La reserva debe realizarse en un día (y hora) posterior a este momento.";
         return error;
     }
     // Comprobar que la fecha no cae en sábado o domingo
@@ -60,6 +44,54 @@ function validateParamsReserve(params) {
     else {
         return null;
     }
+    
+}
+
+function validateHour(date, hour) {
+    let error = {};
+
+    let actualDate = new Date();
+    let dateObj = new Date(date + "T" + hour);
+    
+    // Campos no vacíos
+    if (date === "" || hour === "") {
+        error.code = 400;
+        error.title = "Campos vacíos";
+        error.message = "Asegúrate de rellenar todos los campos.";
+        return error;
+    }
+    // Comprobar que la fecha y hora no son anteriores a la actual
+    else if (dateObj < actualDate){
+        error.code = 400;
+        error.title = "Fecha y hora no válidas";
+        error.message = "La reserva debe realizarse en un día (y hora) posterior a este momento.";
+        return error;
+    }    
+    else {
+        return null;
+    }
+}
+
+function validateNPeople(nPeople, capacity) {
+    let error = {};
+    // Campo no vacío
+    if (isNaN(nPeople)) {
+        error.code = 400;
+        error.title = "Campos vacíos";
+        error.message = "Asegúrate de indicar cuántos asistiréis a la reserva.";
+        return error;
+    }
+    // El número de personas no es un número o no es mayor a 0
+    else if (nPeople < 0 || nPeople > capacity) {
+        error.code = 400;
+        error.title = "Nº personas no válido";
+        error.message = `Recuerda introducir un número de personas válido y que sea menor o igual que el aforo de la instalación que deseas reservar (${capacity}).`;
+        return error;
+    }
+    else {
+        return null;
+    }
+    
 }
 
 // Cuando cargue el DOM
@@ -171,7 +203,8 @@ $(() => {
         else {
             noFacilityMessage.hide();
         }    
-    });    
+    });   
+
 
     // --- Formulario reserva ---
     const formReserve = $("#form-reserve");
@@ -180,32 +213,71 @@ $(() => {
     const pDate = $("#p-date");
     const pHour = $("#p-hour");
     const buttonSbReserve = $("#button-sb-reserve");
+    const buttonModalReserve = $("#button-modal-reserve");
 
     // Al abrir el modal, actualizamos los campos
     buttonReserve.on("click", () => {
-        nPeopleModal.val(nPeopleFilter.val());
         let date = facilityDate.val();
-        // Formatear a DD/MM/AAAA
-        let parts = date.split('-');
-        let formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
-        pDate.text(`Fecha: ${formattedDate}`);
-        // Obtener hora seleccionada
-        pHour.text(`Hora: ${inputHour.val()}`);
+        let hour = inputHour.val();
+        // Validar día y hora
+        let error = validateDate(date);
+        if (!error) { error = validateHour(date, hour); }
+        if (!error) {
+            nPeopleModal.val(nPeopleFilter.val());        
+            // Formatear a DD/MM/AAAA
+            let parts = date.split('-');
+            let formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
+            pDate.text(`Fecha: ${formattedDate}`);
+            // Obtener hora seleccionada
+            pHour.text(`Hora: ${hour}`);
+            // Mostrar modal
+            buttonModalReserve.click();
+        }
+        else {
+            showModal(error, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
+        }
+
+    });
+
+    // Cuando se establece una fecha se traen las horas disponibles/ocupadas
+    facilityDate.on("change", () => {
+        let date = facilityDate.val();
+        let idFacility = inputIdFacility.val();
+        let error = validateDate(date);
+        if (!error) {
+            // GET horasOcupadas (AJAX)
+            $.ajax({
+                method: "GET",
+                url: "/usuario/horasDisponibles",
+                data: {
+                    date: date,
+                    idFacility: idFacility
+                },
+                success: (data, statusText, jqXHR) => {
+                    // Poner en rojo las horas ocupadas
+                    hoursTable.each(function(i, hour) {
+                        let hourSpan = $(this);
+                        // Hora ocupada
+                        if ((data.hours).includes(hourSpan.text())) {
+                            hourSpan.removeClass("bg-riu-gray");
+                            hourSpan.addClass("bg-riu-red");
+                        }
+                    });
+                },
+                error: (jqXHR, statusText, errorThrown) => {
+                    showModal(jqXHR.responseJSON, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
+                }
+            });
+        }
+        else {
+            showModal(error, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
+        }
     });
 
     // POST reservar
-    buttonSbReserve.on("click", (event) => {
-        event.preventDefault();
-        let params = {
-            date: facilityDate.val(),
-            hour: inputHour.val(),
-            idFacility: parseInt(inputIdFacility.val()),
-            idFacilityType: parseInt(inputIdFacilityType.val()),
-            nPeople: parseInt(nPeopleModal.val()),
-            capacity: parseInt(nPeopleModal.attr("max"))
-        };
+    buttonSbReserve.on("click", () => {
         // Validar
-        let error = validateParamsReserve(params);
+        let error = validateNPeople(parseInt(nPeopleModal.val()), parseInt(nPeopleModal.attr("max")));
         if (!error) {
             formReserve.submit();
         }

@@ -60,8 +60,11 @@ class DAOFacilities {
                         callback(-1);
                     }
                     else {
-                        if (rows.length !== 1) {
+                        if (rows.length > 1) {
                             callback(-1);
+                        }
+                        else if (rows.length === 0) {
+                            callback(-8);
                         }
                         else {
                             let facility = {

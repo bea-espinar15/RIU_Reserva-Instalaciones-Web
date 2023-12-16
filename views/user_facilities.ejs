@@ -72,7 +72,8 @@
                 <input id="input-id-facility" name="idFacility" type="text" hidden="true">
                 <input id="input-id-facility-type" name="idFacilityType" type="text" hidden="true">
                 <!-- Botón reservar -->
-                <button id="button-reserve" type="button" data-bs-toggle="modal" data-bs-target="#div-modal-reserve" class="button-riu bg-riu-primary">Termina tu reserva</button>
+                <button id="button-reserve" type="button" class="button-riu bg-riu-primary">Termina tu reserva</button>
+                <button id="button-modal-reserve" type="button" hidden="true" data-bs-toggle="modal" data-bs-target="#div-modal-reserve"></button>
                 <!-- Modal confirmar reserva -->
                 <div id="div-modal-reserve" class="modal fade" aria-labelledby="label-modal-reserve" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -105,7 +106,7 @@
                             <!-- Footer -->
                             <div class="modal-footer">
                                 <button type="button" class="button-modal-cancel bg-riu-gray" data-bs-dismiss="modal" >Cancelar</button>
-                                <button id="button-sb-reserve" class="button-modal-new-type bg-riu-primary">Confirmar</button>
+                                <button id="button-sb-reserve" type="button" class="button-modal-new-type bg-riu-primary">Confirmar</button>
                             </div>
                         </div>
                     </div>

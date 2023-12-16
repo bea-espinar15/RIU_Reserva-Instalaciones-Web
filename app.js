@@ -182,8 +182,6 @@ app.get("/correosDisponibles", uniController.universityMails);
 // Facultades que tiene una universidad
 app.get("/facultades", uniController.faculties);
 
-// [TODO]
-
 // --- Peticiones POST ---
 
 // Login

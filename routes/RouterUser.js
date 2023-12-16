@@ -37,6 +37,18 @@ function routerConfig(facController, mesController, resController, uniController
     // Reservas
     RouterUser.get("/reservas", mesController.unreadMessages, resController.userReservations);
 
+    // Horas ocupadas
+    RouterUser.get(
+        "/horasDisponibles",
+        // Campos no vacíos
+        check("idFacility", "1").notEmpty(),
+        // ID es un número
+        check("idFacility", "-4").isNumeric(),
+        // Comprobar día
+        check("date", "38").isDate({format: "YYYY-MM-DD"}),
+        resController.unavailableHours
+    );
+
     // --- Peticiones POST ---
     // Reservar
     RouterUser.post(

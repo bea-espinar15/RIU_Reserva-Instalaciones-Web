@@ -15,6 +15,7 @@ class ReservationController {
 
         this.reservations = this.reservations.bind(this);
         this.userReservations = this.userReservations.bind(this);
+        this.unavailableHours = this.unavailableHours.bind(this);
         this.reserve = this.reserve.bind(this);
         this.filter = this.filter.bind(this);
         this.cancel = this.cancel.bind(this);
@@ -119,6 +120,25 @@ class ReservationController {
                 });
             }
         });
+    }
+
+    // Obtener horas ocupadas en un día
+    unavailableHours(request, response, next) {
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            // Comprobar instalación válida
+            this.daoFac.read(request.query.idFacility, (error, facility) => {
+                if (error) {
+                    errorHandler.manageAJAXError(error, next);
+                }
+                else {
+                    // 
+                }
+            });
+        }
+        else {
+            errorHandler.manageAJAXError(parseInt(errors.array()[0].msg), next);
+        }
     }
 
     // --- POST ---

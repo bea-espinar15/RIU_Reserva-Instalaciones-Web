@@ -2,7 +2,7 @@
 
 // Validación Cliente
 function validateNewFacility(params) {
-    let error;
+    let error = {};
     // Campos no vacíos
     if (params.name === "" || params.startHour === "" || params.endHour === "" || params.reservationType === "" || params.capacity === "" || params.facilityType === ""){
         error.code = 400;

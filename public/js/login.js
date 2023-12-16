@@ -4,7 +4,7 @@ const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Validación Cliente
 function validateParams(params, universityMails) {
-    let error;
+    let error = {};
     // Campos no vacíos
     if (params.mail === "" || params.password === "") {
         error.code = 400;

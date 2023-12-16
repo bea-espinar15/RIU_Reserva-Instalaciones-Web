@@ -5,7 +5,7 @@ const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /(?=.*[A-Za-z])(?=.*\d).{8,}/;
 
 function validateParams(params, universityMails) {
-    let error;
+    let error = {};
     // Campos no vacíos
     if (params.name === "" || params.lastname1 === "" || params.lastname2 === "" || params.mail === "" || params.password === "" || params.faculty === ""){
         error.code = 400;

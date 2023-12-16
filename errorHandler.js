@@ -42,6 +42,11 @@ function generateError(cod) {
             title = "Petición no válida";
             message = "No sé qué estabas intentando leer, pero no lo estás haciendo bien!";
         } break;
+        case -8: {
+            code = 403;
+            title = "Instalación no válida";
+            message = "No sé qué estabas intentando hacer, pero no puedes!";
+        } break;
         // Bad Request
         case 1: {
             code = 400;
@@ -228,6 +233,11 @@ function generateError(cod) {
             title = "Correo vacío";
             message = "Recuerda indicar a quién quieres mandar el correo, escribiendo sólo con la parte que va antes del @.";
         } break;
+        case 38: {
+            code = 400;
+            title = "Fecha no válida";
+            message = "Indica una fecha válida en el calendario.";
+        } break;
         default: {
             code = 500;
             title = "Error desconocido";
@@ -267,23 +277,11 @@ function manageError(error, data, redirect, next) {
 
 function manageAJAXError(error, next) {
     let errorObj = generateError(error);
-    // Error mayor
-    if (error < 0) {
-        next({
-            ajax: false,
-            status: errorObj.code,
-            redirect: "error",
-            data: errorObj
-        });
-    }
-    // Bad Request
-    else {
-        next({
+    next({
             ajax: true,
             status: errorObj.code,
             error: errorObj
         });
-    }
 }
 
 module.exports = {

@@ -4,7 +4,7 @@ const webRegex = /^(ftp|http|https):\/\/[^ "]+$/;
 
 // Validación Cliente
 function validateParams(params) {
-    let error;
+    let error = {};
     // Campos no vacíos
     if (params.name === "" || params.address === "" || params.web === ""){
         error.code = 400;

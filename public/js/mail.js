@@ -68,7 +68,7 @@ function showMailCompose(facultyMessage, universityMessage, title, user, subject
 
 // Validación Cliente
 function validateMessage(params) {
-    let error;
+    let error = {};
     // Mensaje vacío
     if (params.message === "") {
         error.code = 400;
