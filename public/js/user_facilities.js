@@ -31,14 +31,8 @@ function validateParamsReserve(params) {
         error.message = "Asegúrate de rellenar todos los campos.";
         return false;
     }
-    // ids no son números 
-    else if (typeof(params.idFacility) !== 'number' || typeof(params.idFacilityType) !== 'number') {
-        error.title = "Instalación no válida";
-        error.message = "No tienes permiso para reservar esta instalación (o no existe).";
-        return false;
-    }
     // El número de personas no es un número o no es mayor a 0
-    else if (typeof(params.nPeople) !== 'number' || params.nPeople <= 0) {
+    else if (params.nPeople <= 0 && params.nPeople > params.capacity) {
         error.title = "Nº personas no válido";
         error.message = "Recuerda introducir un número de personas válido y que sea menor o igual que el aforo de la instalación que deseas reservar.";
         return false;
@@ -193,7 +187,8 @@ $(() => {
             hour: inputHour.val(),
             idFacility: parseInt(inputIdFacility.val()),
             idFacilityType: parseInt(inputIdFacilityType.val()),
-            nPeople: parseInt(nPeopleModal.val())
+            nPeople: parseInt(nPeopleModal.val()),
+            capacity: parseInt(nPeopleModal.attr("max"))
         };
         if(validateParamsReserve(params)){
             formReserve.submit();

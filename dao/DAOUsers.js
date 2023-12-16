@@ -8,7 +8,7 @@ class DAOUsers {
         this.create = this.create.bind(this);
         this.validate = this.validate.bind(this);
         this.makeAdmin = this.makeAdmin.bind(this);
-        this.banUser = this.banUser.bind(this);
+        this.delete = this.delete.bind(this);
         this.read = this.read.bind(this);
         this.readAll = this.readAll.bind(this);
         this.readByUniversity = this.readByUniversity.bind(this);
@@ -97,7 +97,7 @@ class DAOUsers {
     }
     
     // Expulsar a un usuario
-    banUser(idUser, callback) {
+    delete(idUser, callback) {
         this.pool.getConnection((error, connection) => {
             if (error) {
                 callback(-1);

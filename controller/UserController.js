@@ -485,12 +485,16 @@ class UserController {
                 }
                 else {
                     // Comprobar que el usuario no estaba baneado
-                    if (!user.enabled){
+                    if (!user.enabled) {
                         errorHandler.manageAJAXError(18, next);
                     }
                     // Comprobar que el usuario no era ya administrador
                     else if (user.rol) {
                         errorHandler.manageAJAXError(31, next);
+                    }
+                    // Comprobar que el usuario estaba validado
+                    else if (!user.validated) {
+                        errorHandler.manageAJAXError(34, next);
                     }
                     else {
                         this.daoUse.makeAdmin(idUser, (error) => {
@@ -517,7 +521,8 @@ class UserController {
                                             data: {
                                                 code: 200,
                                                 title: "Nuevo administrador",
-                                                message: "El nuevo administrador ha sido dado de alta con éxito!"
+                                                message: "El nuevo administrador ha sido dado de alta con éxito!",
+                                                user: user
                                             }
                                         });
                                     }
@@ -549,8 +554,12 @@ class UserController {
                     if (!user.enabled){
                         errorHandler.manageAJAXError(33, next);
                     }
+                    // Comprobar que el usuario no es admin
+                    if (user.rol){
+                        errorHandler.manageAJAXError(35, next);
+                    }
                     else {
-                        this.daoUse.banUser(idUser, (error) => {
+                        this.daoUse.delete(idUser, (error) => {
                             if (error) {
                                 errorHandler.manageAJAXError(error, next);
                             }

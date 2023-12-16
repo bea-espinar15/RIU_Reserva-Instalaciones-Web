@@ -5,25 +5,19 @@ const error = {};
 function validateNewFacility(params) {
     // Campos no vacíos
     if(params.name === "" || params.startHour === "" || params.endHour === "" || params.reservationType === "" || params.capacity === "" || params.facilityType === ""){
-        error.title = "LALA Campos vacíos";
+        error.title = "Campos vacíos";
         error.message = "Asegúrate de rellenar todos los campos.";
         return false;
     }
     // Horas exactas
     else if (params.startHour.split(":")[1] !== "00" || params.endHour.split(":")[1] !== "00") {
-        error.title = "LALA Hora no válida";
+        error.title = "Hora no válida";
         error.message = "Las horas de apertura y cierre deben ser horas en punto, y la hora de cierre debe ser posterior a la de apertura.";
         return false;
     }
-    // Tipo de reserva válido
-    else if (params.reservationType !== "Individual" && params.reservationType !== "Colectiva") {
-        error.title = "LALA Tipo de reserva no válido";
-        error.message = "El tipo de reserva tiene que ser Individual o Colectiva.";
-        return false;
-    }
     // El aforo no es un número o no es mayor a 0
-    else if (typeof(params.capacity) !== 'number' || params.capacity <= 0) {
-        error.title = "LALA Aforo no válido";
+    else if (params.capacity <= 0) {
+        error.title = "Aforo no válido";
         error.message = "El aforo debe ser un número mayor que 0.";
         return false;
     }
@@ -205,14 +199,10 @@ $(() => {
                                                 </div>`);
                         facilitiesTable.append(divNewFacility);
     
-                        // Añadir data facility
-                        let lastAddedFacility = facilitiesTable.find('.div-facility:last');
-                        lastAddedFacility.data("facility", data.facility);
-    
                         let buttonSeeMore = facilitiesTable.find('button').last();
                         buttonSeeMore.data("facility", data.facility);
     
-                        //  [TODO] Actualizar ver resultados
+                        // Actualizar ver resultados
                         let facs = facilities.length;
                         if (facs === 0) {
                             noFacilityMessage.text(`Ver ${facs+1} resultado`);

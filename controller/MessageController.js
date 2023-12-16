@@ -55,7 +55,7 @@ class MessageController {
                             }
                         });
                     }
-                });                
+                });
             }
         });
     }
@@ -80,51 +80,46 @@ class MessageController {
         if (errors.isEmpty()) {
             // Si eres usuario normal o eres admin y vas a enviar a sólo 1 usuario
             if (!request.session.currentUser.rol || (request.session.currentUser.rol && request.body.faculty === "" && request.body.university === "false")) {
-                // Usuario no vacío
-                if (request.body.mail === "") {
-                    errorHandler.manageAJAXError(1, next);
-                }
-                else {
-                    // Obtener usuario destino
-                    this.daoUse.readByUniversity(request.body.mail, request.session.university.id, (error, user) => {
-                        if (error) {
-                            errorHandler.manageAJAXError(error, next);
+                // Obtener usuario destino
+                this.daoUse.readByUniversity(request.body.mail, request.session.university.id, (error, user) => {
+                    if (error) {
+                        errorHandler.manageAJAXError(error, next);
+                    }
+                    else {
+                        // Comprobar si existe el usuario en esa universidad
+                        if (!user || !user.validated) {
+                            errorHandler.manageAJAXError(23, next);
                         }
                         else {
-                            // Comprobar si existe el usuario en esa universidad
-                            if (!user || !user.validated) {
-                                errorHandler.manageAJAXError(23, next);
-                            }
-                            else {
-                                let newMessage = {
-                                    idSender: request.session.currentUser.id,
-                                    idReceiver: user.id,
-                                    message: request.body.message,
-                                    subject: request.body.subject
-                                };
-                                // Enviar mensaje
-                                this.daoMes.create(newMessage, (error) => {
-                                    if (error) {
-                                        errorHandler.manageAJAXError(error, next);
-                                    }
-                                    else {
-                                        // Terminar
-                                        next({
-                                            ajax: true,
-                                            error: false,
-                                            img: false,
-                                            data: {
-                                                code: 200,
-                                                title: "Mensaje enviado",
-                                                message: `El mensaje se ha enviado correctamente a ${user.mail}`
-                                            }
-                                        });
-                                    }
-                                });
-                            }
+                            let newMessage = {
+                                idSender: request.session.currentUser.id,
+                                idReceiver: user.id,
+                                message: request.body.message,
+                                subject: request.body.subject
+                            };
+                            // Enviar mensaje
+                            this.daoMes.create(newMessage, (error) => {
+                                if (error) {
+                                    errorHandler.manageAJAXError(error, next);
+                                }
+                                else {
+                                    // Terminar
+                                    next({
+                                        ajax: true,
+                                        error: false,
+                                        img: false,
+                                        data: {
+                                            code: 200,
+                                            title: "Mensaje enviado",
+                                            message: `El mensaje se ha enviado correctamente a ${user.mail}`
+                                        }
+                                    });
+                                }
+                            });
                         }
-                    });
-                }
+                    }
+                });
+
             }
             else { // Si eres admin
                 // Comprobar que sólo se ha seleccionado 1 de las 3 opciones para enviar
@@ -168,10 +163,10 @@ class MessageController {
                                                             errorOcurred = true;
                                                             errorHandler.manageAJAXError(error, next);
                                                         }
-    
+
                                                         // Un usuario menos al que enviar
                                                         cont--;
-    
+
                                                         // Si se han enviado mensajes a todos los usuarios y no ha habido ningún error, terminamos
                                                         if (cont === 0 && !errorOcurred) {
                                                             // Terminar
@@ -187,11 +182,11 @@ class MessageController {
                                                             });
                                                         }
                                                     });
-                                                }    
+                                                }
                                                 else {
                                                     // Un usuario menos al que enviar
                                                     cont--;
-    
+
                                                     // Si se han enviado mensajes a todos los usuarios y no ha habido ningún error, terminamos
                                                     if (cont === 0 && !errorOcurred) {
                                                         // Terminar
@@ -206,7 +201,7 @@ class MessageController {
                                                             }
                                                         });
                                                     }
-                                                }                                            
+                                                }
                                             });
                                         }
                                     });
@@ -291,7 +286,7 @@ class MessageController {
 
     // Marcar como leído
     markAsRead(request, response, next) {
-        
+
         const errors = validationResult(request);
         if (errors.isEmpty()) {
             // Obtener mensaje

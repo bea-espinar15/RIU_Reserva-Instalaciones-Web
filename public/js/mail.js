@@ -2,29 +2,17 @@
 
 const error = {};
 
-function validateMessageRead(idMessage) {
-    // Campos vacíos
-    if(idMessage === ""){
-        error.title = "Campos vacíos";
-        error.message = "Asegúrate de rellenar todos los campos.";
-        return false;
-    }
-    // Petición no válida
-    else if (typeof(idMessage) !== 'number') {
-        error.title = "Petición no válida";
-        error.message = "No sé qué estabas intentando leer, pero no lo estás haciendo bien!";
-        return false;
-    }
-    else {
-        return true;
-    }
-}
-
 function validateMessage(params) {
-    // Campos vacíos
-    if(params.message === ""){
-        error.title = "Campos vacíos";
-        error.message = "Asegúrate de rellenar todos los campos.";
+    // Mensaje vacío
+    if (params.message === "") {
+        error.title = "Mensaje vacío";
+        error.message = "El mensaje que quieres mandar no puede ser vacío.";
+        return false;
+    }
+    // Correo vacío
+    if (params.mail === "") {
+        error.title = "Correo vacío";
+        error.message = "El correo a quien le quieres mandar un correo no puede ser vacío.";
         return false;
     }
     // Petición no válida
@@ -52,7 +40,7 @@ $(() => {
     const subjectMessage = $("#input-mail-subject");
     const textMessage = $("#textarea-mail-message");
     const facultyMessage = $("#input-faculty");
-    const universityMessage= $("#input-university");
+    const universityMessage = $("#input-university");
     const sbSendButton = $("#input-sb-mail");
     // Botón del modal respuesta/error
     const buttonModalError = $("#button-modal-error");
@@ -64,90 +52,77 @@ $(() => {
 
     inboxContainer.show();
     showMessageContainer.hide();
-            
+
     // Cuando se pulsa un correo, se muestran sus detalles
-    messages.each(function(i, msg) {
+    messages.each(function (i, msg) {
         let divMessage = $(this);
         divMessage.on("click", () => {
             let message = divMessage.data("message");
             // Si no estaba leído, se marca como leído
             if (!message.readDate) {
                 // POST marcar mensaje como leído (AJAX)
-                if (validateMessageRead(message.id)) {
-                    $.ajax({
-                        method: "POST",
-                        url: "/personal/marcarLeido",
-                        data: {
-                            idMessage: message.id
-                        },
-                        success: (data, statusText, jqXHR) => {
-                            // Cambiar apariencia (no negrita y eliminar punto)
-                            $(`#h2-sender-${message.id}`).removeClass("font-bold");
-                            $(`#p-subject-${message.id}`).removeClass("font-bold");
-                            $(`#img-unread-dot-${message.id}`).hide();
-                            // Mostrar detalles del mensaje
-                            titleMessage.text("Detalles del mensaje");
-                            userMessage.attr("value",   message.senderUsername);
-                            subjectMessage.attr("value",message.subject);
-                            textMessage.text(message.message);
-                            sbSendButton.attr("value","Responder");
-                            if (facultyMessage) { facultyMessage.attr("value", ""); }
-                            if (universityMessage) { universityMessage.prop("checked", false); }
-                            // Desactivar inputs
-                            userMessage.attr("disabled", "true");
-                            subjectMessage.attr("disabled", "true");
-                            textMessage.attr("disabled", "true");
-                            if (facultyMessage) { facultyMessage.attr("disabled", "true"); }
-                            if (universityMessage) { universityMessage.attr("disabled", "true"); }
-                            // Cambiar funcionalidad del botón
-                            sbSendButton.off("click").on("click", (event) => {
-                                event.preventDefault();
-                                buttonCompose.data("answer", message.senderUsername);
-                                buttonCompose.data("disabled", true);
-                                buttonCompose.click();
-                            });
-                            // Ocultar div correos si la pantalla es pequeña
-                            if ($(window).width() <= 768) {
-                                inboxContainer.hide();
-                            } 
-                            // Mostrar div
-                            showMessageContainer.show();
-                        },
-                        error: (jqXHR, statusText, errorThrown) => {
-                            let error = jqXHR.responseJSON;
-                            modalErrorTitle.text(error.title);
-                            modalErrorMessage.text(error.message);
-                            modalErrorHeader.removeClass("bg-riu-light-green");
-                            modalErrorHeader.addClass("bg-riu-light-gray");
-                            imgModalError.attr("src", "/img/icons/error.png");
-                            imgModalError.attr("alt", "Icono de error");
-                            buttonErrorOk.removeClass("bg-riu-green");
-                            buttonErrorOk.addClass("bg-riu-red");
-                            // Mostrarlo
-                            buttonModalError.click();
+
+                $.ajax({
+                    method: "POST",
+                    url: "/personal/marcarLeido",
+                    data: {
+                        idMessage: message.id
+                    },
+                    success: (data, statusText, jqXHR) => {
+                        // Cambiar apariencia (no negrita y eliminar punto)
+                        $(`#h2-sender-${message.id}`).removeClass("font-bold");
+                        $(`#p-subject-${message.id}`).removeClass("font-bold");
+                        $(`#img-unread-dot-${message.id}`).hide();
+                        // Mostrar detalles del mensaje
+                        titleMessage.text("Detalles del mensaje");
+                        userMessage.attr("value", message.senderUsername);
+                        subjectMessage.attr("value", message.subject);
+                        textMessage.text(message.message);
+                        sbSendButton.attr("value", "Responder");
+                        if (facultyMessage) { facultyMessage.attr("value", ""); }
+                        if (universityMessage) { universityMessage.prop("checked", false); }
+                        // Desactivar inputs
+                        userMessage.attr("disabled", "true");
+                        subjectMessage.attr("disabled", "true");
+                        textMessage.attr("disabled", "true");
+                        if (facultyMessage) { facultyMessage.attr("disabled", "true"); }
+                        if (universityMessage) { universityMessage.attr("disabled", "true"); }
+                        // Cambiar funcionalidad del botón
+                        sbSendButton.off("click").on("click", (event) => {
+                            event.preventDefault();
+                            buttonCompose.data("answer", message.senderUsername);
+                            buttonCompose.data("disabled", true);
+                            buttonCompose.click();
+                        });
+                        // Ocultar div correos si la pantalla es pequeña
+                        if ($(window).width() <= 768) {
+                            inboxContainer.hide();
                         }
-                    });
-                }
-                else {
-                    modalErrorTitle.text(error.title);
-                    modalErrorMessage.text(error.message);
-                    modalErrorHeader.removeClass("bg-riu-light-green");
-                    modalErrorHeader.addClass("bg-riu-light-gray");
-                    imgModalError.attr("src", "/img/icons/error.png");
-                    imgModalError.attr("alt", "Icono de error");
-                    buttonErrorOk.removeClass("bg-riu-green");
-                    buttonErrorOk.addClass("bg-riu-red");
-                    // Mostrarlo
-                    buttonModalError.click();
-                }                
+                        // Mostrar div
+                        showMessageContainer.show();
+                    },
+                    error: (jqXHR, statusText, errorThrown) => {
+                        let error = jqXHR.responseJSON;
+                        modalErrorTitle.text(error.title);
+                        modalErrorMessage.text(error.message);
+                        modalErrorHeader.removeClass("bg-riu-light-green");
+                        modalErrorHeader.addClass("bg-riu-light-gray");
+                        imgModalError.attr("src", "/img/icons/error.png");
+                        imgModalError.attr("alt", "Icono de error");
+                        buttonErrorOk.removeClass("bg-riu-green");
+                        buttonErrorOk.addClass("bg-riu-red");
+                        // Mostrarlo
+                        buttonModalError.click();
+                    }
+                });
             }
             else {
                 // Mostrar detalles del mensaje
                 titleMessage.text("Detalles del mensaje");
-                userMessage.attr("value",   message.senderUsername);
-                subjectMessage.attr("value",message.subject);
+                userMessage.attr("value", message.senderUsername);
+                subjectMessage.attr("value", message.subject);
                 textMessage.text(message.message);
-                sbSendButton.attr("value","Responder");
+                sbSendButton.attr("value", "Responder");
                 if (facultyMessage) { facultyMessage.attr("value", ""); }
                 if (universityMessage) { universityMessage.prop("checked", false); }
                 // Desactivar inputs
@@ -166,7 +141,7 @@ $(() => {
                 // Ocultar div correos si la pantalla es pequeña
                 if ($(window).width() <= 768) {
                     inboxContainer.hide();
-                } 
+                }
                 // Mostrar div
                 showMessageContainer.show();
             }
@@ -178,24 +153,24 @@ $(() => {
         // Rellenar contenido del div
         titleMessage.text("Nuevo mensaje");
         userMessage.attr("value", buttonCompose.data("answer"));
-        subjectMessage.attr("value","");
+        subjectMessage.attr("value", "");
         textMessage.text("");
         if (facultyMessage) { facultyMessage.attr("value", ""); }
         if (universityMessage) { universityMessage.prop("checked", false); }
-        sbSendButton.attr("value","Enviar");
+        sbSendButton.attr("value", "Enviar");
         // Activar inputs
         userMessage.removeAttr("disabled");
         subjectMessage.removeAttr("disabled");
         textMessage.removeAttr("disabled");
         if (facultyMessage) {
             if (!buttonCompose.data("disabled")) {
-                facultyMessage.removeAttr("disabled"); 
-            }            
+                facultyMessage.removeAttr("disabled");
+            }
         }
-        if (universityMessage) { 
+        if (universityMessage) {
             if (!buttonCompose.data("disabled")) {
-                universityMessage.removeAttr("disabled"); 
-            }            
+                universityMessage.removeAttr("disabled");
+            }
         }
         // Actualizar data botón
         buttonCompose.data("answer", "");
@@ -257,7 +232,7 @@ $(() => {
                 buttonErrorOk.addClass("bg-riu-red");
                 // Mostrarlo
                 buttonModalError.click();
-            }            
+            }
         });
         // Ocultar div correos si la pantalla es pequeña
         if ($(window).width() <= 768) {

@@ -206,7 +206,17 @@ function generateError(cod) {
         case 33: {
             code = 400;
             title = "Usuario expulsado";
-            message = "No se puede volver a expulsar un usuario ya expulsado.";
+            message = "No se puede volver a expulsar un usuario que ya lo está.";
+        } break;
+        case 34: {
+            code = 400;
+            title = "Usuario no válido";
+            message = "El usuario al que deseas hace administrador no está validado todavía.";
+        } break;
+        case 35: {
+            code = 400;
+            title = "Usuario es administrador";
+            message = "No puedes expulsar a un usuario que es administrador.";
         } break;
         default: {
             code = 500;
