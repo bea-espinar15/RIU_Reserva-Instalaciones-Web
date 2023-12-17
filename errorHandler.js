@@ -248,6 +248,16 @@ function generateError(cod) {
             title = "Ningún campo modificado";
             message = "El nombre y la foto de la instalación son iguales que como eran antes.";
         } break;
+        case 41: {
+            code = 400;
+            title = "Tipo repetido";
+            message = "El tipo de instalación introducido ya existía.";
+        } break;
+        case 42: {
+            code = 400;
+            title = "Tipo no seleccionado";
+            message = "Por favor, selecciona el tipo de instalación que deseas o crea uno nuevo.";
+        } break;
         default: {
             code = 500;
             title = "Error desconocido";

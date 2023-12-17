@@ -256,7 +256,7 @@ class FacilityController {
                                                         capacity: params.capacity,
                                                         hasPic: params.pic ? true : false,
                                                         idType: idFacilityType,
-                                                        facilityTypeName: params.facilityType,
+                                                        typeName: params.facilityType,
                                                         typeHasPic: typeHasPic
                                                     }
                                                     next({
@@ -340,9 +340,49 @@ class FacilityController {
         }
     }
 
-    // [TODO] Crear nuevo tipo instalación
+    // Crear nuevo tipo instalación
     newType(request, response, next) {
-        errorHandler.manageAJAXError(25, next);
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            let pic = request.file;
+            // Comprobar formato foto, si hay
+            if (pic && (pic.mimetype !== "image/png" || pic.size > 64 * 1024)) {
+                errorHandler.manageAJAXError(14, next);
+            }
+            else {
+                let idUniversity = request.session.university.id;
+                // Comprobar si ese tipo existe en esa universidad
+                this.daoFac.readTypeByUniversity(request.body.name, idUniversity, (error) => {
+                    if (error) {
+                        errorHandler.manageAJAXError(error, next);
+                    }
+                    else {
+                        let facilityTypePic = pic ? pic.buffer : null
+                        // Crear el nuevo tipo
+                        this.daoFac.createType(request.body.name, facilityTypePic, idUniversity, (error) => {
+                            if (error) {
+                                errorHandler.manageAJAXError(error, next);
+                            }
+                            else {
+                                next({
+                                    ajax: true,
+                                    error: false,
+                                    img: false,
+                                    data: {
+                                        code: 200,
+                                        title: "Tipo de instalación creado",
+                                        message: "Se ha añadido un nuevo tipo con éxito, ahora ya puedes seleccionarlo."
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        }        
+        else {
+            errorHandler.manageAJAXError(parseInt(errors.array()[0].msg), next);
+        }
     }
 }
 

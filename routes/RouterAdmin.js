@@ -93,6 +93,10 @@ function routerConfig(facController, mesController, resController, uniController
       check("reservationType","1").notEmpty(),
       check("capacity","1").notEmpty(),
       check("facilityType","1").notEmpty(),
+      // Tipo no es "newType"
+      check("facilityType","42").custom((type) => {
+        return type !== "newType";
+      }),
       // Horas exactas
       check("startHour", "27").custom((startHour) => {
          let min = (startHour.split(":"))[1];
@@ -129,9 +133,12 @@ function routerConfig(facController, mesController, resController, uniController
       facController.editFacility
     );
 
-    // [TODO] Crear tipo de instalación
+    // Crear tipo de instalación
     RouterAdmin.post(
       "/crearTipo",
+      multerFactory.single("facilityTypePic"),
+      // Campos no vacios
+      check("name","1").notEmpty(),
       facController.newType
     );
 

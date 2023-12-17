@@ -10,6 +10,13 @@ function validateNewFacility(params) {
         error.message = "Asegúrate de rellenar todos los campos.";
         return error;
     }
+    // Comprobar que se ha seleccionado un tipo
+    else if (params.facilityType === "") {
+        error.code = 400;
+        error.title = "Tipo no seleccionado";
+        error.message = "Por favor, selecciona el tipo de instalación que deseas o crea uno nuevo.";
+        return error;
+    }
     // Comprobar que la hora_fin > hora_ini
     else if (new Date(`2000-01-01T${params.startHour}:00`) >= new Date(`2000-01-01T${params.endHour}:00`)) {
         error.code = 400;
@@ -36,7 +43,7 @@ function validateNewFacility(params) {
     }
 }
 
-function validateEditFacility(name) {
+function validateName(name) {
     let error = {};
     // Campos no vacíos
     if (name === "") {
@@ -100,7 +107,7 @@ $(() => {
         else if (typeHasPic) { facilityPic.attr("src", `/fotoTipoInstalacion/${facility.idType}`); }
         else { facilityPic.attr("src", "/img/default/facility.png"); }
         nameFacility.val(facility.name);
-        typeFacility.val(facility.facilityTypeName);
+        typeFacility.val(facility.typeName);
         startHourFacility.val(facility.startHour);
         endHourFacility.val(facility.endHour);
         resTypeFacility.val(facility.reservationType);
@@ -162,7 +169,8 @@ $(() => {
 
     // Al seleccionar un nuevo tipo, se abre el modal:
     typeFacility.on("change", () => {
-        if (typeFacility.val() === "") {
+        if (typeFacility.val() === "newType") {
+            typeFacility.val("");
             buttonModalNewType.click();
         }        
     });
@@ -258,9 +266,9 @@ $(() => {
         // POST editar instalación (AJAX)
         else {
             // Validar
-            let error = validateEditFacility(nameFacility.val());
+            let error = validateName(nameFacility.val());
             if (!error) {
-                // Obtener foto de perfil
+                // Obtener foto de la instalación
                 let formData = new FormData();
                 let fileInput = pictureFacility[0].files[0];
                 formData.append("facilityPic", fileInput);
@@ -305,20 +313,42 @@ $(() => {
         }
     });
 
-    // [TODO] POST crear nuevo tipo (AJAX)
+    // POST crear nuevo tipo (AJAX)
     const buttonSbNewType = $("#button-sb-new-type");
-
+    const inputFacilityTypeName = $("#input-facility-type-name")
+    const inputFacilityTypePic = $("#input-facility-type-pic")
+    
     buttonSbNewType.on("click", (event) => {
         event.preventDefault();
-        $.ajax({
-            method: "POST",
-            url: "/admin/crearTipo",
-            data: {},
-            success: () => {},
-            error: (jqXHR, statusText, errorThrown) => {
-                showModal(jqXHR.responseJSON, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
-            }
-        });
+        let error = validateName(inputFacilityTypeName.val());
+        if (!error) {
+            // Obtener foto del tipo
+            let formData = new FormData();
+            let fileInput = inputFacilityTypePic[0].files[0];
+            formData.append("facilityTypePic", fileInput);
+            formData.append("name", inputFacilityTypeName.val());
+            $.ajax({
+                method: "POST",
+                url: "/admin/crearTipo",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: (data, statusText, jqXHR) => { 
+                    // Añadir la opción al select
+                    typeFacility.append(`<option value="${inputFacilityTypeName.val()}">${inputFacilityTypeName.val()}</option>`);
+                    // Seleccionar esa opción
+                    typeFacility.val(inputFacilityTypeName.val());
+                    // Mostrar modal
+                    showModal(data, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
+                },
+                error: (jqXHR, statusText, errorThrown) => {
+                    showModal(jqXHR.responseJSON, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
+                }
+            });
+        }
+        else {
+            showModal(error, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
+        }       
     });
 
 });

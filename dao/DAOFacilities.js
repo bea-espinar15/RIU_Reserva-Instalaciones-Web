@@ -1,6 +1,5 @@
 "use strict"
 
-
 const utils = require("../utils");
 
 class DAOFacilities {
@@ -9,19 +8,21 @@ class DAOFacilities {
         this.pool = pool;
 
         this.create = this.create.bind(this);
+        this.createType = this.createType.bind(this);
         this.read = this.read.bind(this);
         this.readByUniversity = this.readByUniversity.bind(this);
         this.readByType = this.readByType.bind(this);
         this.readAll = this.readAll.bind(this);
         this.readAllTypes = this.readAllTypes.bind(this);
         this.readFacilitiesByType = this.readFacilitiesByType.bind(this);
+        this.readTypeByUniversity = this.readTypeByUniversity.bind(this);
         this.readFacilityTypePic = this.readFacilityTypePic.bind(this);
         this.readFacilityPic = this.readFacilityPic.bind(this);
         this.update = this.update.bind(this);
     }
 
     // Métodos
-    // Crear
+    // Crear nueva instalación
     create(newFacility, callback) {
         this.pool.getConnection((error, connection) => {
             if (error) {
@@ -40,6 +41,32 @@ class DAOFacilities {
                         }
                         else {
                             callback(null, rows.insertId);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    // Crear nuevo tipo de instalación
+    createType(name, pic, idUniversity, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "INSERT INTO RIU_TIN_Tipo_Instalación (nombre, foto, id_universidad) VALUES (?, ?, ?)";
+                connection.query(querySQL, [name, pic, idUniversity], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.affectedRows != 1) {
+                            callback(-1);
+                        }
+                        else {
+                            callback(null);
                         }
                     }
                 });
@@ -264,6 +291,35 @@ class DAOFacilities {
                             facilities.push(facility);
                         });
                         callback(null, facilities);
+                    }
+                });
+            }
+        });
+    }
+
+    // Leer tipo por universidad
+    readTypeByUniversity(name, idUniversity, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "SELECT * FROM RIU_TIN_Tipo_Instalación AS TIN WHERE nombre = ? AND id_universidad = ?";
+                connection.query(querySQL, [name, idUniversity], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.length > 1) {
+                            callback(-1);
+                        }
+                        else if (rows.length === 0) {
+                            callback(null);
+                        }
+                        else {
+                            callback(41);
+                        }
                     }
                 });
             }

@@ -68,10 +68,11 @@
                         <!-- Tipo de instalación -->
                         <label for="input-facility-type">Tipo</label>
                         <select id="input-facility-type" aria-required="true">
+                            <option value="">Selecciona un tipo</option>
+                            <option value="newType">Nuevo tipo...</option>
                             <% facilityTypes.forEach((type => { %>
                                 <option value="<%= type.name %>"><%= type.name %></option>
-                            <% })); %>
-                            <option value="">Nuevo tipo...</option>
+                            <% })); %>                            
                         </select>
                         <button id="button-modal-new-type" type="button" hidden="true" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#div-modal-new-type">Nuevo</button>
                         <!-- Hora inicio -->
