@@ -289,7 +289,7 @@ class DAOReservations {
                 callback(-1);
             }
             else {
-                let querySQL = "SELECT hora, SUM(n_personas) AS plazasOcupadas FROM RIU_RES_Reserva WHERE activo = 1 AND cola = 0 AND fecha = ? AND id_instalación = ? GROUP BY hora";
+                let querySQL = "SELECT * FROM RIU_RES_Reserva WHERE activo = 1 AND fecha = ? AND id_instalación = ?";
                 connection.query(querySQL, [date, idFacility], (error, rows) => {
                     connection.release();
                     if (error) {
@@ -301,7 +301,8 @@ class DAOReservations {
                         rows.forEach(row => {
                             let reservation = {
                                 hour: utils.formatHour(row.hora),
-                                nPeople: row.plazasOcupadas
+                                nPeople: row.n_personas,
+                                queued: row.cola
                             }
                             reservations.push(reservation);
                         });

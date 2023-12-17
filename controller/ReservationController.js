@@ -138,11 +138,21 @@ class ReservationController {
                             errorHandler.manageAJAXError(error, next);
                         }
                         else {
-                            // Quedarnos sólo con las horas
+                            // Calcular horas, plazas disponibles y si hay cola en cada hora
                             let hours = new Array();
                             reservations.forEach((res) => {
-                                res.capacityLeft = facility.capacity - res.nPeople;
-                                hours.push({ hour: res.hour, capacityLeft: res.capacityLeft });
+                                let hourExists = hours.find(h => h.hour === res.hour);
+                                if (hourExists) {
+                                    hourExists.capacityLeft = hourExists.capacityLeft - res.nPeople;
+                                    hourExists.queued = hourExists.queued || res.queued;
+                                }
+                                else {
+                                    hours.push({
+                                        hour: res.hour, 
+                                        capacityLeft: facility.capacity - res.nPeople,
+                                        queued: res.queued
+                                    })
+                                }
                             });
                             // Terminar
                             next({
@@ -548,7 +558,6 @@ class ReservationController {
                     currentPeople += res.nPeople;
                 }
             });
-            console.log(currentPeople, nPeople);
             if (currentPeople + nPeople > capacity) {
                 callback(true);
             }

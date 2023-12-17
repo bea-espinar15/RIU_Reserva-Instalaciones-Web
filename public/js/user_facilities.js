@@ -288,7 +288,7 @@ $(() => {
                         if (data.hours.some((item) => item.hour === hourSpan.text())) {
                             let selectedHour = data.hours.find((item) => item.hour === hourSpan.text());
                             // ROJO
-                            if (data.reservationType === "Individual" || selectedHour.capacityLeft === 0) {
+                            if (data.reservationType === "Individual" || selectedHour.queued || selectedHour.capacityLeft === 0) {
                                 hourSpan.removeClass("bg-riu-gray");
                                 hourSpan.addClass("bg-riu-red");
                                 hourSpan.attr("title", "Hora llena, entrarás en cola");
