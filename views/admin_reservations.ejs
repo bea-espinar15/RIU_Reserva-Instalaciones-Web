@@ -64,7 +64,12 @@
                             <button class="accordion-button collapsed current" type="button" data-bs-toggle="collapse" data-bs-target="#div-reservation-<%= i %>" aria-expanded="false" aria-controls="div-reservation-<_%= i %>">
                                 <!-- Info de la reserva -->
                                 <div class="div-reservation-info d-flex flex-column">
-                                    <h2><%= res.facilityName %></h2>
+                                    <h2>
+                                        <%= res.facilityName %>
+                                        <% if (res.queued) { %>
+                                            <img src="/img/icons/queued.png" alt="Estás en cola de espera" title="Estás en cola de espera" width="20" height="20">
+                                        <% } %>
+                                    </h2>
                                     <p class="m-0"><%= res.userName %></p>
                                 </div>
                             </button>

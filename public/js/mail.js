@@ -112,6 +112,7 @@ $(() => {
     const facultyMessage = $("#input-faculty");
     const universityMessage = $("#input-university");
     const sbSendButton = $("#input-sb-mail");
+    const buttonAlertMessage = $("#button-alert-message");
 
     inboxContainer.show();
     showMessageContainer.hide();
@@ -139,7 +140,7 @@ $(() => {
                         showMailDetails(message, facultyMessage, universityMessage, titleMessage, userMessage, subjectMessage, textMessage, sbSendButton, buttonCompose, inboxContainer, showMessageContainer);
                     },
                     error: (jqXHR, statusText, errorThrown) => {
-                        showModal(jqXHR.responseJSON, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
+                        showModal(jqXHR.responseJSON, $("#div-modal-response-header"), $("#img-modal-response"), $("#h1-modal-response"), $("#p-modal-response"), $("#button-modal-response-ok"), $("#button-modal-response"));
                     }
                 });                
             }
@@ -175,20 +176,28 @@ $(() => {
                     success: (data, statusText, jqXHR) => {
                         // Resetear vista
                         showMessageContainer.hide();
-                        // Mostrar modal
-                        showModal(data, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
+                        // Mostrar alerta toast
+                        buttonAlertMessage.click();
                     },
                     error: (jqXHR, statusText, errorThrown) => {
-                        showModal(jqXHR.responseJSON, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
+                        showModal(jqXHR.responseJSON, $("#div-modal-response-header"), $("#img-modal-response"), $("#h1-modal-response"), $("#p-modal-response"), $("#button-modal-response-ok"), $("#button-modal-response"));
                     }
                 });
             }
             else {
-                showModal(error, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
+                showModal(error, $("#div-modal-response-header"), $("#img-modal-response"), $("#h1-modal-response"), $("#p-modal-response"), $("#button-modal-response-ok"), $("#button-modal-response"));
             }
         });
         // Mostrar/ocultar divs
         showRightDiv($(window), inboxContainer, showMessageContainer);
+    });
+
+    // Toast cuando se envía un mensaje    
+    const toastAlertMessage = $("#toast-alert-message");
+
+    const toast = bootstrap.Toast.getOrCreateInstance(toastAlertMessage);
+    buttonAlertMessage.on("click", () => {
+        toast.show();
     });
 
     // Botón atrás

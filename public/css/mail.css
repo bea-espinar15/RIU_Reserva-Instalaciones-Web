@@ -84,13 +84,16 @@ label {
     font-size: 1.5rem;
 }
 
+label {
+    margin-right: 2rem;
+    width: 3rem;
+}
+
 #input-mail-user {
-    margin-left: 0.2rem;
     width: 10rem;
 }
 
 #input-faculty {
-    margin-left: 0.2rem;
     width: 15rem;   
 }
 
@@ -100,7 +103,6 @@ label {
 }
 
 #input-mail-subject {
-    margin-left: 0.5rem;
     width: 26rem;
 }
 
@@ -131,6 +133,16 @@ label {
     .div-message img {
         display: none;
     }
+
+    #div-mail-admin {
+        flex-direction: column;
+        align-items: start !important;
+    }
+
+    #label-university {
+        margin: 0.7rem 0rem;
+    }
+
 }
 
 /* Monitores laptop - XL */
@@ -140,14 +152,8 @@ label {
         margin-top: 1rem;        
     }
 
-    #div-mail-admin {
-        flex-direction: column;
-        align-items: start !important;
-    }
-
-    #label-university {
-        margin-top: 0.7rem;
-        margin-left: 0rem;
+    #input-mail-subject {
+        width: 20rem;
     }
 }
 

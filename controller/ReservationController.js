@@ -139,15 +139,10 @@ class ReservationController {
                         }
                         else {
                             // Quedarnos sólo con las horas
-                            let hoursFull = new Set();
-                            let hoursAlmost = new Set();
+                            let hours = new Array();
                             reservations.forEach((res) => {
-                                if (facility.reservationType === "Individual" || res.nPeople === facility.capacity) {
-                                    hoursFull.add(res.hour);
-                                }
-                                else {
-                                    hoursAlmost.add(res.hour);
-                                }
+                                res.capacityLeft = facility.capacity - res.nPeople;
+                                hours.push({ hour: res.hour, capacityLeft: res.capacityLeft });
                             });
                             // Terminar
                             next({
@@ -155,8 +150,8 @@ class ReservationController {
                                 error: false,
                                 img: false,
                                 data: {
-                                    hoursFull: Array.from(hoursFull),
-                                    hoursAlmost: Array.from(hoursAlmost)
+                                    hours: hours,
+                                    reservationType: facility.reservationType
                                 }
                             });
                         }

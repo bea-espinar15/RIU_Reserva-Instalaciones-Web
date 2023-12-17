@@ -123,7 +123,7 @@ $(() => {
         resTypeFacility.attr("disabled", "true");
         capacityFacility.attr("disabled", "true");
         // Ocultar div instalaciones si la pantalla es pequeña
-        if ($(window).width() <= 768) {
+        if ($(window).width() <= 992) {
             facilitiesContainer.hide();
         }
         // Mostrar div
@@ -153,7 +153,7 @@ $(() => {
         resTypeFacility.removeAttr("disabled");
         capacityFacility.removeAttr("disabled");
         // Ocultar div instalaciones si la pantalla es pequeña
-        if ($(window).width() <= 768) {
+        if ($(window).width() <= 992) {
             facilitiesContainer.hide();
         }
         // Mostrar div
@@ -350,5 +350,13 @@ $(() => {
             showModal(error, $("#div-modal-response-header"), $("#img-modal-response"), $("#h1-modal-response"), $("#p-modal-response"), $("#button-modal-response-ok"), $("#button-modal-response"));
         }       
     });
+
+    // Ocultar texto Buscar si pantalla es muy pequeña
+    if ($(window).width() <= 340) {
+        buttonSearch.html(`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                           </svg>`);
+    }
+    
 
 });

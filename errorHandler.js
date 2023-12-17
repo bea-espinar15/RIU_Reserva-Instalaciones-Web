@@ -285,7 +285,7 @@ function manageError(error, data, redirect, next) {
     }
     // Bad Request
     else {
-        data.error = errorObj;
+        data.response = errorObj;
         next({
             ajax: false,
             status: errorObj.code,

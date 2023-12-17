@@ -6,7 +6,7 @@
 
 #input-search-user {
     border: 1px solid var(--primary-dark);
-    width: 25rem;
+    width: 20rem;
     padding: 5px 10px;
 }
 
@@ -96,9 +96,8 @@
 
 .div-admin-info {
     flex-direction: column;
-    align-items: start;
-    margin-top: 0.5rem;
-    margin-right: 1rem;
+    align-items: start !important;
+    margin: 0.5rem 1rem 0rem 1rem;
 }
 
 .p-admin-faculty {
@@ -110,8 +109,6 @@
 /* Monitores más largos */
 @media (max-width: 1919.98px) {
     .div-admin-info {
-        flex-direction: column;
-        align-items: start !important;
         margin: 0.5rem 0rem;
     }
 
@@ -168,8 +165,6 @@
     }
 
     .div-admin-info {
-        flex-direction: column;
-        align-items: start !important;
         margin: 0.5rem 0rem;
     }
 

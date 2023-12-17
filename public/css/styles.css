@@ -10,6 +10,7 @@
     --green: #157824;
     --light-green: #EAF9EE;
     --yellow: #976E07;
+    --light-yellow: #F5CF6E;
     --blue: #007DB3;
 
     /* Colores parametrizables */
@@ -103,6 +104,10 @@ hr {
 
 .bg-riu-yellow {
     background-color: var(--yellow);
+}
+
+.bg-riu-light-yellow {
+    background-color: var(--light-yellow);
 }
 
 .bg-riu-blue {

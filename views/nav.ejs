@@ -22,9 +22,8 @@
             <a id="a-nav-mail" href="/personal/correo" class="position-relative" title="Correo">
                 <img src="/img/mail.png" alt="Símbolo correo" width="60">
                 <% if (generalInfo.messagesUnread > 0 ) { %>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-riu-blue">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-riu-blue" title="Correos no leídos">
                         <%= generalInfo.messagesUnread %>
-                        <span class="visually-hidden">Correos no leídos</span>
                     </span>
                 <% } %>
             </a>
@@ -54,7 +53,7 @@
                         <a href="/personal/correo" class="dropdown-item">
                             Mi correo
                             <% if (generalInfo.messagesUnread > 0 ) { %>
-                                <span class="badge rounded-pill bg-riu-blue">
+                                <span class="badge rounded-pill bg-riu-blue" title="Correos no leídos">
                                     <%= generalInfo.messagesUnread %>
                                     <span class="visually-hidden">Correos no leídos</span>
                                 </span>

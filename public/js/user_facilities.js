@@ -153,7 +153,7 @@ $(() => {
             let hours = generateHours(facility.startHour, facility.endHour);
             hoursTable.empty();
             hours.forEach((hour) => {
-                hoursTable.append(`<span class="badge bg-riu-gray" title="Hora disponible">${hour}</span>`);
+                hoursTable.append(`<span class="badge bg-riu-gray position-relative" title="Hora disponible">${hour}</span>`);
             });
             hoursTable.on("click", ".badge", function() {
                 let hour = $(this);
@@ -267,15 +267,22 @@ $(() => {
                     hoursTable.children("span").each(function(i, hour) {
                         let hourSpan = $(this);
                         // Hora ocupada
-                        if ((data.hoursFull).includes(hourSpan.text())) {
-                            hourSpan.removeClass("bg-riu-gray");
-                            hourSpan.addClass("bg-riu-red");
-                            hourSpan.attr("title", "Hora llena, entrarás en cola");
-                        }
-                        else if ((data.hoursAlmost).includes(hourSpan.text())) {
-                            hourSpan.removeClass("bg-riu-gray");
-                            hourSpan.addClass("bg-riu-yellow");
-                            hourSpan.attr("title", "Hay reservas a esta hora, puede que no haya plazas suficientes");
+                        if (data.hours.some((item) => item.hour === hourSpan.text())) {
+                            let selectedHour = data.hours.find((item) => item.hour === hourSpan.text());
+
+                            if (data.reservationType === "Individual" || selectedHour.capacityLeft === 0) {
+                                hourSpan.removeClass("bg-riu-gray");
+                                hourSpan.addClass("bg-riu-red");
+                                hourSpan.attr("title", "Hora llena, entrarás en cola");
+                            }
+                            else {
+                                hourSpan.removeClass("bg-riu-gray");
+                                hourSpan.addClass("bg-riu-yellow");
+                                hourSpan.attr("title", "Hay reservas a esta hora, puede que no haya plazas suficientes");
+                                hourSpan.append(`<span class="span-capacity position-absolute top-0 start-100 translate-middle badge rounded-pill bg-riu-light-yellow" title="Plazas disponibles">
+                                                    ${selectedHour.capacityLeft}
+                                                </span>`);
+                            }   
                         }
                     });
                 },
