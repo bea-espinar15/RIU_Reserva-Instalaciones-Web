@@ -14,11 +14,11 @@ function showRightDiv(window, inboxContainer, showMessageContainer) {
 function showMailDetails(message, facultyMessage, universityMessage, title, user, subject, text, sbSendButton, buttonCompose, inboxContainer, showMessageContainer) {
     // Mostrar detalles del mensaje
     title.text("Detalles del mensaje");
-    user.attr("value", message.senderUsername);
-    subject.attr("value", message.subject);
-    text.text(message.message);
-    sbSendButton.attr("value", "Responder");
-    if (facultyMessage) { facultyMessage.attr("value", ""); }
+    user.val(message.senderUsername);
+    subject.val(message.subject);
+    text.val(message.message);
+    sbSendButton.val("Responder");
+    if (facultyMessage) { facultyMessage.val(""); }
     if (universityMessage) { universityMessage.prop("checked", false); }
     // Desactivar inputs
     user.attr("disabled", "true");
@@ -41,10 +41,10 @@ function showMailDetails(message, facultyMessage, universityMessage, title, user
 function showMailCompose(facultyMessage, universityMessage, title, user, subject, text, sbSendButton, buttonCompose) {
     // Rellenar contenido del div
     title.text("Nuevo mensaje");
-    user.attr("value", buttonCompose.data("answer"));
-    subject.attr("value", "");
-    text.text("");
-    if (facultyMessage) { facultyMessage.attr("value", ""); }
+    user.val(buttonCompose.data("answer"));
+    subject.val("");
+    text.val("");
+    if (facultyMessage) { facultyMessage.val(""); }
     if (universityMessage) { universityMessage.prop("checked", false); }
     sbSendButton.attr("value", "Enviar");
     // Activar inputs
@@ -85,6 +85,34 @@ function validateMessage(params) {
     }
     // Petición no válida
     else if (params.mail.includes("@")) {
+        error.code = 400;
+        error.title = "Usuario no válido";
+        error.message = "Recuerda introducir correctamente el correo del usuario al que quieres escribir sólo con la parte que va antes del @.";
+        return error;
+    }
+    else {
+        return null;
+    }
+}
+
+function validateMessageAdmin(params) {
+    let error = {};
+    // Mensaje vacío
+    if (params.message === "") {
+        error.code = 400;
+        error.title = "Mensaje vacío";
+        error.message = "El mensaje que quieres mandar no puede estar vacío.";
+        return error;
+    }
+    // Correo vacío
+    if (params.mail === "" && params.faculty === "" && !params.university) {
+        error.code = 400;
+        error.title = "Destinatario vacío";
+        error.message = "Recuerda indicar a quién quieres mandar el correo, eligiendo o bien un usuario, o una facultad o la organización completa.";
+        return error;
+    }
+    // Petición no válida
+    else if (params.mail !== "" && params.mail.includes("@")) {
         error.code = 400;
         error.title = "Usuario no válido";
         error.message = "Recuerda introducir correctamente el correo del usuario al que quieres escribir sólo con la parte que va antes del @.";
@@ -136,6 +164,15 @@ $(() => {
                         $(`#h2-sender-${message.id}`).removeClass("font-bold");
                         $(`#p-subject-${message.id}`).removeClass("font-bold");
                         $(`#img-unread-dot-${message.id}`).hide();
+                        // Actualizar mensaje
+                        let today = new Date();
+                        let day = today.getDate();
+                        let month = today.getMonth() + 1;
+                        let year = today.getFullYear();
+                        if (day < 10) { day = '0' + day; }
+                        if (month < 10) { month = '0' + month; }
+                        message.readDate = day + '/' + month + '/' + year;
+                        divMessage.data("message", message);
                         // Mostrar detalles del mensaje
                         showMailDetails(message, facultyMessage, universityMessage, titleMessage, userMessage, subjectMessage, textMessage, sbSendButton, buttonCompose, inboxContainer, showMessageContainer);
                     },
@@ -167,7 +204,13 @@ $(() => {
                 message: textMessage.val()
             }
             // Validar
-            let error = validateMessage(params);
+            let error;
+            if (facultyMessage) { // eres admin
+                error = validateMessageAdmin(params);
+            }
+            else {
+                error = validateMessage(params);
+            }            
             if (!error) {
                 $.ajax({
                     method: "POST",
@@ -192,6 +235,47 @@ $(() => {
         showRightDiv($(window), inboxContainer, showMessageContainer);
     });
 
+    // Si se escribe en un campo (admin) los otros se desactivan
+    userMessage.on("change", () => {
+        if (userMessage.val() === "") {
+            // Activar los otros
+            facultyMessage.removeAttr("disabled");
+            universityMessage.removeAttr("disabled");
+        }
+        else {
+            // Desactivar los otros
+            facultyMessage.attr("disabled", "true");
+            universityMessage.attr("disabled", "true");
+        }
+    });
+
+    facultyMessage.on("change", () => {
+        if (facultyMessage.val() === "") {
+            // Activar los otros
+            userMessage.removeAttr("disabled");
+            universityMessage.removeAttr("disabled");
+        }
+        else {
+            // Desactivar los otros
+            userMessage.attr("disabled", "true");
+            universityMessage.attr("disabled", "true");
+        }
+
+    });
+
+    universityMessage.on("change", () => {
+        if (!universityMessage.prop("checked")) {
+            // Activar los otros
+            userMessage.removeAttr("disabled");
+            facultyMessage.removeAttr("disabled");
+        }
+        else {
+            // Desactivar los otros
+            userMessage.attr("disabled", "true");
+            facultyMessage.attr("disabled", "true");
+        }
+    });
+    
     // Toast cuando se envía un mensaje    
     const toastAlertMessage = $("#toast-alert-message");
 

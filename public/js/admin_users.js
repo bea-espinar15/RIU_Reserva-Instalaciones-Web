@@ -261,6 +261,9 @@ $(() => {
                     divInfo.data("user", use);
                     if (checkboxPending.prop("checked")) {
                         divInfo.hide();
+                        if ($(".div-card-user:visible").length === 0) {
+                            noUserMessage.show();
+                        }
                     }
 
                     // Mostrar modal

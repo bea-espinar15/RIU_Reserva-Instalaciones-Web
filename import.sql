@@ -129,6 +129,8 @@ INSERT INTO RIU_USU_Usuario (activo, validado, nombre, apellido1, apellido2, cor
 (1, 1, 'Antonio', 'Navarro', 'Martín', 'anavarro', '$2b$10$0HR20Vb0gg7DpWQLEVMGhu0.rUxneq2MEjMGuRziTohrvKPB7IANe', 1, 1),
 (1, 1, 'Carlos', 'González', 'Calvo', 'cargonca', '$2b$10$0HR20Vb0gg7DpWQLEVMGhu0.rUxneq2MEjMGuRziTohrvKPB7IANe', 1, 1),
 
+(1, 1, 'Jorge', 'Sierra', 'Alonso', 'jorsieal', '$2b$10$0HR20Vb0gg7DpWQLEVMGhu0.rUxneq2MEjMGuRziTohrvKPB7IANe', 0, 1),
+
 (1, 1, 'Julia', 'Chacón', 'Labella', 'julia.chacon', '$2b$10$0HR20Vb0gg7DpWQLEVMGhu0.rUxneq2MEjMGuRziTohrvKPB7IANe', 1, 5);
 
 
@@ -176,18 +178,23 @@ INSERT INTO RIU_INS_Instalación (nombre, hora_ini, hora_fin, tipo_reserva, afor
 
 -- RESERVA
 INSERT INTO RIU_RES_Reserva (activo, id_usuario, id_instalación, n_personas, fecha, hora, cola, fecha_reserva) VALUES
-(1, 1, 18, 3, '2024-12-15', '09:00:00', 0, '2023-11-26 18:06:23'),
-(1, 1, 1, 15, '2024-12-20', '09:00:00', 0, '2023-11-26 18:07:24'),
-(1, 1, 5, 87, '2024-12-13', '09:00:00', 0, '2023-11-26 18:08:25'),
-(1, 1, 19, 5, '2024-12-15', '10:00:00', 0, '2023-11-26 18:09:26'),
+(1, 1, 11, 2, '2023-12-15', '09:00:00', 0, '2023-11-26 18:06:23'),
+(1, 1, 1, 15, '2023-12-18', '17:00:00', 0, '2023-11-26 18:06:24'),
+(1, 1, 1, 25, '2023-12-19', '10:00:00', 0, '2023-11-26 18:06:25'),
+(1, 1, 1, 35, '2023-12-20', '09:00:00', 0, '2023-11-26 18:06:26'),
+(1, 1, 1, 20, '2023-12-21', '13:00:00', 0, '2023-11-26 18:06:27'),
+(1, 1, 1, 18, '2023-12-22', '14:00:00', 0, '2023-11-26 18:06:28'),
+(1, 1, 1, 60, '2023-12-22', '15:00:00', 0, '2023-11-26 18:06:29'),
+(1, 1, 5, 87, '2023-12-19', '09:00:00', 0, '2023-11-26 18:06:30'),
 
-(1, 2, 18, 1, '2024-12-15', '09:00:00', 1, '2023-11-26 18:10:27'),
-(1, 2, 11, 220, '2024-12-15', '09:00:00', 0, '2023-11-26 18:11:28'),
-(1, 2, 5, 53, '2024-12-14', '09:00:00', 0, '2023-11-26 18:12:29'),
+(1, 2, 11, 245, '2023-12-15', '09:00:00', 1, '2023-11-26 18:10:27'),
+(1, 2, 1, 20, '2023-12-20', '09:00:00', 0, '2023-11-26 18:11:28'),
+(1, 2, 1, 50, '2023-12-19', '10:00:00', 1, '2023-11-26 18:11:28'),
 
-(1, 3, 19, 2, '2024-12-15', '10:00:00', 1, '2023-11-26 18:13:30'),
-(1, 3, 11, 220, '2024-12-15', '09:00:00', 1, '2023-11-26 18:14:31'),
-(1, 3, 5, 32, '2024-12-14', '09:00:00', 0, '2023-11-26 18:15:32');
+
+(1, 3, 1, 50, '2023-12-20', '09:00:00', 1, '2023-11-26 18:13:30'),
+(1, 3, 11, 220, '2023-12-15', '09:00:00', 1, '2023-11-26 18:14:31');
+
 
 -- CORREO
 INSERT INTO RIU_MEN_Mensaje (id_usuario_origen, id_usuario_destino, mensaje, asunto, fecha_envío, fecha_leído) VALUES
@@ -219,7 +226,9 @@ INSERT INTO RIU_MEN_Mensaje (id_usuario_origen, id_usuario_destino, mensaje, asu
 (8, 9, 'Hola Carlos, tu cuenta ahora es de administrador', 'Ahora eres admin', '2023-09-03 09:06:53', '2023-09-03 18:28:19'),
 (8, 9, 'No te preocupes Carlos. Cuando puedas', 'Inicio competencias', '2023-09-05 09:25:02', null),
 (1, 9, 'Hola Carlos, quería darte las gracias por haber impartido tan bien tu asignatura', 'Agradecimineto EC', '2023-09-11 18:06:23', null),
-(2, 9, 'Hola Carlos, no me acurdo de nada de EC, ¿cuándo tendrías hueco para una tutoría?', 'Dudas EC', '2023-09-10 11:39:03', null);
+(2, 9, 'Hola Carlos, no me acurdo de nada de EC, ¿cuándo tendrías hueco para una tutoría?', 'Dudas EC', '2023-09-10 11:39:03', null),
+
+(7, 10, 'Hola Jorge, tu cuenta ya has sido validada', 'Validación completada', '2023-09-10 09:05:25', '2023-09-15 10:16:31');
 
 -- Añadir fotos
 

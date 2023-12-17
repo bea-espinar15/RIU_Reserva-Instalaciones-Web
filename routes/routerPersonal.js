@@ -34,12 +34,6 @@ function routerConfig(facController, mesController, resController, uniController
         "/enviarMensaje",
         // Mensaje no vacío
         check("message", "1").notEmpty(),
-        // Correo no vacío
-        check("mail", "1").notEmpty(),
-        // No hay @
-        check("mail", "22").custom((mail) => {
-            return !mail.includes("@");
-        }),
         mesController.sendMessage
     );
 
