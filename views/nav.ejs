@@ -5,7 +5,7 @@
     <nav class="d-flex align-items-center justify-content-between bg-riu-primary">
         <!-- Inicio -->
         <div>
-            <a id="a-nav" href="/inicio" class="d-flex align-items-center">
+            <a id="a-nav" href="/inicio" class="d-flex align-items-center" title="Volver a inicio">
                 <% if (generalInfo.hasLogo) { %>
                     <img src="/fotoUniversidad/<%= generalInfo.idUniversity %>" alt="Logo <%= generalInfo.name %>" width="60" height="60">
                 <% } else { %>
@@ -19,7 +19,7 @@
         <!-- Correo y menú -->
         <div class="d-flex align-items-center">
             <!-- Correo con nº no leídos -->
-            <a id="a-nav-mail" href="/personal/correo" class="position-relative">
+            <a id="a-nav-mail" href="/personal/correo" class="position-relative" title="Correo">
                 <img src="/img/mail.png" alt="Símbolo correo" width="60">
                 <% if (generalInfo.messagesUnread > 0 ) { %>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-riu-blue">
@@ -31,7 +31,7 @@
             <!-- Menú dropdown de Perfil -->
             <div class="dropdown">
                 <!-- Botón de perfil normal -->
-                <button id="button-nav-profile" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button id="button-nav-profile" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Desplegable del perfil">
                     <% if (generalInfo.hasProfilePic) { %>
                         <img src="/fotoPerfil/<%= generalInfo.idUser %>" alt="Foto de perfil" width="50">
                     <% } else { %>
@@ -42,7 +42,7 @@
                     </svg>
                 </button>
                 <!-- Menú hamburguesa -->
-                <button id="button-nav-hamburger" type="button" data-bs-toggle="dropdown" aria-expanded="false" class="d-none">
+                <button id="button-nav-hamburger" type="button" data-bs-toggle="dropdown" aria-expanded="false" class="d-none" title="Desplegable del perfil y correo">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="white" class="bi bi-list" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
                     </svg>

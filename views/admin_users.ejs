@@ -30,6 +30,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-search" viewBox="0 0 16 16">
                                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                                 </svg>
+                                Buscar
                             </button>                      
                         </div>
                         <label id="label-checkbox" class="d-flex align-items-center">
@@ -57,11 +58,11 @@
                                             <%= user.lastname1 %> 
                                             <%= user.lastname2 %> 
                                             <% if (!user.enabled) { %>
-                                                <img id="img-icon-<%= user.id %>" src="/img/icons/banned.png" alt="Usuario baneado" width="25" height="25">
+                                                <img id="img-icon-<%= user.id %>" src="/img/icons/banned.png" alt="Usuario baneado" width="25" height="25" title="Usuario expulsado">
                                             <% } else if (user.validated) { %>
-                                                <img id="img-icon-<%= user.id %>" src="/img/icons/accepted.png" alt="Usuario normal" width="25" height="25">
+                                                <img id="img-icon-<%= user.id %>" src="/img/icons/accepted.png" alt="Usuario normal" width="25" height="25" title="Usuario validado">
                                             <% } else { %>
-                                                <img id="img-icon-<%= user.id %>" src="/img/icons/pending.png" alt="Usuario pendiente de validar" width="25" height="25">
+                                                <img id="img-icon-<%= user.id %>" src="/img/icons/pending.png" alt="Usuario pendiente de validar" width="25" height="25" title="Usuario pendiente de validar">
                                             <% } %>
                                         </h2>
                                         <p><%= user.mail %>@<%= universityMail %></p>
@@ -85,7 +86,7 @@
                 </div>
 
                 <!-- MODAL BANEAR -->
-                <div class="modal fade" id="div-modal-ban" aria-labelledby="label-modal-ban" aria-hidden="true">
+                <div id="div-modal-ban" aria-labelledby="div-modal-ban" aria-hidden="true" class="modal fade">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
                             <!-- Header -->
@@ -112,7 +113,7 @@
                 </div>
 
                 <!-- MODAL HACER ADMIN -->
-                <div class="modal fade" id="div-modal-make-admin" aria-labelledby="label-modal-make-admin" aria-hidden="true">
+                <div id="div-modal-make-admin" aria-labelledby="div-modal-make-admin" aria-hidden="true" class="modal fade">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
                             <!-- Header -->

@@ -62,14 +62,14 @@
                 <div class="d-flex flex-column">
                     <div>
                         <label for="input-mail-user">Usuario:</label>
-                        <input id="input-mail-user" type="text" value="">
+                        <input id="input-mail-user" type="text" value="">         
                         <p id="p-mail-university" class="d-inline">@<%= universityMail %></p>
                     </div> 
                     <% if (generalInfo.isAdmin) { %>
                         <div id="div-mail-admin" class="d-flex align-items-center">
                             <div>
                                 <label id="label-faculty" for="input-faculty" title="Enviar a todos los usuarios de una facultad">Facultad:</label>
-                                <select id="input-faculty">
+                                <select id="input-faculty" aria-required="true">
                                     <option value="">Selecciona una opción</option>
                                     <% faculties.forEach((fac) => { %>
                                         <option value="<%= fac.name %>"><%= fac.name %></option>
@@ -77,7 +77,7 @@
                                 </select>
                             </div>                                
                             <label id="label-university" title="Enviar a toda la universidad" class="d-flex align-items-center">
-                                <input id="input-university" type="checkbox" class="checkbox-riu">
+                                <input id="input-university" type="checkbox" class="checkbox-riu" aria-required="true">
                                 Universidad
                             </label>
                         </div>
@@ -90,7 +90,7 @@
                 </div>
                 <!-- Mensaje -->
                 <div class="d-flex flex-column">
-                    <label id="label-mail-message" for="textarea-mail-message">Mensaje:</label>
+                    <label id="label-mail-message" for="textarea-mail-message" title="Campo obligatorio">Mensaje:</label>
                     <textarea id="textarea-mail-message" cols="30" rows="7" placeholder="Escribe aquí tu mensaje..."></textarea>
                 </div>
                 <!-- Submit -->

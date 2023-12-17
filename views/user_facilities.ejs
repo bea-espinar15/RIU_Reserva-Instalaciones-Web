@@ -56,7 +56,7 @@
                 </button>
                 <!-- JQuery -->
                 <img id="img-facility-pic" src="" alt="Imagen instalación" width="270" height="270">                
-                <h2 id="h2-facility-name"></h2>
+                <h2 id="h2-facility-name">Nombre de la instalación</h2>
                 <p id="p-warning-res-type">¡Atención! Esta instalación es colectiva. Otros pueden reservarla al mismo tiempo si el aforo lo permite.</p>
             </div>
             <!-- Info instalación -->
@@ -67,15 +67,15 @@
                 <!-- Hora -->
                 <p class="mt-2 mb-1">Hora:</p>
                 <div id="div-hours"></div>
-                <input id="input-hour" name="hour" type="hour" hidden="true">
+                <input id="input-hour" name="hour" type="hour" placeholder="Hora seleccionada" hidden="true" aria-hidden="true">
                 <!-- Info instalación (oculto) -->
-                <input id="input-id-facility" name="idFacility" type="text" hidden="true">
-                <input id="input-id-facility-type" name="idFacilityType" type="text" hidden="true">
+                <input id="input-id-facility" name="idFacility" type="text" placeholder="Instalación seleccionada" hidden="true" aria-hidden="true">
+                <input id="input-id-facility-type" name="idFacilityType" type="text" placeholder="Tipo de instalación seleccionado" hidden="true" aria-hidden="true">
                 <!-- Botón reservar -->
                 <button id="button-reserve" type="button" class="button-riu bg-riu-primary">Termina tu reserva</button>
-                <button id="button-modal-reserve" type="button" hidden="true" data-bs-toggle="modal" data-bs-target="#div-modal-reserve"></button>
+                <button id="button-modal-reserve" type="button" hidden="true" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#div-modal-reserve">Abrir modal</button>
                 <!-- Modal confirmar reserva -->
-                <div id="div-modal-reserve" class="modal fade" aria-labelledby="label-modal-reserve" aria-hidden="true">
+                <div id="div-modal-reserve" class="modal fade" aria-labelledby="div-modal-reserve" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
                             <!-- Header -->

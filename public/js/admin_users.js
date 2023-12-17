@@ -105,6 +105,7 @@ $(() => {
                 success: (data, statusText, jqXHR) => {
                     // Cambiar icono
                     $(`#img-icon-${idUser}`).attr("src", "/img/icons/accepted.png");
+                    $(`#img-icon-${idUser}`).attr("title", "Usuario validado");
 
                     // Cambiar botones
                     let divButtons = $(`#div-buttons-${idUser}`);
@@ -238,6 +239,7 @@ $(() => {
 
                 // Cambiar icono y fondo
                 $(`#img-icon-${idUser}`).attr("src", "/img/icons/banned.png");
+                $(`#img-icon-${idUser}`).attr("title", "Usuario expulsado");
                 $(`#div-info-user-${idUser}`).addClass("bg-riu-res-gray");
 
                 // Mostrar modal

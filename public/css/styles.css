@@ -6,29 +6,23 @@
     --light-gray: #EFE8E7;
     --gray: #727272;
     --dark-gray: #454545;
-    --red: #B92525;
+    --red: #8b1010;
     --green: #157824;
     --light-green: #EAF9EE;
-    --yellow: #bb890a;
-    --blue: #0098D7;   
+    --yellow: #976E07;
+    --blue: #007DB3;
 
     /* Colores parametrizables */
     --primary-h: 0;
     --primary-s: 45%;
     --primary-l: 35%;
-    --secondary-h: 215;
-    --secondary-s: 43%;
-    --secondary-l: 27%;
     --filter-dark: 0.6; /* Oscurecer un 40% */
-    --filter-light: 1.8; /* Aclarar un 80% */
+    --filter-light: 1.5; /* Aclarar un 80% */
   
     /* Construimos los colores */
     --primary: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
-    --secondary: hsl(var(--secondary-h), var(--secondary-s), var(--secondary-l));
     --primary-dark: hsl(var(--primary-h), var(--primary-s), calc(var(--primary-l) * var(--filter-dark)));
     --primary-light: hsl(var(--primary-h), var(--primary-s), calc(var(--primary-l) * var(--filter-light)));
-    --secondary-dark: hsl(var(--secondary-h), var(--secondary-s), calc(var(--secondary-l) * var(--filter-dark)));
-    --secondary-light: hsl(var(--secondary-h), var(--secondary-s), calc(var(--secondary-l) * var(--filter-light)));
    
     /* Otros colores */
     --footer-gray: #bababa;
@@ -67,24 +61,12 @@ hr {
     background-color: var(--primary);
 }
 
-.bg-riu-secondary { /* [!] CONFIGURABLE */
-    background-color: var(--secondary);
-}
-
 .bg-riu-primary-dark { /* [!] CONFIGURABLE */
     background-color: var(--primary-dark);
 }
 
-.bg-riu-secondary-dark { /* [!] CONFIGURABLE */
-    background-color: var(--secondary-dark);
-}
-
 .bg-riu-primary-light { /* [!] CONFIGURABLE */
     background-color: var(--primary-light);
-}
-
-.bg-riu-secondary-light { /* [!] CONFIGURABLE */
-    background-color: var(--secondary-light);
 }
 
 .bg-riu-white {
@@ -133,7 +115,7 @@ hr {
 
 /* --- INPUT --- */
 label {
-    color: var(--gray);
+    color: var(--dark-gray);
 }
 
 input, select {

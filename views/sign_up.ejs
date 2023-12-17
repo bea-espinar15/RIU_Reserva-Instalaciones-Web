@@ -19,13 +19,13 @@
             <h1 id="h1-sign-up" class="font-bold">Crea tu cuenta</h1>
             <!-- Formulario registro -->
             <form class="d-flex flex-column w-50">
-                <input id="input-name" type="text" placeholder="Nombre">
-                <input id="input-lastname-1" type="text" placeholder="Primer apellido">
-                <input id="input-lastname-2" type="text" placeholder="Segundo apellido">
-                <input id="input-mail" type="email" placeholder="Correo">
-                <input id="input-password" type="password" placeholder="Contraseña">
+                <input id="input-name" type="text" placeholder="Nombre" aria-required="true">
+                <input id="input-lastname-1" type="text" placeholder="Primer apellido" aria-required="true">
+                <input id="input-lastname-2" type="text" placeholder="Segundo apellido" aria-required="true">
+                <input id="input-mail" type="email" placeholder="Correo" aria-required="true">
+                <input id="input-password" type="password" placeholder="Contraseña" aria-required="true">
                 <label id="label-faculty" for="input-faculty">Selecciona tu facultad</label>
-                <select id="input-faculty">
+                <select id="input-faculty" aria-required="true">
                     <option value="null">Introduce tu correo</option>
                 </select>
                 <input id="input-sb-sign-up" type="submit" value="Regístrate" class="bg-riu-primary button-riu button-auth align-self-center">
