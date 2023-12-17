@@ -263,18 +263,29 @@ $(() => {
                     idFacility: idFacility
                 },
                 success: (data, statusText, jqXHR) => {
+                    // Resetear horas
+                    hoursTable.children("span").each(function(i, span) {
+                        let spanHour = $(span);
+                        spanHour.removeClass("bg-riu-yellow");
+                        spanHour.removeClass("bg-riu-red");
+                        spanHour.removeClass("bg-riu-blue");
+                        spanHour.addClass("bg-riu-gray");
+                        // Quitar span
+                        (spanHour.find(".span-capacity")).remove();
+                    });
                     // Poner en rojo las horas ocupadas y en amarillo las que tienen pocas plazas
                     hoursTable.children("span").each(function(i, hour) {
                         let hourSpan = $(this);
                         // Hora ocupada
                         if (data.hours.some((item) => item.hour === hourSpan.text())) {
                             let selectedHour = data.hours.find((item) => item.hour === hourSpan.text());
-
+                            // ROJO
                             if (data.reservationType === "Individual" || selectedHour.capacityLeft === 0) {
                                 hourSpan.removeClass("bg-riu-gray");
                                 hourSpan.addClass("bg-riu-red");
                                 hourSpan.attr("title", "Hora llena, entrarás en cola");
                             }
+                            // AMARILLO (+ span)
                             else {
                                 hourSpan.removeClass("bg-riu-gray");
                                 hourSpan.addClass("bg-riu-yellow");

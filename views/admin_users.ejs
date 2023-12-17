@@ -73,20 +73,20 @@
                                 <% if (user.enabled) { %>
                                     <div id="div-buttons-<%= user.id %>" class="div-buttons d-flex flex-column">
                                             <% if (user.validated) { %>
-                                                <button type="button" class="button-ban button-users bg-riu-red" data-bs-toggle="modal" data-bs-target="#div-modal-ban" data-idUser="<%= user.id %>">Expulsar</button>
+                                                <button type="button" class="button-ban button-users bg-riu-red" data-bs-toggle="modal" data-bs-target="#div-modal-ban-<%= user.id %>" data-idUser="<%= user.id %>">Expulsar</button>
                                                 <!-- MODAL BANEAR -->
                                                 <%- include("confirm_modal", { 
-                                                    idConfirmModal: "div-modal-ban", 
+                                                    idConfirmModal: `div-modal-ban-${user.id}`, 
                                                     pConfirmModal: "¿Estás seguro de que quieres expulsar a este usuario? No se puede deshacer esta acción.", 
-                                                    buttonSbConfirmModal: "button-sb-ban",
+                                                    buttonSbConfirmModal: `button-sb-ban-${user.id}`,
                                                     dataName: "iduser",
                                                     dataValue: user.id }) %>
-                                                <button type="button" class="button-make-admin button-users bg-riu-primary-light button-make-admin" data-bs-toggle="modal" data-bs-target="#div-modal-make-admin" data-idUser="<%= user.id %>">Hacer Admin</button>
+                                                <button type="button" class="button-make-admin button-users bg-riu-primary-light" data-bs-toggle="modal" data-bs-target="#div-modal-make-admin-<%= user.id %>" data-idUser="<%= user.id %>">Hacer Admin</button>
                                                 <!-- MODAL HACER ADMIN -->
                                                 <%- include("confirm_modal", { 
-                                                    idConfirmModal: "div-modal-make-admin", 
+                                                    idConfirmModal: `div-modal-make-admin-${user.id}`, 
                                                     pConfirmModal: "¿Estás seguro de que quieres hacer administrador a este usuario? No se puede deshacer esta acción.", 
-                                                    buttonSbConfirmModal: "button-sb-make-admin",
+                                                    buttonSbConfirmModal: `button-sb-make-admin-${user.id}`,
                                                     dataName: "iduser",
                                                     dataValue: user.id }) %>
                                                 <% } else { %>

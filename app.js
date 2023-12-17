@@ -97,16 +97,26 @@ function userLogged(request, response, next) {
     }
 };
 
+// Comprobar que el usuario no había iniciado sesión
+function userAlreadyLogged(request, response, next) {
+    if (request.session.currentUser) {
+        response.redirect("/inicio");
+    }
+    else {
+        next();
+    }
+};
+
 // --- Peticiones GET ---
 
 // - Rutas -
 // SignUp
-app.get("/registro", (request, response, next) => {
+app.get("/registro", userAlreadyLogged, (request, response, next) => {
     response.render("sign_up", { response: undefined });
 });
 
 // Login
-app.get("/login", (request, response, next) => {
+app.get("/login", userAlreadyLogged, (request, response, next) => {
     response.render("login", { mail:"", response: undefined });
 });
 

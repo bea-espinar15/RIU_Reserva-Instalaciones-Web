@@ -84,9 +84,9 @@ class ReservationController {
                 reservations.forEach((res) => {
                     // Pasar la fecha a objeto Date para comparar
                     let formattedDate = res.date.split('/');
-                    formattedDate = new Date(`${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}`);
+                    let completeDate = new Date(`${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}` + "T" + res.hour);
                     // Comparar fecha con hoy                            
-                    if (formattedDate < today) {
+                    if (completeDate < today) {
                         // Si es antigua y se quedó en cola es como si no hubiera existido
                         if (!res.queued) {
                             oldReservations.push(res);
@@ -254,7 +254,7 @@ class ReservationController {
                                                                 if (queued) { msg = "Se ha realizado la reserva y has sido añadido a la cola de espera. Si alguno delante cancela se te avisará."; }
                                                                 else { msg = "Se ha realizado la reserva con éxito!"; }
                                                                 // Añadir mensaje de respuesta a data
-                                                                data.error = {
+                                                                data.response = {
                                                                     code: 200,
                                                                     title: "Reserva realizada",
                                                                     message: msg

@@ -75,7 +75,7 @@
                                                 <%- include("confirm_modal", { 
                                                     idConfirmModal: `div-modal-cancel-${i}`, 
                                                     pConfirmModal: "¿Estás seguro de que quieres cancelar tu reserva? No se puede deshacer esta acción.", 
-                                                    buttonSbConfirmModal: "button-sb-cancel",
+                                                    buttonSbConfirmModal: `button-sb-cancel-${cr.id}`,
                                                     dataName: "idReservation",
                                                     dataValue: cr.id }) %>
                                             </div>                                            

@@ -53,7 +53,7 @@ class DAOUsers {
                 callback(-1);
             }
             else {
-                let querySQL = "SELECT * FROM RIU_USU_Usuario AS USU WHERE id = ?";
+                let querySQL = "SELECT USU.*, FAC.nombre AS nombre_facultad FROM RIU_USU_Usuario AS USU JOIN RIU_FAC_Facultad AS FAC ON USU.id_facultad = FAC.id WHERE USU.id = ?";
                 connection.query(querySQL, [idUser], (error, rows) => {
                     connection.release();
                     if (error) {
@@ -76,7 +76,8 @@ class DAOUsers {
                                 password: rows[0].contraseña,
                                 hasProfilePic: (rows[0].foto ? true : false),
                                 rol: rows[0].rol,
-                                idFaculty: rows[0].id_facultad
+                                idFaculty: rows[0].id_facultad,
+                                facultyName: rows[0].nombre_facultad
                             }
                             callback(null, user);
                         }
