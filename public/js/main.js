@@ -34,10 +34,10 @@ function showModal(response, header, img, title, message, button, modal) {
 $(() => {
 
     // Comprobar al cargar la página si hay un mensaje que mostrar
-    const error = $("body").data("error");
+    const response = $("body").data("response");
 
-    if (error) {
-        showModal(error, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
+    if (response) {
+        showModal(response, $("#div-modal-response-header"), $("#img-modal-response"), $("#h1-modal-response"), $("#p-modal-response"), $("#button-modal-response-ok"), $("#button-modal-response"));
     }
 
     // Logout

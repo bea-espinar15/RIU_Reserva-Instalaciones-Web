@@ -90,7 +90,7 @@ class UniversityController {
             status: 200,
             redirect: "admin_settings",
             data: {
-                error: undefined,
+                response: undefined,
                 generalInfo: {
                     idUniversity: request.session.university.id,
                     name: request.session.university.name,
@@ -157,7 +157,7 @@ class UniversityController {
                         request.session.university = newUniversity;
                         // Reconstruimos data para redirigir a inicio
                         let data = {
-                            error: {
+                            response: {
                                 code: 200,
                                 title: "Configuración actualizada",
                                 message: "Los datos de la universidad se han modificado con éxito"

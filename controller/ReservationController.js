@@ -47,7 +47,7 @@ class ReservationController {
                             status: 200,
                             redirect: "admin_reservations",
                             data: {
-                                error: undefined,
+                                response: undefined,
                                 generalInfo: {
                                     idUniversity: idUniversity,
                                     name: request.session.university.name,
@@ -102,7 +102,7 @@ class ReservationController {
                     status: 200,
                     redirect: "user_reservations",
                     data: {
-                        error: undefined,
+                        response: undefined,
                         generalInfo: {
                             idUniversity: request.session.university.id,
                             name: request.session.university.name,
@@ -292,7 +292,7 @@ class ReservationController {
     // Filtrar reservas
     filter(request, response, next) {
         let data = {
-            error: undefined,
+            response: undefined,
             generalInfo: {
                 idUniversity: request.session.university.id,
                 name: request.session.university.name,

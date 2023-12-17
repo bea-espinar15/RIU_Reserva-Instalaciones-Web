@@ -39,7 +39,7 @@ class FacilityController {
                             status: 200,
                             redirect: "admin_facilities",
                             data: {
-                                error: undefined,
+                                response: undefined,
                                 generalInfo: {
                                     idUniversity: request.session.university.id,
                                     name: request.session.university.name,
@@ -73,7 +73,7 @@ class FacilityController {
                     status: 200,
                     redirect: "user_index",
                     data: {
-                        error: undefined,
+                        response: undefined,
                         generalInfo: {
                             idUniversity: request.session.university.id,
                             name: request.session.university.name,
@@ -112,7 +112,7 @@ class FacilityController {
                         status: 200,
                         redirect: "user_facilities",
                         data: {
-                            error: undefined,
+                            response: undefined,
                             generalInfo: {
                                 idUniversity: request.session.university.id,
                                 name: request.session.university.name,

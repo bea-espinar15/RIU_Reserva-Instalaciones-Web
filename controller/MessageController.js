@@ -37,7 +37,7 @@ class MessageController {
                             status: 200,
                             redirect: "mail",
                             data: {
-                                error: undefined,
+                                response: undefined,
                                 generalInfo: {
                                     idUniversity: request.session.university.id,
                                     name: request.session.university.name,

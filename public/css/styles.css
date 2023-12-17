@@ -175,17 +175,17 @@ input, select {
     background: none;
 }
 
-#button-modal-error-ok {
+#button-modal-response-ok {
     padding: 1rem 2rem;
 }
 
-#h1-modal-error {
+#h1-modal-response {
     margin-left: 1rem !important;
     font-size: 1.3rem;
     color: var(--black);
 }
 
-#img-modal-error {
+#img-modal-response {
     margin: 0rem !important;
     width: 30px !important;
 }

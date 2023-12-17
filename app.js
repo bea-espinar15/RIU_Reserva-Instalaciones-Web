@@ -102,12 +102,12 @@ function userLogged(request, response, next) {
 // - Rutas -
 // SignUp
 app.get("/registro", (request, response, next) => {
-    response.render("sign_up", { error: undefined });
+    response.render("sign_up", { response: undefined });
 });
 
 // Login
 app.get("/login", (request, response, next) => {
-    response.render("login", { mail:"", error: undefined });
+    response.render("login", { mail:"", response: undefined });
 });
 
 // Inicio

@@ -97,7 +97,7 @@ class UserController {
                     status: 200,
                     redirect: "admin_users",
                     data: {
-                        error: undefined,
+                        response: undefined,
                         generalInfo: {
                             idUniversity: request.session.university.id,
                             name: request.session.university.name,
@@ -147,7 +147,7 @@ class UserController {
             status: 200,
             redirect: "profile",
             data: {
-                error: undefined,
+                response: undefined,
                 generalInfo: {
                     idUniversity: request.session.university.id,
                     name: request.session.university.name,
@@ -172,7 +172,7 @@ class UserController {
             status: 200,
             redirect: "admin_index",
             data: {
-                error: undefined,
+                response: undefined,
                 generalInfo: {
                     idUniversity: request.session.university.id,
                     name: request.session.university.name,
@@ -242,7 +242,7 @@ class UserController {
                                                     request.session.university = university;
                                                     // Construir data
                                                     let data = {
-                                                        error: undefined,
+                                                        response: undefined,
                                                         generalInfo: {
                                                             idUniversity: university.id,
                                                             name: university.name,
@@ -306,7 +306,7 @@ class UserController {
             redirect: "login",
             data: {
                 mail: "",
-                error: undefined
+                response: undefined
             }
         });
     }
