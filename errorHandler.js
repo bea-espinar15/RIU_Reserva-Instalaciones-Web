@@ -238,6 +238,11 @@ function generateError(cod) {
             title = "Fecha no válida";
             message = "Indica una fecha válida en el calendario.";
         } break;
+        case 39: {
+            code = 400;
+            title = "Contraseña no válida";
+            message = "La nueva contraseña debe ser distinta a la antigua.";
+        } break;
         default: {
             code = 500;
             title = "Error desconocido";

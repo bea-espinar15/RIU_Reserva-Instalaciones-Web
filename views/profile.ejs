@@ -35,12 +35,12 @@
                 <!-- Foto de perfil -->
                 <div class="col-6 d-flex flex-column align-items-center mx-auto">
                     <% if (user.hasProfilePic) { %>
-                        <img src="/fotoPerfil/<%= user.id %>" alt="Foto de perfil" width="180">
+                        <img id="img-profile-pic" src="/fotoPerfil/<%= user.id %>" alt="Foto de perfil" width="180">
                     <% } else { %>
-                        <img src="/img/default/profile.png" alt="Foto de perfil (ninguna)" width="180">
+                        <img id="img-profile-pic" src="/img/default/profile.png" alt="Foto de perfil (ninguna)" width="180">
                     <% } %>
-                    <form>
-                        <input id="input-profile-pic" type="file" placeholder="Foto de perfil">
+                    <form enctype="multipart/form-data">
+                        <input id="input-profile-pic" type="file" placeholder="Foto de perfil" data-iduser="<%= user.id %>">
                     </form>                    
                 </div>          
             </div>

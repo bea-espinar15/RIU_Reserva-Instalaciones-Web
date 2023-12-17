@@ -15,6 +15,9 @@ const multerFactory = multer({ storage: multer.memoryStorage() });
 // --- Crear router ---
 const RouterPersonal = express.Router();
 
+// Variables globales
+const passwordRegex = /(?=.*[A-Za-z])(?=.*\d).{8,}/;
+
 // Obtener pool
 function routerConfig(facController, mesController, resController, uniController, useController) {
 
@@ -49,15 +52,23 @@ function routerConfig(facController, mesController, resController, uniController
         mesController.markAsRead
     );
 
-    // [TODO] Editar foto de perfil
+    // Editar foto de perfil
     RouterPersonal.post(
         "/editarFotoPerfil",
+        multerFactory.single("profilePic"),
         useController.editProfilePic
     );
 
-    // [TODO] Cambiar contraseña
+    // Cambiar contraseña
     RouterPersonal.post(
         "/cambiarContrasena",
+        // Campos no vacíos
+        check("oldPass", "1").notEmpty(),
+        check("newPass", "1").notEmpty(),
+        // Nueva contraseña cumple requisitos
+        check("newPass", "15").custom((pass) => {
+            return passwordRegex.test(pass);
+        }),
         useController.changePassword
     );
 

@@ -463,14 +463,105 @@ class UserController {
         }
     }
 
-    // [TODO] Editar foto de perfil
+    // Editar foto de perfil
     editProfilePic(request, response, next) {
-        errorHandler.manageAJAXError(25, next);
+        let pic = request.file;
+        // Comprobar formato foto, si hay
+        if (pic && (pic.mimetype !== "image/png" || pic.size > 64 * 1024)) {
+            errorHandler.manageAJAXError(14, next);
+        }
+        else {
+            // Actualizar
+            let profilePic = pic ? pic.buffer : null
+            this.daoUse.updateProfilePic(profilePic, request.session.currentUser.id, (error) => {
+                if (error) {
+                    errorHandler.manageAJAXError(error, next);
+                }
+                else {
+                    // Actualizar sesión
+                    request.session.currentUser.hasProfilePic = true;
+                    next({
+                        ajax: true,
+                        error: false,
+                        img: false,
+                        data: {
+                            code: 200,
+                            title: "Imagen actualizada",
+                            message: "Tu foto de perfil ha sido actualizada con éxito!"
+                        }
+                    });
+                }
+            });
+        }
     }
 
     // [TODO] Cambiar contraseña
     changePassword(request, response, next) {
-        errorHandler.manageAJAXError(25, next);
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            let oldPass = request.body.oldPass;
+            let newPass = request.body.newPass;
+            // La nueva y antigua contraseña son iguales
+            if (oldPass === newPass) {
+                errorHandler.manageAJAXError(39, next);
+            }
+            else {
+                // Comprobar que la contraseña actual es correcta
+                this.daoUse.read(request.session.currentUser.id, (error, user) => {
+                    if (error) {
+                        errorHandler.manageAJAXError(error, next);
+                    }
+                    else {
+                        bcrypt.compare(oldPass, user.password, (err, result) => {
+                            if (error) {
+                                errorHandler.manageAJAXError(error, next);
+                            }
+                            else if (!result) {
+                                errorHandler.manageAJAXError(5, next);
+                            }
+                            else {
+                                // Cifrar contraseña
+                                bcrypt.genSalt(saltRounds, (error, salt) => {
+                                    if (error) {
+                                        errorHandler.manageAJAXError(error, next);
+                                    }
+                                    else {
+                                        bcrypt.hash(newPass, salt, (error, hashedPassword) => {
+                                            if (error) {
+                                                errorHandler.manageAJAXError(error, next);
+                                            }
+                                            else {
+                                                // Actualizar contraseña
+                                                this.daoUse.updatePassword(hashedPassword, request.session.currentUser.id, (error) => {
+                                                    if (error) {
+                                                        errorHandler.manageAJAXError(error, next);
+                                                    }
+                                                    else {
+                                                        next({
+                                                            ajax: true,
+                                                            error: false,
+                                                            img: false,
+                                                            data: {
+                                                                code: 200,
+                                                                title: "Contraseña actualizada",
+                                                                message: "Tu contraseña ha sido actualizada con éxito."
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });                                
+                            }
+                        });                        
+                    }
+                });                
+            }
+        }
+        else {
+            errorHandler.manageAJAXError(parseInt(errors.array()[0].msg), next);
+        }
     }
 
     // Hacer administrador a un usuario

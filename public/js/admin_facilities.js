@@ -103,6 +103,10 @@ $(() => {
         }
         // Mostrar div
         showFacilityContainer.show();
+        // Desplazar al usuario arriba del todo
+        $('html, body').animate({
+            scrollTop: 0
+        }, 100);
     });
 
     // Cuando se pulsa en Nueva, se crea el formulario para crear

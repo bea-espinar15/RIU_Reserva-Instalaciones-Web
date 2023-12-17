@@ -6,15 +6,17 @@ class DAOUsers {
         this.pool = pool;
 
         this.create = this.create.bind(this);
-        this.validate = this.validate.bind(this);
-        this.makeAdmin = this.makeAdmin.bind(this);
-        this.delete = this.delete.bind(this);
         this.read = this.read.bind(this);
         this.readAll = this.readAll.bind(this);
         this.readByUniversity = this.readByUniversity.bind(this);
         this.readUserByMail = this.readUserByMail.bind(this);
         this.readAllByFaculty = this.readAllByFaculty.bind(this);
         this.readPic = this.readPic.bind(this);
+        this.validate = this.validate.bind(this);
+        this.makeAdmin = this.makeAdmin.bind(this);
+        this.updateProfilePic = this.updateProfilePic.bind(this);
+        this.updatePassword = this.updatePassword.bind(this);
+        this.delete = this.delete.bind(this);        
     }
     
     // Métodos
@@ -27,84 +29,6 @@ class DAOUsers {
             else {
                 let querySQL = "INSERT INTO RIU_USU_Usuario (nombre, apellido1, apellido2, correo, contraseña, id_facultad) VALUES (?, ?, ?, ?, ?, ?)";
                 connection.query(querySQL, [newUser.name, newUser.lastname1, newUser.lastname2, newUser.mail, newUser.password, newUser.idFaculty], (error, rows) => {
-                    connection.release();
-                    if (error) {
-                        callback(-1);
-                    }
-                    else {
-                        if (rows.affectedRows === 0) {
-                            callback(-1);
-                        }
-                        else {
-                            callback(null);
-                        }
-                    }
-                });
-            }
-        });
-    }
-
-    // Validar usuario
-    validate(idUser, callback) {
-        this.pool.getConnection((error, connection) => {
-            if (error) {
-                callback(-1);
-            }
-            else {
-                let querySQL = "UPDATE RIU_USU_Usuario SET validado = 1 WHERE id = ?";
-                connection.query(querySQL, [idUser], (error, rows) => {
-                    connection.release();
-                    if (error) {
-                        callback(-1);
-                    }
-                    else {
-                        if (rows.affectedRows === 0) {
-                            callback(-1);
-                        }
-                        else {
-                            callback(null);
-                        }
-                    }
-                });
-            }
-        });
-    }
-
-    // Hacer administrador a un usuario
-    makeAdmin(idUser, callback) {
-        this.pool.getConnection((error, connection) => {
-            if (error) {
-                callback(-1);
-            }
-            else {
-                let querySQL = "UPDATE RIU_USU_Usuario SET rol = 1 WHERE id = ?";
-                connection.query(querySQL, [idUser], (error, rows) => {
-                    connection.release();
-                    if (error) {
-                        callback(-1);
-                    }
-                    else {
-                        if (rows.affectedRows === 0) {
-                            callback(-1);
-                        }
-                        else {
-                            callback(null);
-                        }
-                    }
-                });
-            }
-        });
-    }
-    
-    // Expulsar a un usuario
-    delete(idUser, callback) {
-        this.pool.getConnection((error, connection) => {
-            if (error) {
-                callback(-1);
-            }
-            else {
-                let querySQL = "UPDATE RIU_USU_Usuario SET activo = 0 WHERE id = ?";
-                connection.query(querySQL, [idUser], (error, rows) => {
                     connection.release();
                     if (error) {
                         callback(-1);
@@ -337,6 +261,137 @@ class DAOUsers {
             }
         });
     }
+
+    // Validar usuario
+    validate(idUser, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "UPDATE RIU_USU_Usuario SET validado = 1 WHERE id = ?";
+                connection.query(querySQL, [idUser], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.affectedRows === 0) {
+                            callback(-1);
+                        }
+                        else {
+                            callback(null);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    // Hacer administrador a un usuario
+    makeAdmin(idUser, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "UPDATE RIU_USU_Usuario SET rol = 1 WHERE id = ?";
+                connection.query(querySQL, [idUser], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.affectedRows === 0) {
+                            callback(-1);
+                        }
+                        else {
+                            callback(null);
+                        }
+                    }
+                });
+            }
+        });
+    }
+    
+    // Actualizar foto de perfil
+    updateProfilePic(pic, idUser, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "UPDATE RIU_USU_Usuario SET foto = ? WHERE id = ?";
+                connection.query(querySQL, [pic, idUser], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.affectedRows === 0) {
+                            callback(-1);
+                        }
+                        else {
+                            callback(null);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    // Cambiar contraseña
+    updatePassword(newPass, idUser, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "UPDATE RIU_USU_Usuario SET contraseña = ? WHERE id = ?";
+                connection.query(querySQL, [newPass, idUser], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.affectedRows === 0) {
+                            callback(-1);
+                        }
+                        else {
+                            callback(null);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    // Expulsar a un usuario
+    delete(idUser, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "UPDATE RIU_USU_Usuario SET activo = 0 WHERE id = ?";
+                connection.query(querySQL, [idUser], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.affectedRows === 0) {
+                            callback(-1);
+                        }
+                        else {
+                            callback(null);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
 }
 
 module.exports = DAOUsers;
