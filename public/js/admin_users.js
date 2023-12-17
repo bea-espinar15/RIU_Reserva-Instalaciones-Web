@@ -145,17 +145,7 @@ $(() => {
     });
 
     // POST Hacer admin (AJAX)
-    const buttonsMakeAdmin = $(".button-make-admin");
-    const buttonSubmitMakeAdmin = $("#button-sb-make-admin");
-
-    // Enviar info del botón para abrir el modal al botón de submit
-    buttonsMakeAdmin.each(function (i, button) {
-        let buttonMake = $(this);
-        let idUser = buttonMake.data("iduser");
-        buttonMake.on("click", (event) => {
-            buttonSubmitMakeAdmin.data("iduser", idUser);
-        });
-    });
+    const buttonSubmitMakeAdmin = $(".button-sb-make-admin");
 
     // POST
     buttonSubmitMakeAdmin.on("click", (event) => {
@@ -211,17 +201,7 @@ $(() => {
     });
 
     // POST Expulsar (AJAX)
-    const buttonsBan = $(".button-ban");
-    const buttonSubmitBan = $("#button-sb-ban");
-
-    // Enviar info del botón para abrir el modal al botón de submit
-    buttonsBan.each(function (i, button) {
-        let buttonBane = $(this);
-        let idUser = buttonBane.data("iduser");
-        buttonBane.on("click", (event) => {
-            buttonSubmitBan.data("iduser", idUser);
-        });
-    });
+    const buttonSubmitBan = $(".button-sb-ban");
 
     // POST
     buttonSubmitBan.on("click", (event) => {
@@ -250,5 +230,12 @@ $(() => {
             }
         });
     });
+
+     // Al cerrar el modal, quitar el backdrop
+     $('#modal-response').on('hidden.bs.modal', function () {
+        $('.modal-backdrop').remove();
+        $('body').css('overflow', 'auto');
+    });
+
 
 });

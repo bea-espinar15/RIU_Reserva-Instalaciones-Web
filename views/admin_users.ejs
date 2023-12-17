@@ -74,68 +74,28 @@
                                     <div id="div-buttons-<%= user.id %>" class="div-buttons d-flex flex-column">
                                             <% if (user.validated) { %>
                                                 <button type="button" class="button-ban button-users bg-riu-red" data-bs-toggle="modal" data-bs-target="#div-modal-ban" data-idUser="<%= user.id %>">Expulsar</button>
+                                                <!-- MODAL BANEAR -->
+                                                <%- include("confirm_modal", { 
+                                                    idConfirmModal: "div-modal-ban", 
+                                                    pConfirmModal: "¿Estás seguro de que quieres expulsar a este usuario? No se puede deshacer esta acción.", 
+                                                    buttonSbConfirmModal: "button-sb-ban",
+                                                    dataName: "iduser",
+                                                    dataValue: user.id }) %>
                                                 <button type="button" class="button-make-admin button-users bg-riu-primary-light button-make-admin" data-bs-toggle="modal" data-bs-target="#div-modal-make-admin" data-idUser="<%= user.id %>">Hacer Admin</button>
-                                            <% } else { %>
+                                                <!-- MODAL HACER ADMIN -->
+                                                <%- include("confirm_modal", { 
+                                                    idConfirmModal: "div-modal-make-admin", 
+                                                    pConfirmModal: "¿Estás seguro de que quieres hacer administrador a este usuario? No se puede deshacer esta acción.", 
+                                                    buttonSbConfirmModal: "button-sb-make-admin",
+                                                    dataName: "iduser",
+                                                    dataValue: user.id }) %>
+                                                <% } else { %>
                                                 <button type="button" class="button-sb-validate button-users bg-riu-green" data-idUser="<%= user.id %>">Validar</button>
                                             <% } %>                   
                                     </div>
                                 <% } %>
                             </div>
                         <% }); %>
-                    </div>
-                </div>
-
-                <!-- MODAL BANEAR -->
-                <div id="div-modal-ban" aria-labelledby="div-modal-ban" aria-hidden="true" class="modal fade">
-                    <div class="modal-dialog modal-lg modal-dialog-centered">
-                        <div class="modal-content">
-                            <!-- Header -->
-                            <div class="modal-header bg-riu-primary">
-                                <button type="button" class="button-modal-x" data-bs-dismiss="modal" aria-label="Close">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" height="20" class="bi bi-x-lg" viewBox="0 0 16 16">
-                                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
-                                      </svg>
-                                </button>
-                            </div>
-                            <!-- Body: mensaje de confirmación -->
-                            <div class="modal-body d-flex">
-                                <p>¿Estás seguro de que quieres expulsar a este usuario? No se puede deshacer esta acción.</p>
-                            </div>
-                            <!-- Footer -->
-                            <div class="modal-footer">
-                                <form>
-                                    <button type="button" class="button-modal-cancel bg-riu-gray" data-bs-dismiss="modal" >No</button>
-                                    <button id="button-sb-ban" class="button-modal-cancel bg-riu-primary ms-2">Sí</button>
-                                </form>                                                        
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- MODAL HACER ADMIN -->
-                <div id="div-modal-make-admin" aria-labelledby="div-modal-make-admin" aria-hidden="true" class="modal fade">
-                    <div class="modal-dialog modal-lg modal-dialog-centered">
-                        <div class="modal-content">
-                            <!-- Header -->
-                            <div class="modal-header bg-riu-primary">
-                                <button type="button" class="button-modal-x" data-bs-dismiss="modal" aria-label="Close">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" height="20" class="bi bi-x-lg" viewBox="0 0 16 16">
-                                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
-                                      </svg>
-                                </button>
-                            </div>
-                            <!-- Body: mensaje de confirmación -->
-                            <div class="modal-body d-flex">
-                                <p>¿Estás seguro de que quieres hacer administrador a este usuario? No se puede deshacer esta acción.</p>
-                            </div>
-                            <!-- Footer -->
-                            <div class="modal-footer">
-                                <form>
-                                    <button type="button" class="button-modal-cancel bg-riu-gray" data-bs-dismiss="modal" >No</button>
-                                    <button id="button-sb-make-admin" class="button-modal-cancel bg-riu-primary ms-2">Sí</button>
-                                </form>                                                        
-                            </div>
-                        </div>
                     </div>
                 </div>
 

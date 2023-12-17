@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    <div id="<%= idConfirmModal %>" aria-labelledby="<%= idConfirmModal %>" aria-hidden="true" class="modal fade">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <!-- Header -->
+                <div class="modal-header bg-riu-primary">
+                    <button type="button" class="button-modal-x" data-bs-dismiss="modal" aria-label="Close">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" height="20" class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                          </svg>
+                    </button>
+                </div>
+                <!-- Body: mensaje de confirmación -->
+                <div class="modal-body d-flex">
+                    <p><%= pConfirmModal %></p>
+                </div>
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <form>
+                        <button type="button" class="button-modal-confirm bg-riu-gray" data-bs-dismiss="modal" >No</button>
+                        <button class="<%= buttonSbConfirmModal %> button-modal-confirm bg-riu-primary ms-2" data-<%= dataName %>="<%= dataValue %>">Sí</button>
+                    </form>                                                        
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

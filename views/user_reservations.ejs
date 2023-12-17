@@ -72,37 +72,18 @@
                                             <div class="div-modal-cancel col d-flex align-items-end justify-content-end">
                                                 <!-- MODAL CANCELAR -->
                                                 <button class="button-riu bg-riu-primary button-cancel-reservation" data-bs-toggle="modal" data-bs-target="#div-modal-cancel-<%= i %>">Cancelar</button>
-                                                <div class="modal fade" id="div-modal-cancel-<%= i %>" aria-labelledby="div-modal-cancel-<%= i %>" aria-hidden="true">
-                                                    <div class="modal-dialog modal-lg modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <!-- Header -->
-                                                            <div class="modal-header bg-riu-primary">
-                                                                <button type="button" class="button-modal-x" data-bs-dismiss="modal" aria-label="Close">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" height="20" class="bi bi-x-lg" viewBox="0 0 16 16">
-                                                                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
-                                                                      </svg>
-                                                                </button>
-                                                            </div>
-                                                            <!-- Body: mensaje de confirmación -->
-                                                            <div class="modal-body d-flex">
-                                                                <!-- Cancelar reserva-->
-                                                                <p>¿Estás seguro de que quieres cancelar tu reserva? No se puede deshacer esta acción.</p>
-                                                            </div>
-                                                            <!-- Footer -->
-                                                            <div class="modal-footer">
-                                                                <form>
-                                                                    <button type="button" class="button-modal-cancel bg-riu-gray" data-bs-dismiss="modal" >No</button>
-                                                                    <button class="button-sb-cancel button-modal-cancel bg-riu-primary ms-2" data-idReservation="<%= cr.id %>">Sí</button>
-                                                                </form>                                                        
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <%- include("confirm_modal", { 
+                                                    idConfirmModal: `div-modal-cancel-${i}`, 
+                                                    pConfirmModal: "¿Estás seguro de que quieres cancelar tu reserva? No se puede deshacer esta acción.", 
+                                                    buttonSbConfirmModal: "button-sb-cancel",
+                                                    dataName: "idReservation",
+                                                    dataValue: cr.id }) %>
                                             </div>                                            
                                         </div>
                                     </div>
                                 </div>
                     <% }); } %>
+                    
                 </div> 
             </div>
         </div>

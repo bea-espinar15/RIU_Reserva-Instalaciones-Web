@@ -34,6 +34,7 @@ $(() => {
     // Al cerrar el modal, quitar el backdrop
     $('#modal-response').on('hidden.bs.modal', function () {
         $('.modal-backdrop').remove();
+        $('body').css('overflow', 'auto');
     });
 
 });

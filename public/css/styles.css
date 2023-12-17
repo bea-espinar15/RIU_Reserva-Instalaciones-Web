@@ -190,6 +190,14 @@ input, select {
     width: 30px !important;
 }
 
+/* --- Modal confirmación --- */
+.button-modal-confirm {
+    padding: 0.5rem 1.3rem;
+    border: none;
+    border-radius: 2rem;
+    color: var(--white);
+}
+
 /* --- NAV --- */
 
 nav {
