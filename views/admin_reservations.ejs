@@ -67,7 +67,7 @@
                                     <h2>
                                         <%= res.facilityName %>
                                         <% if (res.queued) { %>
-                                            <img src="/img/icons/queued.png" alt="Estás en cola de espera" title="Estás en cola de espera" width="20" height="20">
+                                            <img src="/img/icons/queued.png" alt="Estás en cola de espera" title="<%= res.userName %> está en cola de espera" width="20" height="20">
                                         <% } %>
                                     </h2>
                                     <p class="m-0"><%= res.userName %></p>

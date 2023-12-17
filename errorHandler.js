@@ -258,6 +258,11 @@ function generateError(cod) {
             title = "Tipo no seleccionado";
             message = "Por favor, selecciona el tipo de instalación que deseas o crea uno nuevo.";
         } break;
+        case 43: {
+            code = 400;
+            title = "Universidad existente";
+            message = "Ya existe una universidad con ese nombre, por favor ingresa otro.";
+        } break;
         default: {
             code = 500;
             title = "Error desconocido";

@@ -52,7 +52,7 @@ $(() => {
     const inputFaculty = $("#input-faculty");
 
     inputMail.on("change", () => {
-        let mail = inputMail.val();
+        let mail = inputMail.val();    
         // Si es un correo
         if (mailRegex.test(mail)) {
             // Si es uno de los válidos
@@ -74,6 +74,11 @@ $(() => {
                         });
                     }
                 });
+            }
+            else {
+                // Resetear combo
+                inputFaculty.empty();
+                inputFaculty.append("<option value=\"null\">Introduce tu correo</option>");
             }
         }
         else {

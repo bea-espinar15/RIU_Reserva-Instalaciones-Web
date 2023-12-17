@@ -45,7 +45,7 @@ class UserController {
                 if (!user.enabled) {
                     // Cerrarle sesión y redirigirle al login
                     request.session.destroy();
-                    errorHandler.manageError(6, {}, "login", next);
+                    errorHandler.manageError(6, { mail: "" }, "login", next);
                 }
                 else {
                     next();
@@ -266,7 +266,7 @@ class UserController {
                                                     }
                                                     else { // User
                                                         // Obtener tipos de instalaciones de la universidad
-                                                        this.daoFac.readAllTypes(university.id, (error, types) => {
+                                                        this.daoFac.readAllValidTypes(university.id, (error, types) => {
                                                             if (error) {
                                                                 errorHandler.manageError(error, { mail: request.body.mail }, "login", next);
                                                             }

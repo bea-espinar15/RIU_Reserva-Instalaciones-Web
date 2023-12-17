@@ -63,7 +63,7 @@ class FacilityController {
 
     // Tipos de instalaciones
     facilityTypes(request, response, next) {
-        this.daoFac.readAllTypes(request.session.university.id, (error, types) => {
+        this.daoFac.readAllValidTypes(request.session.university.id, (error, types) => {
             if (error) {
                 errorHandler.manageError(error, {}, "error", next);
             }
@@ -102,33 +102,38 @@ class FacilityController {
                     errorHandler.manageError(error, {}, "error", next);
                 }
                 else {
-                    // Actualizar variables de sesión
-                    request.session.facilities = facilities;
-                    request.session.facilityTypeName = facilities[0].facilityTypeName;
-                    request.session.facilityTypeHasPic = facilities[0].facilityTypeHasPic;
-                    // Render
-                    next({
-                        ajax: false,
-                        status: 200,
-                        redirect: "user_facilities",
-                        data: {
-                            response: undefined,
-                            generalInfo: {
-                                idUniversity: request.session.university.id,
-                                name: request.session.university.name,
-                                web: request.session.university.web,
-                                address: request.session.university.address,
-                                hasLogo: request.session.university.hasLogo,
-                                idUser: request.session.currentUser.id,
-                                isAdmin: request.session.currentUser.rol,
-                                hasProfilePic: request.session.currentUser.hasProfilePic,
-                                messagesUnread: request.unreadMessages
-                            },
-                            facilities: facilities,
-                            facilityTypeName: facilities[0].facilityTypeName,
-                            facilityTypeHasPic: facilities[0].facilityTypeHasPic
-                        }
-                    });
+                    if (facilities.length === 0) {
+                        errorHandler.manageError(-3, {}, "error", next);
+                    }
+                    else {
+                        // Actualizar variables de sesión
+                        request.session.facilities = facilities;
+                        request.session.facilityTypeName = facilities[0].facilityTypeName;
+                        request.session.facilityTypeHasPic = facilities[0].facilityTypeHasPic;
+                        // Render
+                        next({
+                            ajax: false,
+                            status: 200,
+                            redirect: "user_facilities",
+                            data: {
+                                response: undefined,
+                                generalInfo: {
+                                    idUniversity: request.session.university.id,
+                                    name: request.session.university.name,
+                                    web: request.session.university.web,
+                                    address: request.session.university.address,
+                                    hasLogo: request.session.university.hasLogo,
+                                    idUser: request.session.currentUser.id,
+                                    isAdmin: request.session.currentUser.rol,
+                                    hasProfilePic: request.session.currentUser.hasProfilePic,
+                                    messagesUnread: request.unreadMessages
+                                },
+                                facilities: facilities,
+                                facilityTypeName: facilities[0].facilityTypeName,
+                                facilityTypeHasPic: facilities[0].facilityTypeHasPic
+                            }
+                        });
+                    }                    
                 }
             });
         }
@@ -254,7 +259,7 @@ class FacilityController {
                                                         endHour: params.endHour,
                                                         reservationType: params.reservationType,
                                                         capacity: params.capacity,
-                                                        hasPic: params.pic ? true : false,
+                                                        hasPic: params.facilityPic ? true : false,
                                                         idType: idFacilityType,
                                                         typeName: params.facilityType,
                                                         typeHasPic: typeHasPic

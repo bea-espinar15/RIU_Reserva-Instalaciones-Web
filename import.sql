@@ -101,7 +101,7 @@ CREATE TABLE RIU_MEN_Mensaje (
 -- UNIVERSIDAD
 INSERT INTO RIU_UNI_Universidad (nombre, web, dirección, correo) VALUES
 ('Universidad Complutense de Madrid', 'https://www.ucm.es/', 'Av. Complutense, s/n, 28040 Madrid', 'ucm.es'),
-('Universidad Autonoma de Madrid', 'https://www.uam.es/uam/inicio', 'Ciudad Universitaria de Cantoblanco, 28049 Madrid', 'uam.es');
+('Universidad Autónoma de Madrid', 'https://www.uam.es/uam/inicio', 'Ciudad Universitaria de Cantoblanco, 28049 Madrid', 'uam.es');
 
 
 -- FACULTAD

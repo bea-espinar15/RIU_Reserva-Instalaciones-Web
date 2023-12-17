@@ -107,7 +107,7 @@ $(() => {
         else if (typeHasPic) { facilityPic.attr("src", `/fotoTipoInstalacion/${facility.idType}`); }
         else { facilityPic.attr("src", "/img/default/facility.png"); }
         nameFacility.val(facility.name);
-        typeFacility.val(facility.typeName);
+        typeFacility.val(facility.facilityTypeName);
         startHourFacility.val(facility.startHour);
         endHourFacility.val(facility.endHour);
         resTypeFacility.val(facility.reservationType);
@@ -167,30 +167,22 @@ $(() => {
         showFacilityContainer.hide();
     });
 
-    // Al seleccionar un nuevo tipo, se abre el modal:
-    typeFacility.on("change", () => {
-        if (typeFacility.val() === "newType") {
-            typeFacility.val("");
-            buttonModalNewType.click();
-        }        
-    });
-
     // Búsqueda por nombre
     buttonSearch.on("click", (event) => {
         event.preventDefault();
         let anyFacility = 0;
-        let facilitiesArray = facilities.toArray();
         // Filtrar array
-        facilitiesArray.filter((divFac) => {
-            let divFacility = $(divFac);
-            let facility = divFacility.data("facility");
+        facilities.find(".button-see-more").each(function(i, buttonFac) {
+            let buttonFacility = $(buttonFac);
+            let facility = buttonFacility.data("facility");
+            let divFacility = $(`#div-facility-${facility.id}`);
             if ((facility.name).toLowerCase().includes((inputSearch.val()).toLowerCase())) {
                 anyFacility++;
                 divFacility.show();
             }
             else {
                 divFacility.hide();
-            }            
+            } 
         });
         
         // Actualizar mensaje de resultados
@@ -215,19 +207,30 @@ $(() => {
                 endHour: endHourFacility.val(),
                 reservationType: resTypeFacility.val(),
                 capacity: parseInt(capacityFacility.val()),
-                facilityType: typeFacility.val(),
-                facilityPic: pictureFacility.val()
+                facilityType: typeFacility.val()
             }
             // Validar input
             let error = validateNewFacility(params);
             if (!error) {
+                // Obtener imagen (crear formData)
+                let formData = new FormData();
+                let fileInput = pictureFacility[0].files[0];
+                formData.append("facilityPic", fileInput);
+                formData.append("name", nameFacility.val());
+                formData.append("startHour", startHourFacility.val());
+                formData.append("endHour", endHourFacility.val());
+                formData.append("reservationType", resTypeFacility.val());
+                formData.append("capacity", capacityFacility.val());
+                formData.append("facilityType", typeFacility.val());                
                 $.ajax({
                     method: "POST",
                     url: "/admin/crearInstalacion",
-                    data: params,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
                     success: (data, statusText, jqXHR) => {
                         // Añadir instalación a la lista
-                        const divNewFacility = $(`<div class="div-facility justify-content-between">
+                        const divNewFacility = $(`<div id="div-facility-${data.facility.id}" class="div-facility justify-content-between">
                                                     <div class="d-flex flex-column">
                                                         <h2>${data.facility.name}</h2>
                                                         <p>${data.facility.typeName}</p>
@@ -313,11 +316,22 @@ $(() => {
         }
     });
 
-    // POST crear nuevo tipo (AJAX)
+    // Modal nuevo tipo
     const buttonSbNewType = $("#button-sb-new-type");
-    const inputFacilityTypeName = $("#input-facility-type-name")
-    const inputFacilityTypePic = $("#input-facility-type-pic")
+    const inputFacilityTypeName = $("#input-facility-type-name");
+    const inputFacilityTypePic = $("#input-facility-type-pic");
     
+    // Al seleccionar un nuevo tipo, se abre el modal:
+    typeFacility.on("change", () => {
+        if (typeFacility.val() === "newType") {
+            typeFacility.val("");
+            inputFacilityTypeName.val("");
+            inputFacilityTypePic.val("");
+            buttonModalNewType.click();
+        }        
+    });
+
+    // POST crear nuevo tipo (AJAX)
     buttonSbNewType.on("click", (event) => {
         event.preventDefault();
         let error = validateName(inputFacilityTypeName.val());

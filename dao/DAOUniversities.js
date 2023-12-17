@@ -7,6 +7,7 @@ class DAOUniversities {
     constructor(pool) {
         this.pool = pool;
 
+        this.read = this.read.bind(this);
         this.readAll = this.readAll.bind(this);
         this.readByMail = this.readByMail.bind(this);
         this.readPic = this.readPic.bind(this);
@@ -15,6 +16,44 @@ class DAOUniversities {
     }
 
     // Métodos
+    // Leer
+    read(name, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {                
+                callback(-1);
+            }
+            else {
+                let querySQL = "SELECT * FROM RIU_UNI_Universidad AS UNI WHERE nombre = ?";
+                connection.query(querySQL, name, (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.length > 1) {
+                            callback(-1);
+                        }
+                        else if (rows.length === 0) {
+                            callback(null);
+                        }
+                        else {
+                            // Construir respuesta
+                            let university = {
+                                id: rows[0].id,
+                                name: rows[0].nombre,
+                                web: rows[0].web,
+                                address: rows[0].dirección,
+                                mail: rows[0].correo,
+                                hasLogo: rows[0].logo ? true : false
+                            }
+                            callback(null, university);
+                        }                        
+                    }
+                });
+            }
+        });
+    }
+    
     // Leer todo
     readAll(callback) {
         this.pool.getConnection((error, connection) => {

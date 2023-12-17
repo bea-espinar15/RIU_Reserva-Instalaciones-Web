@@ -132,57 +132,70 @@ class UniversityController {
                 errorHandler.manageError(14, data, "admin_settings", next);
             }
             else {
-                let newSettings = {
-                    idUniversity: request.session.university.id,
-                    name: request.body.settingsName,
-                    address: request.body.settingsAddress,
-                    web: request.body.settingsWeb,                    
-                    pic: pic ? pic.buffer : null
-                }
-                // Actualizar
-                this.daoUni.changeSettings(newSettings, (error) => {
+                // Comprobar que el nombre no está repetido
+                this.daoUni.read(request.body.settingsName, (error, university) => {
                     if (error) {
                         errorHandler.manageError(error, {}, "error", next);
                     }
                     else {
-                        // Actualizar variables de sesión
-                        let newUniversity = {
-                            id: request.session.university.id,
-                            name: newSettings.name,
-                            address: newSettings.address,
-                            web: newSettings.web,
-                            mail: request.session.university.mail,
-                            hasLogo: newSettings.pic ? true : request.session.university.hasLogo
+                        if (university) { // Ya existe
+                            errorHandler.manageError(43, data, "admin_settings", next);
                         }
-                        request.session.university = newUniversity;
-                        // Reconstruimos data para redirigir a inicio
-                        let data = {
-                            response: {
-                                code: 200,
-                                title: "Configuración actualizada",
-                                message: "Los datos de la universidad se han modificado con éxito"
-                            },
-                            generalInfo: {
-                                idUniversity: newUniversity.id,
-                                name: newUniversity.name,
-                                web: newUniversity.web,
-                                address: newUniversity.address,
-                                hasLogo: newUniversity.hasLogo,
-                                idUser: request.session.currentUser.id,
-                                isAdmin: request.session.currentUser.rol,
-                                hasProfilePic: request.session.currentUser.hasProfilePic,
-                                messagesUnread: request.unreadMessages
-                            },
-                            adminName: request.session.currentUser.name
-                        } 
-                        next({
-                            ajax: false,
-                            status: 200,
-                            redirect: "admin_index",
-                            data: data
-                        });
+                        else {
+                            let newSettings = {
+                                idUniversity: request.session.university.id,
+                                name: request.body.settingsName,
+                                address: request.body.settingsAddress,
+                                web: request.body.settingsWeb,                    
+                                pic: pic ? pic.buffer : null
+                            }
+                            // Actualizar
+                            this.daoUni.changeSettings(newSettings, (error) => {
+                                if (error) {
+                                    errorHandler.manageError(error, {}, "error", next);
+                                }
+                                else {
+                                    // Actualizar variables de sesión
+                                    let newUniversity = {
+                                        id: request.session.university.id,
+                                        name: newSettings.name,
+                                        address: newSettings.address,
+                                        web: newSettings.web,
+                                        mail: request.session.university.mail,
+                                        hasLogo: newSettings.pic ? true : request.session.university.hasLogo
+                                    }
+                                    request.session.university = newUniversity;
+                                    // Reconstruimos data para redirigir a inicio
+                                    let data = {
+                                        response: {
+                                            code: 200,
+                                            title: "Configuración actualizada",
+                                            message: "Los datos de la universidad se han modificado con éxito"
+                                        },
+                                        generalInfo: {
+                                            idUniversity: newUniversity.id,
+                                            name: newUniversity.name,
+                                            web: newUniversity.web,
+                                            address: newUniversity.address,
+                                            hasLogo: newUniversity.hasLogo,
+                                            idUser: request.session.currentUser.id,
+                                            isAdmin: request.session.currentUser.rol,
+                                            hasProfilePic: request.session.currentUser.hasProfilePic,
+                                            messagesUnread: request.unreadMessages
+                                        },
+                                        adminName: request.session.currentUser.name
+                                    } 
+                                    next({
+                                        ajax: false,
+                                        status: 200,
+                                        redirect: "admin_index",
+                                        data: data
+                                    });
+                                }
+                            });
+                        }
                     }
-                });
+                });                
             }
         }
         else {

@@ -14,6 +14,7 @@ class DAOFacilities {
         this.readByType = this.readByType.bind(this);
         this.readAll = this.readAll.bind(this);
         this.readAllTypes = this.readAllTypes.bind(this);
+        this.readAllValidTypes = this.readAllValidTypes.bind(this);
         this.readFacilitiesByType = this.readFacilitiesByType.bind(this);
         this.readTypeByUniversity = this.readTypeByUniversity.bind(this);
         this.readFacilityTypePic = this.readFacilityTypePic.bind(this);
@@ -235,6 +236,38 @@ class DAOFacilities {
             }
             else {
                 let querySQL = "SELECT * FROM RIU_TIN_Tipo_Instalación AS TIN WHERE id_universidad = ?";
+                connection.query(querySQL, [idUniversity], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        // Construir objeto
+                        let types = new Array();
+                        rows.forEach(row => {
+                            let type = {
+                                id: row.id,
+                                name: row.nombre,
+                                hasPic: row.foto ? true : false,
+                                idUniversity: row.id_universidad
+                            }
+                            types.push(type);
+                        });
+                        callback(null, types);
+                    }
+                });
+            }
+        });
+    }
+
+    // Leer todos los tipos que tengan al menos una instalación
+    readAllValidTypes (idUniversity, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "SELECT TIN.* FROM RIU_TIN_Tipo_Instalación AS TIN JOIN RIU_INS_Instalación AS INS ON TIN.id = INS.id_tipo WHERE id_universidad = ? GROUP BY TIN.nombre";
                 connection.query(querySQL, [idUniversity], (error, rows) => {
                     connection.release();
                     if (error) {

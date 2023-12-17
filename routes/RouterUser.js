@@ -29,7 +29,10 @@ function routerConfig(facController, mesController, resController, uniController
     // Instalaciones
     RouterUser.get(
         "/instalaciones/:id", 
-        check("id", "-2").isNumeric(), 
+        // Campos no vacíos
+        check("id", "1").notEmpty(),
+        // ID es un número
+        check("id", "-2").isNumeric(),
         mesController.unreadMessages, 
         facController.facilitiesByType
     );
