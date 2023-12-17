@@ -286,9 +286,58 @@ class FacilityController {
         }
     }
 
-    // [TODO] Editar nueva instalación
+    // Editar instalación
     editFacility(request, response, next) {
-        errorHandler.manageAJAXError(25, next);
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            let pic = request.file;
+            let idFacility = parseInt(request.body.idFacility);
+            let idFacilityType = parseInt(request.body.idFacilityType);
+            // Comprobar formato foto, si hay
+            if (pic && (pic.mimetype !== "image/png" || pic.size > 64 * 1024)) {
+                errorHandler.manageAJAXError(14, next);
+            }
+            else {
+                let facilityPic = pic ? pic.buffer : null
+                // Comprobar si esa instalación ya existía para ese tipo (nombre repetido)
+                this.daoFac.readByType(request.body.name, idFacilityType, (error, facility) => {
+                    if (error) {
+                        errorHandler.manageAJAXError(error, next);
+                    }
+                    else {
+                        if (facility && facility.id !== idFacility) {
+                            errorHandler.manageAJAXError(30, next);
+                        }
+                        else if (facility && !facilityPic) {
+                            errorHandler.manageAJAXError(40, next);
+                        }
+                        else {
+                            // Actualizar instalación
+                            this.daoFac.update(idFacility, request.body.name, facilityPic, (error) => {
+                                if (error) {
+                                    errorHandler.manageAJAXError(error, next);
+                                }
+                                else {
+                                    next({
+                                        ajax: true,
+                                        error: false,
+                                        img: false,
+                                        data: {
+                                            code: 200,
+                                            title: "Instalación actualizada",
+                                            message: "La información de la instalación se ha actualizado con éxito"
+                                        }                                        
+                                    });
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }
+        else {
+            errorHandler.manageAJAXError(parseInt(errors.array()[0].msg), next);
+        }
     }
 
     // [TODO] Crear nuevo tipo instalación

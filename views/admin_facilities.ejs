@@ -39,7 +39,7 @@
                 <p id="p-no-facilities"></p>
                 <!-- Lista -->
                 <% facilities.forEach(fac => { %>
-                    <div class="div-facility justify-content-between">
+                    <div id="div-facility-<%= fac.id %>" class="div-facility justify-content-between">
                         <div class="d-flex flex-column">
                             <h2><%= fac.name %></h2>
                             <p><%= fac.facilityTypeName %></p>

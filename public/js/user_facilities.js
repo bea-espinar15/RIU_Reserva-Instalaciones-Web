@@ -175,6 +175,10 @@ $(() => {
             } 
             // Mostrar div            
             showFacilityContainer.fadeIn(250);
+            // Desplazar al usuario arriba del todo
+            $('html, body').animate({
+                scrollTop: 0
+            }, 100);
         });
     });
 

@@ -36,6 +36,20 @@ function validateNewFacility(params) {
     }
 }
 
+function validateEditFacility(name) {
+    let error = {};
+    // Campos no vacíos
+    if (name === "") {
+        error.code = 400;
+        error.title = "Nombre vacío";
+        error.message = "Asegúrate de rellenar todos los campos.";
+        return error;
+    }
+    else {
+        return null;
+    }
+}
+
 $(() => {
 
     // Obtener elementos
@@ -76,11 +90,13 @@ $(() => {
 
     // Cuando se pulsa una instalación, se muestran sus detalles
     facilitiesTable.on('click', '.button-see-more', function () {
+        showFacilityContainer.hide();
         let divFacility = $(this);
         let facility = divFacility.data("facility");
         let typeHasPic = divFacility.data("typehaspic");
         // Rellenar contenido del div
-        if (facility.hasPic) { facilityPic.attr("src", `/fotoInstalacion/${facility.id}`); }
+        let timestamp = new Date().getTime();
+        if (facility.hasPic) { facilityPic.attr("src", `/fotoInstalacion/${facility.id}?timestamp=${timestamp}`); }
         else if (typeHasPic) { facilityPic.attr("src", `/fotoTipoInstalacion/${facility.idType}`); }
         else { facilityPic.attr("src", "/img/default/facility.png"); }
         nameFacility.val(facility.name);
@@ -89,6 +105,8 @@ $(() => {
         endHourFacility.val(facility.endHour);
         resTypeFacility.val(facility.reservationType);
         capacityFacility.val(facility.capacity);
+        buttonSbFacility.data("idfacility", facility.id);
+        buttonSbFacility.data("idfacilitytype", facility.idType);
         buttonSbFacility.data("new", false);
         // Desactivar inputs
         nameFacility.removeAttr("disabled");
@@ -102,7 +120,7 @@ $(() => {
             facilitiesContainer.hide();
         }
         // Mostrar div
-        showFacilityContainer.show();
+        showFacilityContainer.fadeIn(250);
         // Desplazar al usuario arriba del todo
         $('html, body').animate({
             scrollTop: 0
@@ -237,17 +255,53 @@ $(() => {
                 showModal(error, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
             }
         }
-        // [TODO] POST editar instalación (AJAX)
+        // POST editar instalación (AJAX)
         else {
-            $.ajax({
-                method: "POST",
-                url: "/admin/editarInstalacion",
-                data: {},
-                success: () => {},
-                error: (jqXHR, statusText, errorThrown) => {
-                    showModal(jqXHR.responseJSON, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
-                }
-            });
+            // Validar
+            let error = validateEditFacility(nameFacility.val());
+            if (!error) {
+                // Obtener foto de perfil
+                let formData = new FormData();
+                let fileInput = pictureFacility[0].files[0];
+                formData.append("facilityPic", fileInput);
+                formData.append("name", nameFacility.val());
+                formData.append("idFacilityType", buttonSbFacility.data("idfacilitytype"));
+                formData.append("idFacility", buttonSbFacility.data("idfacility"));
+                let idFacility = buttonSbFacility.data("idfacility");
+                $.ajax({
+                    method: "POST",
+                    url: "/admin/editarInstalacion",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: (data, statusText, jqXHR) => {
+                        // Actualizar foto de la instalación
+                        if (fileInput) {
+                            // Para no usar la imagen que tenías en caché si no volver a pedirla al servidor
+                            let timestamp = new Date().getTime();
+                            facilityPic.attr("src", `/fotoInstalacion/${idFacility}?timestamp=${timestamp}`);
+                        }
+                        else {
+                            facilityPic.attr("src", "/img/default/facility.png");
+                        }
+                        // Actualizar el botón de ver más
+                        ($(`#div-facility-${idFacility}`).find("h2")).text(nameFacility.val());
+                        let buttonEditFacility = $(`#div-facility-${idFacility}`).find(".button-see-more");
+                        let editFac = buttonEditFacility.data("facility");
+                        editFac.name = nameFacility.val();
+                        editFac.hasPic = fileInput ? true : false;
+                        buttonEditFacility.data("facility", editFac);
+                        // Mostrar modal
+                        showModal(data, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
+                    },
+                    error: (jqXHR, statusText, errorThrown) => {
+                        showModal(jqXHR.responseJSON, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
+                    }
+                });
+            }
+            else {
+                showModal(error, $("#div-modal-error-header"), $("#img-modal-error"), $("#h1-modal-error"), $("#p-modal-error"), $("#button-modal-error-ok"), $("#button-modal-error"));
+            }
         }
     });
 

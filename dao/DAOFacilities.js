@@ -17,6 +17,7 @@ class DAOFacilities {
         this.readFacilitiesByType = this.readFacilitiesByType.bind(this);
         this.readFacilityTypePic = this.readFacilityTypePic.bind(this);
         this.readFacilityPic = this.readFacilityPic.bind(this);
+        this.update = this.update.bind(this);
     }
 
     // Métodos
@@ -318,6 +319,32 @@ class DAOFacilities {
                             // Construir objeto
                             let pic = rows[0].foto;
                             callback(null, pic);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    // Actualizar
+    update(idFacility, name, pic, callback) {
+        this.pool.getConnection((error, connection) => {
+            if (error) {
+                callback(-1);
+            }
+            else {
+                let querySQL = "UPDATE RIU_INS_Instalación SET nombre = ?, foto = ? WHERE id = ?";
+                connection.query(querySQL, [name, pic, idFacility], (error, rows) => {
+                    connection.release();
+                    if (error) {
+                        callback(-1);
+                    }
+                    else {
+                        if (rows.affectedRows != 1) {
+                            callback(-1);
+                        }
+                        else {
+                            callback(null);
                         }
                     }
                 });

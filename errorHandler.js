@@ -30,7 +30,7 @@ function generateError(cod) {
         case -5: {
             code = 403;
             title = "Petición no válida";
-            message = "No sé a quién estabas intentando validar, pero no lo estás haciendo bien!";
+            message = "No sé qué estás intentando hacer, pero no lo estás haciendo bien!";
         } break;
         case -6: {
             code = 403;
@@ -242,6 +242,11 @@ function generateError(cod) {
             code = 400;
             title = "Contraseña no válida";
             message = "La nueva contraseña debe ser distinta a la antigua.";
+        } break;
+        case 40: {
+            code = 400;
+            title = "Ningún campo modificado";
+            message = "El nombre y la foto de la instalación son iguales que como eran antes.";
         } break;
         default: {
             code = 500;

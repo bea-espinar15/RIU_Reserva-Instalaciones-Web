@@ -115,9 +115,17 @@ function routerConfig(facController, mesController, resController, uniController
       facController.newFacility
     );
 
-    // [TODO] Editar instalación
+    // Editar instalación
     RouterAdmin.post(
       "/editarInstalacion",
+      multerFactory.single("facilityPic"),
+      // Campos no vacios
+      check("name","1").notEmpty(),
+      check("idFacility", "1").notEmpty(),
+      check("idFacilityType", "1").notEmpty(),
+      // ID es un número
+      check("idFacility", "-5").isNumeric(),
+      check("idFacilityType", "-5").isNumeric(),
       facController.editFacility
     );
 
