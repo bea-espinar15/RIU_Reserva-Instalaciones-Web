@@ -4,11 +4,11 @@
 $(() => {
 
     // POST cancelar reserva (AJAX)
-    const buttonsCancel = $(".button-sb-cancel");
+    const buttonsCancel = $("[id^='button-sb-cancel-']");
     const reservationsTable = $("#div-current-reservations");
 
     buttonsCancel.each(function (i, btn) {
-        let button = $(this);
+        let button = $(btn);
         button.on("click", (event) => {
             event.preventDefault();
             let idReservation = button.data("idreservation");

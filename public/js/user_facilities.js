@@ -153,7 +153,7 @@ $(() => {
             let hours = generateHours(facility.startHour, facility.endHour);
             hoursTable.empty();
             hours.forEach((hour) => {
-                hoursTable.append(`<span class="badge bg-riu-gray position-relative" title="Hora disponible">${hour}</span>`);
+                hoursTable.append(`<span class="badge bg-riu-gray position-relative" title="Hora disponible"><p>${hour}</p></span>`);
             });
             hoursTable.on("click", ".badge", function() {
                 let hour = $(this);
@@ -165,7 +165,7 @@ $(() => {
                 hoursTable.find(".bg-riu-blue").removeClass("bg-riu-blue");                
                 hour.addClass("bg-riu-blue");
                 hour.attr("title", "Hora seleccionada");
-                inputHour.attr("value", hour.text());
+                inputHour.val(hour.find("p").text());
             });
             // Actualizar aforo máximo
             nPeopleModal.attr("max", facility.capacity);
@@ -223,6 +223,7 @@ $(() => {
     const pHour = $("#p-hour");
     const buttonSbReserve = $("#button-sb-reserve");
     const buttonModalReserve = $("#button-modal-reserve");
+    const pWarningQueue = $("#p-warning-queue");
 
     // Al abrir el modal, actualizamos los campos
     buttonReserve.on("click", () => {
@@ -239,6 +240,13 @@ $(() => {
             pDate.text(`Fecha: ${formattedDate}`);
             // Obtener hora seleccionada
             pHour.text(`Hora: ${hour}`);
+            // Mostrar párrafo cola
+            if ((hoursTable.find(".bg-riu-blue")).hasClass("bg-riu-red")) {
+                pWarningQueue.show();
+            }
+            else {
+                pWarningQueue.hide();
+            }
             // Mostrar modal
             buttonModalReserve.click();
         }
